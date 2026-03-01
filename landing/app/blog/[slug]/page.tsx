@@ -16,7 +16,7 @@ const imageMap: Record<string, string> = {
   'semantic-duplicate-detection': '/series-4-semantic-duplicate-detection.png',
   'hidden-cost-import-chains': '/series-5-hidden-cost-import-chains.png',
   'visualizing-invisible': '/series-6-visualise-invisible-debt.png',
-  'future-human-friendly-code': '/part-7-future-human-friendly-code.png',
+  'future-human-friendly-code': '/series-7-future-human-friendly-code.png',
 };
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
