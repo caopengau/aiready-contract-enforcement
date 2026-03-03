@@ -134,6 +134,7 @@ const sections = [
   { id: 'metrics', label: 'Understanding Metrics' },
   { id: 'unified-cli', label: 'Unified CLI' },
   { id: 'visualize', label: 'Visualize' },
+  { id: 'consulting', label: 'Consulting Audit' },
   { id: 'options', label: 'CLI Options' },
   { id: 'contributing', label: 'Contributing' },
 ];
@@ -760,6 +761,53 @@ export default function DocsPage() {
                   the default browser
                 </li>
               </ul>
+            </div>
+          </section>
+
+          {/* Consulting Section */}
+          <section id="consulting" className="mb-16">
+            <h2 className="text-4xl font-black text-slate-900 mb-6">
+              <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                Consulting Audit
+              </span>
+            </h2>
+
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-6 mb-6">
+              <p className="text-slate-700 mb-4">
+                Are you an AI Consultant or Architect auditing codebases for
+                readiness? Use this prompt to generate a professional,
+                data-backed report for your clients.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-lg mb-8">
+              <h3 className="text-2xl font-bold text-slate-900 mb-4">
+                📊 Professional Audit
+              </h3>
+              <p className="text-slate-600 mb-4">
+                This workflow produces a structured report and interactive
+                visualization to identify systemic issues and token ROI.
+              </p>
+              <AgentPrompt variant="consulting" />
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                <h4 className="font-bold text-slate-900 mb-2">
+                  White-label Reports
+                </h4>
+                <p className="text-sm text-slate-600">
+                  Export scan results to JSON to feed your own custom templates
+                  or AI synthesis engines.
+                </p>
+              </div>
+              <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                <h4 className="font-bold text-slate-900 mb-2">Readiness ROI</h4>
+                <p className="text-sm text-slate-600">
+                  Translate token waste into real dollar savings for your
+                  clients by optimizing context windows.
+                </p>
+              </div>
             </div>
           </section>
 

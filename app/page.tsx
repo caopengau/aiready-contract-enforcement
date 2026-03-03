@@ -15,6 +15,7 @@ import { Testimonials } from '../components/Testimonials';
 import { CTA } from '../components/CTA';
 import { FAQ } from '../components/FAQ';
 import { Footer } from '../components/Footer';
+import { ConsultantsSection } from '../components/ConsultantsSection';
 import { AIOptimizedContent } from '../components/AIOptimizedContent';
 import {
   generateBreadcrumbSchema,
@@ -112,6 +113,8 @@ export default function HomePage() {
         <AIReadinessScore />
 
         <NotAnotherLinter />
+
+        <ConsultantsSection />
 
         <Testimonials />
 

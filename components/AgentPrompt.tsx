@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface AgentPromptProps {
-  variant?: 'basic' | 'detailed' | 'fix';
+  variant?: 'basic' | 'detailed' | 'fix' | 'consulting';
   className?: string;
 }
 
@@ -68,12 +68,29 @@ const prompts = {
     '',
     'Step 4: Report before/after AI Readiness Score and changes made.',
   ],
+  consulting: [
+    'Generate an AI Readiness Audit for this codebase:',
+    '',
+    'Step 1: Run comprehensive scan',
+    'npx @aiready/cli scan --score --output audit-report.json',
+    '',
+    'Step 2: Generate interactive visualization',
+    'npx @aiready/cli visualise --report audit-report.json --output audit.html',
+    '',
+    'Step 3: Analyze results for professional advisory:',
+    '- Identify systemic architectural drift',
+    '- Calculate potential token savings from consolidation',
+    '- Prioritize refactoring targets by "Readiness ROI"',
+    '',
+    'Step 4: Create an executive summary suitable for stakeholders.',
+  ],
 };
 
 const promptTitles = {
   basic: 'Basic Scan',
   detailed: 'Detailed Analysis',
   fix: 'Fix Issues',
+  consulting: 'Consulting Audit',
 };
 
 const agentIcons = [
