@@ -50,9 +50,6 @@ AWS_PROFILE ?= aiready
 AWS_REGION ?= ap-southeast-2
 EXPECTED_AWS_ACCOUNT_ID := 316759592139
 
-ifndef VERIFY_AWS_ACCOUNT_DEFINED
-VERIFY_AWS_ACCOUNT_DEFINED := 1
-
 # Verify AWS account and profile matches expectations
 .PHONY: verify-aws-account
 verify-aws-account:
@@ -65,7 +62,6 @@ verify-aws-account:
 		exit 1; \
 	fi
 	@printf '$(GREEN)✓ AWS Account verified: $(AWS_PROFILE) ($(EXPECTED_AWS_ACCOUNT_ID))$(RESET_COLOR)\n'
-endif
 
 # Notifications (defaults for solo founder)
 SES_TO_EMAIL ?= caopengau@gmail.com
