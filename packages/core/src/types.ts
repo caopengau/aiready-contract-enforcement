@@ -152,15 +152,14 @@ export interface ComprehensionDifficulty {
   score: number;
   /** Factors contributing to difficulty */
   factors: {
-    name: string;
-    contribution: number;
-    description: string;
-  }[];
+    budgetRatio: number;
+    depthRatio: number;
+    fragmentation: number;
+  };
   /** Interpretation */
   rating: 'trivial' | 'easy' | 'moderate' | 'difficult' | 'expert';
 }
 
-/**
 /**
  * Technical Value Chain
  * Traces a technical issue through its impact on AI and developer outcomes.
@@ -182,6 +181,16 @@ export interface TechnicalValueChain {
     opportunityCost: number;
     riskLevel: 'low' | 'moderate' | 'high' | 'critical';
   };
+}
+
+/**
+ * v0.13+ simplified technical value chain
+ */
+export interface TechnicalValueChainSummary {
+  score: number;
+  density: number;
+  complexity: number;
+  surface: number;
 }
 
 /**
@@ -275,12 +284,12 @@ export interface AIReadyConfig {
       )[];
     };
     [toolName: string]:
-    | {
-      enabled?: boolean;
-      scoreWeight?: number;
-      [key: string]: any;
-    }
-    | undefined;
+      | {
+          enabled?: boolean;
+          scoreWeight?: number;
+          [key: string]: any;
+        }
+      | undefined;
   };
 
   // Scoring configuration
