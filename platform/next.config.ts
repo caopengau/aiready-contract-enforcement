@@ -10,11 +10,8 @@ if (
   delete process.env.AWS_SECRET_ACCESS_KEY;
 }
 
-const nextConfig: any = {
+const nextConfig: NextConfig = {
   reactStrictMode: true,
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   typescript: {
     ignoreBuildErrors: true,
   },

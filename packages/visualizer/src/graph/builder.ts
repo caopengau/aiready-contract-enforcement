@@ -165,8 +165,9 @@ export class GraphBuilder {
       basenameMap.get(base)!.add(p.fileName);
     });
 
-    // 1. Process patterns
-    (report.patterns || []).forEach((entry: any) => {
+    // 1. Process patterns (Support unified patternDetect.results or legacy patterns)
+    const patterns = report.patternDetect?.results || report.patterns || [];
+    patterns.forEach((entry: any) => {
       const file = entry.fileName;
       builder.addNode(
         file,
@@ -221,8 +222,10 @@ export class GraphBuilder {
       });
     });
 
-    // 2. Duplicates
-    (report.duplicates || []).forEach((dup: any) => {
+    // 2. Duplicates (Support unified patternDetect.duplicates or legacy duplicates)
+    const duplicates =
+      report.patternDetect?.duplicates || report.duplicates || [];
+    duplicates.forEach((dup: any) => {
       builder.addNode(dup.file1, 'Similarity target', 5);
       builder.addNode(dup.file2, 'Similarity target', 5);
       builder.addEdge(dup.file1, dup.file2, 'similarity');
@@ -237,8 +240,9 @@ export class GraphBuilder {
       fileIssues.get(f2)!.duplicates += 1;
     });
 
-    // 3. Context: dependencies and related files
-    (report.context || []).forEach((ctx: any) => {
+    // 3. Context: dependencies and related files (Support unified contextAnalyzer.results or legacy context)
+    const context = report.contextAnalyzer?.results || report.context || [];
+    context.forEach((ctx: any) => {
       const file = ctx.file;
       builder.addNode(file, `Deps: ${ctx.dependencyCount || 0}`, 10);
 
@@ -282,9 +286,10 @@ export class GraphBuilder {
         }
       });
 
-      const fileDir = path.dirname(file);
+      const absoluteFile = path.resolve(builder.rootDir, file);
+      const fileDir = path.dirname(absoluteFile);
       (ctx.dependencyList || []).forEach((dep: string) => {
-        if (dep.startsWith('.')) {
+        if (dep.startsWith('.') || dep.startsWith('/')) {
           const possiblePaths = [
             path.resolve(fileDir, dep),
             path.resolve(fileDir, dep + '.ts'),
@@ -305,7 +310,9 @@ export class GraphBuilder {
     });
 
     // 4. Doc Drift
-    (report.docDrift?.issues || []).forEach((issue: any) => {
+    const docDriftResults =
+      report.docDrift?.results || report.docDrift?.issues || [];
+    docDriftResults.forEach((issue: any) => {
       const file = issue.location?.file;
       if (file) {
         builder.addNode(file, 'Doc-Drift Issue', 5);
@@ -315,7 +322,9 @@ export class GraphBuilder {
     });
 
     // 5. Dependencies
-    (report.deps?.issues || []).forEach((issue: any) => {
+    const depsResults =
+      report.dependencyHealth?.results || report.deps?.issues || [];
+    depsResults.forEach((issue: any) => {
       const file = issue.location?.file;
       if (file) {
         builder.addNode(file, 'Dependency Issue', 5);

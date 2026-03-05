@@ -186,6 +186,27 @@ export class GraphBuilder {
       }
     };
 
+    const processItemWithIssues = (item: any) => {
+      const file = item.file || item.fileName || item.location?.file;
+      if (!file) return;
+
+      processFileNode(file, 'Issue Hub', 8);
+
+      // Handle nested issues array (AnalysisResult format)
+      if (Array.isArray(item.issues)) {
+        item.issues.forEach((issue: any) => {
+          const sev = rankSeverity(
+            typeof issue === 'string' ? null : issue.severity
+          );
+          bumpIssue(file, sev);
+        });
+      } else {
+        // Direct issue object format
+        const sev = rankSeverity(item.severity);
+        bumpIssue(file, sev);
+      }
+    };
+
     // 1. Semantic Duplicates
     // Every tool now lives under its camelCase name in 'raw'
     const patternData = raw.patternDetect || {};
@@ -199,6 +220,17 @@ export class GraphBuilder {
       const f1 = dup.file1 || dup.fileName || dup.file;
       const f2 = dup.file2;
 
+      // Calculate severity for the duplicate itself if it's a raw pattern
+      const dupSev: IssueSeverity | null = dup.severity
+        ? rankSeverity(dup.severity)
+        : dup.similarity
+          ? dup.similarity > 0.95
+            ? 'critical'
+            : dup.similarity > 0.9
+              ? 'major'
+              : 'minor'
+          : null;
+
       if (f1) {
         processFileNode(f1, 'Semantic Pattern', 8);
         const cleanF1 = builder.cleanPath(f1);
@@ -209,7 +241,16 @@ export class GraphBuilder {
             duplicates: 0,
           });
         fileIssues.get(cleanF1)!.duplicates += 1;
+
+        if (Array.isArray(dup.issues)) {
+          dup.issues.forEach((issue: any) =>
+            bumpIssue(f1, rankSeverity(issue.severity))
+          );
+        } else {
+          bumpIssue(f1, dupSev);
+        }
       }
+
       if (f2) {
         processFileNode(f2, 'Semantic Pattern', 8);
         const cleanF2 = builder.cleanPath(f2);
@@ -220,6 +261,10 @@ export class GraphBuilder {
             duplicates: 0,
           });
         fileIssues.get(cleanF2)!.duplicates += 1;
+
+        // For f2, we only bump the duplicate issue itself
+        bumpIssue(f2, dupSev);
+
         if (f1) builder.addEdge(f1, f2, 'similarity');
       }
     });
@@ -252,12 +297,8 @@ export class GraphBuilder {
         contextBudget
       );
 
-      (ctx.issues || []).forEach((issue: any) => {
-        const sev = rankSeverity(
-          typeof issue === 'string' ? null : issue.severity
-        );
-        bumpIssue(file, sev);
-      });
+      // Reuse unified handler
+      processItemWithIssues(ctx);
 
       (ctx.dependencyList || []).forEach((dep: string) => {
         if (dep.startsWith('.') || dep.startsWith('@aiready')) {
@@ -272,12 +313,8 @@ export class GraphBuilder {
       if (key === 'semanticDuplicates' || key === 'contextFragmentation')
         return;
 
-      (tool.details || []).forEach((issue: any) => {
-        const file = issue.file || issue.fileName || issue.location?.file;
-        if (file) {
-          processFileNode(file, 'Code Quality Node', 6);
-          bumpIssue(file, rankSeverity(issue.severity));
-        }
+      (tool.details || []).forEach((item: any) => {
+        processItemWithIssues(item);
       });
     });
 

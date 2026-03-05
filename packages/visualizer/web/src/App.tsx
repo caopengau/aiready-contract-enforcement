@@ -45,30 +45,35 @@ function App() {
   // Load report data
   useEffect(() => {
     const loadData = async () => {
-      const reportData = await loadReportData();
+      try {
+        const reportData = await loadReportData();
 
-      if (!reportData) {
-        setError(
-          'No scan data found. Run "pnpm aiready scan ." then copy to public/report-data.json'
-        );
+        if (!reportData) {
+          setError(
+            'No scan data found. Run "pnpm aiready scan ." then copy to public/report-data.json'
+          );
+          setLoading(false);
+          return;
+        }
+
+        // Extract optional visualizer config from report (injected by CLI)
+        const visualizerConfig = (reportData as any).visualizerConfig;
+        const graphData = transformReportToGraph(reportData, visualizerConfig);
+        setData(graphData);
+
+        // Show warning if graph was truncated
+        if (graphData.truncated?.nodes || graphData.truncated?.edges) {
+          setTruncatedWarning({
+            nodes: graphData.truncated.nodes,
+            edges: graphData.truncated.edges,
+          });
+        }
+      } catch (err: any) {
+        console.error('Failed to load or transform report data:', err);
+        setError(`Failed to load visualization: ${err.message || 'Unknown error'}`);
+      } finally {
         setLoading(false);
-        return;
       }
-
-      // Extract optional visualizer config from report (injected by CLI)
-      const visualizerConfig = (reportData as any).visualizerConfig;
-      const graphData = transformReportToGraph(reportData, visualizerConfig);
-      setData(graphData);
-
-      // Show warning if graph was truncated
-      if (graphData.truncated?.nodes || graphData.truncated?.edges) {
-        setTruncatedWarning({
-          nodes: graphData.truncated.nodes,
-          edges: graphData.truncated.edges,
-        });
-      }
-
-      setLoading(false);
     };
 
     loadData();

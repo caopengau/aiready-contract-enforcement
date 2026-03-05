@@ -21,7 +21,7 @@ export default function CodebaseMap({ repos, initialRepoId }: Props) {
   const [filteredData, setFilteredData] = useState<GraphData | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Default: only critical and major
+  // Default: all severities and healthy nodes visible
   const [filters, setFilters] = useState<
     Record<IssueSeverity | 'healthy', boolean>
   >({
