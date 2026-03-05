@@ -52,7 +52,7 @@ function extractBusinessMetrics(report: ReportData): BusinessMetrics {
 }
 
 export function transformReportToGraph(
-  report: ReportData,
+  report: any,
   runtimeGraphConfig?: { maxNodes?: number; maxEdges?: number }
 ): GraphData {
   // Use runtime config if available (from aiready.json), else use defaults from constants
@@ -60,6 +60,12 @@ export function transformReportToGraph(
     maxNodes: runtimeGraphConfig?.maxNodes ?? GRAPH_CONFIG.maxNodes,
     maxEdges: runtimeGraphConfig?.maxEdges ?? GRAPH_CONFIG.maxEdges,
   };
+
+  // Support both legacy and unified report formats
+  const patterns = report.patternDetect?.results || report.patterns || [];
+  const duplicates = report.patternDetect?.duplicates || report.duplicates || [];
+  const context = report.contextAnalyzer?.results || report.context || [];
+
   const nodes: FileNode[] = [];
   const edges: GraphEdge[] = [];
   const nodeMap = new Map<string, FileNode>();
@@ -69,16 +75,18 @@ export function transformReportToGraph(
     { count: number; severities: Set<string>; maxSeverity: string }
   >();
 
-  for (const pattern of report.patterns) {
+  const severityPriority: Record<string, number> = {
+    critical: 4,
+    major: 3,
+    minor: 2,
+    info: 1,
+    default: 0,
+  };
+
+  for (const pattern of patterns) {
     const issueCount = pattern.issues?.length || 0;
     if (issueCount > 0) {
       let maxSeverity = 'info';
-      const severityPriority: Record<string, number> = {
-        critical: 4,
-        major: 3,
-        minor: 2,
-        info: 1,
-      };
       for (const issue of pattern.issues) {
         if (
           (severityPriority[issue.severity] || 0) >
@@ -95,7 +103,7 @@ export function transformReportToGraph(
     }
   }
 
-  for (const ctx of report.context) {
+  for (const ctx of context) {
     // Try direct match first. If not found, try basename fallback so that
     // pattern entries with different path styles still associate their
     // severity with the context file in consumer reports.
@@ -114,8 +122,8 @@ export function transformReportToGraph(
 
     const titleLines = [
       `Token Cost: ${tokenCost}`,
-      `Lines of Code: ${ctx.linesOfCode}`,
-      `Dependencies: ${ctx.dependencyCount}`,
+      `Lines of Code: ${ctx.linesOfCode ?? 'n/a'}`,
+      `Dependencies: ${ctx.dependencyCount ?? 0}`,
     ];
 
     if (issues) {
@@ -142,7 +150,10 @@ export function transformReportToGraph(
     nodeMap.set(ctx.file, node);
   }
 
-  for (const ctx of report.context) {
+  // Pre-calculate node keys for faster matching
+  const nodeKeys = Array.from(nodeMap.keys());
+
+  for (const ctx of context) {
     const sourceDir = ctx.file.substring(0, ctx.file.lastIndexOf('/'));
     for (const dep of ctx.dependencyList || []) {
       if (dep.startsWith('.') || dep.startsWith('/')) {
@@ -171,7 +182,7 @@ export function transformReportToGraph(
         // Strategy 2: Fall back to loose endsWith matching
         if (!targetFile) {
           const depBase = normalizedDep.split('/').pop() || normalizedDep;
-          targetFile = [...nodeMap.keys()].find(
+          targetFile = nodeKeys.find(
             (k) =>
               k.endsWith(`/${depBase}.ts`) ||
               k.endsWith(`/${depBase}.tsx`) ||
@@ -221,7 +232,7 @@ export function transformReportToGraph(
           /\.(ts|tsx|js|jsx)$/,
           ''
         );
-        relatedId = [...nodeMap.keys()].find(
+        relatedId = nodeKeys.find(
           (k) =>
             k.endsWith(`/${relBase}.ts`) ||
             k.endsWith(`/${relBase}.tsx`) ||
@@ -243,7 +254,7 @@ export function transformReportToGraph(
     }
   }
 
-  for (const dup of report.duplicates || []) {
+  for (const dup of duplicates) {
     if (nodeMap.has(dup.file1) && nodeMap.has(dup.file2)) {
       const exists = edges.some(
         (e) =>
@@ -290,6 +301,7 @@ export function transformReportToGraph(
 export async function loadReportData(): Promise<ReportData | null> {
   const possiblePaths = [
     '/report-data.json',
+    './report-data.json',
     '../report-data.json',
     '../../report-data.json',
   ];
@@ -298,7 +310,10 @@ export async function loadReportData(): Promise<ReportData | null> {
     try {
       const response = await fetch(path);
       if (response.ok) {
-        return await response.json();
+        const data = await response.json();
+        // If it's a unified report, it might be nested under 'results' if it was a deep clone 
+        // but typically unified report IS the data.
+        return data;
       }
     } catch {
       continue;
@@ -311,7 +326,7 @@ export async function loadReportData(): Promise<ReportData | null> {
 export function getEdgeDistance(type: string): number {
   return (
     GRAPH_CONFIG.edgeDistances[
-      type as keyof typeof GRAPH_CONFIG.edgeDistances
+    type as keyof typeof GRAPH_CONFIG.edgeDistances
     ] ?? GRAPH_CONFIG.edgeDistances.dependency
   );
 }
@@ -319,7 +334,7 @@ export function getEdgeDistance(type: string): number {
 export function getEdgeStrength(type: string): number {
   return (
     GRAPH_CONFIG.edgeStrengths[
-      type as keyof typeof GRAPH_CONFIG.edgeStrengths
+    type as keyof typeof GRAPH_CONFIG.edgeStrengths
     ] ?? GRAPH_CONFIG.edgeStrengths.dependency
   );
 }
@@ -327,7 +342,7 @@ export function getEdgeStrength(type: string): number {
 export function getEdgeOpacity(type: string): number {
   return (
     GRAPH_CONFIG.edgeOpacities[
-      type as keyof typeof GRAPH_CONFIG.edgeOpacities
+    type as keyof typeof GRAPH_CONFIG.edgeOpacities
     ] ?? GRAPH_CONFIG.edgeOpacities.dependency
   );
 }
