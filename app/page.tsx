@@ -1,4 +1,7 @@
+'use client';
+
 import Script from 'next/script';
+import { useState } from 'react';
 import AnimatedHero from '../components/AnimatedHero';
 import AnimatedStats from '../components/AnimatedStats';
 import { Benefits } from '../components/Benefits';
@@ -17,6 +20,7 @@ import { FAQ } from '../components/FAQ';
 import { Footer } from '../components/Footer';
 import { ConsultantsSection } from '../components/ConsultantsSection';
 import { AIOptimizedContent } from '../components/AIOptimizedContent';
+import Modal from '../components/Modal';
 import {
   generateBreadcrumbSchema,
   generateWebsiteSchema,
@@ -25,6 +29,11 @@ import {
 } from '../lib/seo';
 
 export default function HomePage() {
+  const [isAuditModalOpen, setIsAuditModalOpen] = useState(false);
+
+  const openAuditModal = () => setIsAuditModalOpen(true);
+  const closeAuditModal = () => setIsAuditModalOpen(false);
+
   // SEO Structured Data
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: '/' },
@@ -94,7 +103,7 @@ export default function HomePage() {
 
         {/* Hero Section */}
         <section className="container mx-auto px-4 py-20 md:py-32 relative">
-          <AnimatedHero />
+          <AnimatedHero onOpenAudit={openAuditModal} />
         </section>
 
         {/* Live Scan Demo Section */}
@@ -118,18 +127,25 @@ export default function HomePage() {
 
         <Testimonials />
 
-        <CTA />
-
-        {/* Request Report Form */}
-        <section id="audit-form" className="container mx-auto px-4 py-20">
-          <ParallaxSection offset={10}>
-            <RequestForm />
-          </ParallaxSection>
-        </section>
+        <CTA onOpenAudit={openAuditModal} />
 
         <FAQ />
 
         <Footer />
+
+        {/* Audit Modal */}
+        <Modal
+          isOpen={isAuditModalOpen}
+          onClose={closeAuditModal}
+          maxWidth="max-w-3xl"
+        >
+          <RequestForm
+            title="Request a Personalized Codebase Audit"
+            description="Our experts will analyze your repository and provide a comprehensive strategy session."
+            showGlow={false}
+            isModal={true}
+          />
+        </Modal>
       </div>
     </>
   );

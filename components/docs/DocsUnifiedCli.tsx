@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import RequestForm from '../RequestForm';
 
 export default function DocsUnifiedCli() {
   return (
@@ -30,23 +31,34 @@ export default function DocsUnifiedCli() {
         </div>
       </section>
 
-      <section id="consulting" className="mb-16">
-        <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-3xl p-10 text-white shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 blur-3xl -mr-32 -mt-32"></div>
-          <div className="relative z-10">
-            <h2 className="text-3xl font-black mb-4">Need an Expert Audit?</h2>
-            <p className="text-slate-300 text-lg mb-8 max-w-2xl">
-              While our tools give you the data, our experts provide the
-              strategy. Get a comprehensive AI Readiness Audit for your
-              enterprise codebase.
-            </p>
-            <a
-              href="mailto:hello@getaiready.dev"
-              className="inline-flex items-center gap-2 bg-white text-slate-900 px-8 py-4 rounded-xl font-bold hover:bg-blue-50 transition-all"
-            >
-              Request Professional Audit
-            </a>
-          </div>
+      <section id="consulting" className="mb-24">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-black text-slate-900 mb-4">
+            Need an{' '}
+            <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+              Expert Audit?
+            </span>
+          </h2>
+          <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+            While our tools give you the data, our experts provide the strategy.
+            Get a comprehensive AI Readiness Audit for your enterprise codebase.
+          </p>
+        </div>
+
+        <RequestForm
+          title="Professional AI Readiness Audit"
+          description="Request a comprehensive strategy session and codebase audit for your team."
+          showGlow={false}
+        />
+
+        <div className="mt-12 text-center">
+          <p className="text-slate-500 mb-4">Prefer direct contact?</p>
+          <a
+            href="mailto:hello@getaiready.dev"
+            className="inline-flex items-center gap-2 text-blue-600 font-bold hover:text-blue-700 transition-all"
+          >
+            Email us: hello@getaiready.dev
+          </a>
         </div>
       </section>
 

@@ -34,7 +34,7 @@ const faqs = [
   {
     question: 'What languages do you support?',
     answer:
-      'Currently TypeScript/JavaScript, with Python and Java support coming soon. Our tools work with any codebase that has AST parsing available.',
+      'Currently TypeScript/JavaScript and Python, Java support coming soon. Our tools work with any codebase that has AST parsing available.',
   },
   {
     question: 'Can I contribute to the project?',

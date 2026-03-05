@@ -3,7 +3,19 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { BarChart3, Sparkles, Rocket, ArrowLeft, Loader2 } from 'lucide-react';
 
-export default function RequestForm() {
+interface RequestFormProps {
+  title?: string;
+  description?: string;
+  showGlow?: boolean;
+  isModal?: boolean;
+}
+
+export default function RequestForm({
+  title = 'Get Your Free Codebase Audit',
+  description = 'Receive a detailed PDF report with actionable insights to make your code AI-ready.',
+  showGlow = true,
+  isModal = false,
+}: RequestFormProps) {
   const [email, setEmail] = useState('');
   const [repoUrl, setRepoUrl] = useState('');
   const [notes, setNotes] = useState('');
@@ -52,37 +64,52 @@ export default function RequestForm() {
     }
   };
 
+  const containerClasses = isModal
+    ? 'relative p-6 md:p-8'
+    : 'relative bg-white/80 backdrop-blur-sm border border-slate-200 rounded-3xl p-8 md:p-10 shadow-2xl';
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50 }}
+      initial={{ opacity: 0, y: isModal ? 0 : 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}
       viewport={{ once: true }}
-      className="max-w-3xl mx-auto relative"
+      className={`${isModal ? 'w-full' : 'max-w-3xl mx-auto'} relative`}
     >
       {/* Animated background glow */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-3xl" />
+      {showGlow && !isModal && (
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-3xl" />
+      )}
 
-      <div className="relative bg-white/80 backdrop-blur-sm border border-slate-200 rounded-3xl p-8 md:p-10 shadow-2xl">
-        <div className="text-center mb-8">
+      <div className={containerClasses}>
+        <div className={`text-center ${isModal ? 'mb-4' : 'mb-8'}`}>
           <motion.div
             initial={{ scale: 0 }}
             whileInView={{ scale: 1 }}
             transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
             viewport={{ once: true }}
-            className="inline-block mb-4"
+            className="inline-block mb-2"
           >
-            <BarChart3 className="w-12 h-12 text-blue-600" />
+            <BarChart3
+              className={`${isModal ? 'w-8 h-8' : 'w-12 h-12'} text-blue-600`}
+            />
           </motion.div>
-          <h3 className="text-3xl font-black text-slate-900 mb-3">
-            Get Your Free{' '}
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Codebase Audit
-            </span>
+          <h3
+            className={`${isModal ? 'text-2xl' : 'text-3xl'} font-black text-slate-900 mb-2`}
+          >
+            {title.includes('Audit') ? (
+              <>
+                {title.replace('Audit', '')}
+                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  Audit
+                </span>
+              </>
+            ) : (
+              title
+            )}
           </h3>
-          <p className="text-slate-600 text-lg">
-            Receive a detailed PDF report with actionable insights to make your
-            code AI-ready.
+          <p className={`${isModal ? 'text-sm' : 'text-lg'} text-slate-600`}>
+            {description}
           </p>
         </div>
 
@@ -91,20 +118,28 @@ export default function RequestForm() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
           viewport={{ once: true }}
-          className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-2xl p-6 mb-8"
+          className={`bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-2xl ${isModal ? 'p-4 mb-6' : 'p-6 mb-8'}`}
         >
           <div className="flex items-start gap-3">
-            <Sparkles className="w-6 h-6 text-blue-600 shrink-0" />
-            <div>
-              <h4 className="font-bold text-blue-900 mb-2">What you'll get:</h4>
-              <ul className="text-sm text-blue-800 space-y-2">
+            <Sparkles
+              className={`${isModal ? 'w-4 h-4' : 'w-6 h-6'} text-blue-600 shrink-0 mt-1`}
+            />
+            <div className="w-full">
+              <h4
+                className={`${isModal ? 'text-xs mb-2' : 'text-sm mb-2'} font-bold text-blue-900`}
+              >
+                What you'll get:
+              </h4>
+              <ul
+                className={`${isModal ? 'text-[11px] grid grid-cols-2 gap-x-4 gap-y-1' : 'text-sm space-y-2'} text-blue-800`}
+              >
                 <motion.li
                   initial={{ opacity: 0, x: -10 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.4 }}
                   viewport={{ once: true }}
                 >
-                  ✓ Semantic duplicate detection report
+                  ✓ Semantic duplicate report
                 </motion.li>
                 <motion.li
                   initial={{ opacity: 0, x: -10 }}
@@ -112,7 +147,7 @@ export default function RequestForm() {
                   transition={{ delay: 0.5 }}
                   viewport={{ once: true }}
                 >
-                  ✓ Context window optimization recommendations
+                  ✓ Context window optimization
                 </motion.li>
                 <motion.li
                   initial={{ opacity: 0, x: -10 }}
@@ -120,7 +155,7 @@ export default function RequestForm() {
                   transition={{ delay: 0.6 }}
                   viewport={{ once: true }}
                 >
-                  ✓ Consistency analysis and naming suggestions
+                  ✓ Naming consistency analysis
                 </motion.li>
                 <motion.li
                   initial={{ opacity: 0, x: -10 }}
@@ -128,7 +163,7 @@ export default function RequestForm() {
                   transition={{ delay: 0.7 }}
                   viewport={{ once: true }}
                 >
-                  ✓ Actionable next steps for AI adoption
+                  ✓ Actionable AI adoption roadmap
                 </motion.li>
               </ul>
             </div>
@@ -169,44 +204,51 @@ export default function RequestForm() {
             </motion.button>
           </motion.div>
         ) : (
-          <form onSubmit={onSubmit} className="space-y-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              viewport={{ once: true }}
+          <form
+            onSubmit={onSubmit}
+            className={isModal ? 'space-y-4' : 'space-y-6'}
+          >
+            <div
+              className={isModal ? 'grid md:grid-cols-2 gap-4' : 'space-y-6'}
             >
-              <label className="block text-sm font-bold text-slate-700 mb-2">
-                Email
-              </label>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
-                className="w-full rounded-xl border-2 border-slate-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-              />
-            </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                viewport={{ once: true }}
+              >
+                <label className="block text-sm font-bold text-slate-700 mb-1.5">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  className="w-full rounded-xl border-2 border-slate-200 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                />
+              </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              viewport={{ once: true }}
-            >
-              <label className="block text-sm font-bold text-slate-700 mb-2">
-                GitHub Repo URL
-              </label>
-              <input
-                type="url"
-                required
-                value={repoUrl}
-                onChange={(e) => setRepoUrl(e.target.value)}
-                placeholder="https://github.com/owner/repo"
-                className="w-full rounded-xl border-2 border-slate-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-              />
-            </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                viewport={{ once: true }}
+              >
+                <label className="block text-sm font-bold text-slate-700 mb-1.5">
+                  GitHub Repo URL
+                </label>
+                <input
+                  type="url"
+                  required
+                  value={repoUrl}
+                  onChange={(e) => setRepoUrl(e.target.value)}
+                  placeholder="https://github.com/owner/repo"
+                  className="w-full rounded-xl border-2 border-slate-200 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                />
+              </motion.div>
+            </div>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -214,14 +256,14 @@ export default function RequestForm() {
               transition={{ delay: 0.6 }}
               viewport={{ once: true }}
             >
-              <label className="block text-sm font-bold text-slate-700 mb-2">
+              <label className="block text-sm font-bold text-slate-700 mb-1.5">
                 Notes (optional)
               </label>
               <textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder="Anything specific you'd like us to focus on"
-                className="w-full rounded-xl border-2 border-slate-200 px-4 py-3 h-32 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
+                className={`w-full rounded-xl border-2 border-slate-200 px-4 py-2.5 ${isModal ? 'h-20' : 'h-32'} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none`}
               />
             </motion.div>
 
@@ -237,7 +279,7 @@ export default function RequestForm() {
                 disabled={status === 'loading'}
                 whileHover={{ scale: status === 'loading' ? 1 : 1.02 }}
                 whileTap={{ scale: status === 'loading' ? 1 : 0.98 }}
-                className="flex-1 px-6 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className={`flex-1 ${isModal ? 'py-3' : 'py-4'} bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed transition-all`}
               >
                 {status === 'loading' ? (
                   <span className="flex items-center justify-center gap-2">
@@ -261,7 +303,7 @@ export default function RequestForm() {
             )}
           </form>
         )}
-        <p className="text-xs text-slate-500 text-center mt-6">
+        <p className="text-[10px] text-slate-500 text-center mt-4">
           We'll never share your data. We'll email from the address on the site
           footer.
         </p>

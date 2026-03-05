@@ -1,7 +1,5 @@
 'use client';
 
-'use client';
-
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import AgentPrompt from './AgentPrompt';
@@ -19,7 +17,11 @@ import {
 
 const words = ['AI-Ready', 'Model-Aware', 'Agentic', 'ROI-Driven'];
 
-export default function AnimatedHero() {
+interface AnimatedHeroProps {
+  onOpenAudit: () => void;
+}
+
+export default function AnimatedHero({ onOpenAudit }: AnimatedHeroProps) {
   const [currentWord, setCurrentWord] = useState(0);
   const [activeTab, setActiveTab] = useState<'cli' | 'agent' | 'vscode'>(
     'agent'
@@ -256,12 +258,12 @@ export default function AnimatedHero() {
         <div className="mt-8">
           <p className="text-slate-500 text-sm">
             Need help?{' '}
-            <a
-              href="#audit-form"
+            <button
+              onClick={onOpenAudit}
               className="text-blue-500 font-semibold hover:text-blue-400 underline underline-offset-4 decoration-blue-500/30 hover:decoration-blue-500 transition-all"
             >
               Request a personalized audit or consulting session
-            </a>
+            </button>
           </p>
         </div>
       </motion.div>

@@ -4,7 +4,11 @@ import { motion } from 'framer-motion';
 import ParallaxSection from './ParallaxSection';
 import { Bot, Code2, ArrowRight } from 'lucide-react';
 
-export function CTA() {
+interface CTAProps {
+  onOpenAudit: () => void;
+}
+
+export function CTA({ onOpenAudit }: CTAProps) {
   return (
     <section className="container mx-auto px-4 py-24 mb-12">
       <ParallaxSection offset={10}>
@@ -40,15 +44,15 @@ export function CTA() {
               Get Started for Free
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </motion.a>
-            <motion.a
-              href="mailto:hello@getaiready.dev"
+            <motion.button
+              onClick={onOpenAudit}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="px-8 py-4 bg-slate-800 text-white font-bold rounded-xl border border-slate-700 shadow-lg inline-flex items-center justify-center gap-2"
             >
               <Bot className="w-5 h-5 text-blue-400" />
               Book an AI Audit
-            </motion.a>
+            </motion.button>
           </div>
         </motion.div>
       </ParallaxSection>

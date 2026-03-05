@@ -120,6 +120,24 @@ html {
   box-shadow: 0 0 15px rgba(6, 182, 212, 0.8);
 }
 
+/* Light theme thin scrollbar */
+.scrollbar-thin-light::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin-light::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.scrollbar-thin-light::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+.scrollbar-thin-light::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
 /* Smooth transitions for all interactive elements */
 * {
   transition-property:
