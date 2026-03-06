@@ -163,23 +163,35 @@ export class GraphBuilder {
       }
     };
 
+    // Helper to get results array from various possible formats
+    const getResults = (toolKey: string, legacyKey?: string) => {
+      const camelKey = toolKey.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+      const toolData =
+        report[toolKey] ||
+        report[camelKey] ||
+        (legacyKey ? report[legacyKey] : undefined);
+      if (!toolData) return [];
+      if (Array.isArray(toolData)) return toolData;
+      return toolData.results || toolData.issues || [];
+    };
+
     // Pre-scan for basenames
     const basenameMap = new Map<string, Set<string>>();
-    const patternData =
-      report[ToolName.PatternDetect] ||
-      report.patternDetect ||
-      report.patterns ||
-      {};
-    (patternData.results || []).forEach((p: any) => {
-      const base = path.basename(p.fileName);
-      if (!basenameMap.has(base)) basenameMap.set(base, new Set());
-      basenameMap.get(base)!.add(p.fileName);
+    const patternResults = getResults(ToolName.PatternDetect, 'patterns');
+    patternResults.forEach((p: any) => {
+      const fileName = p.fileName || p.file;
+      if (fileName) {
+        const base = path.basename(fileName);
+        if (!basenameMap.has(base)) basenameMap.set(base, new Set());
+        basenameMap.get(base)!.add(fileName);
+      }
     });
 
     // 1. Process patterns
-    const patterns = patternData.results || report.results || [];
-    patterns.forEach((entry: any) => {
-      const file = entry.fileName;
+    patternResults.forEach((entry: any) => {
+      const file = entry.fileName || entry.file;
+      if (!file) return;
+
       builder.addNode(
         file,
         `Issues: ${(entry.issues || []).length}`,
@@ -234,6 +246,11 @@ export class GraphBuilder {
     });
 
     // 2. Duplicates
+    const patternData =
+      report[ToolName.PatternDetect] ||
+      report.patternDetect ||
+      report.patterns ||
+      report;
     const duplicates = patternData.duplicates || report.duplicates || [];
     duplicates.forEach((dup: any) => {
       builder.addNode(dup.file1, 'Similarity target', 5);
@@ -251,16 +268,12 @@ export class GraphBuilder {
     });
 
     // 3. Context: dependencies and related files
-    const contextData =
-      report[ToolName.ContextAnalyzer] ||
-      report.contextAnalyzer ||
-      report.context ||
-      {};
-    const contextResults =
-      contextData.results || (Array.isArray(contextData) ? contextData : []);
+    const contextResults = getResults(ToolName.ContextAnalyzer, 'context');
     contextResults.forEach((ctx: any) => {
       // Handle context analyzer results (which use 'file' instead of 'fileName')
       const file = ctx.fileName || ctx.file;
+      if (!file) return;
+
       builder.addNode(file, `Deps: ${ctx.dependencyCount || 0}`, 10);
 
       // context-level issues
@@ -324,8 +337,7 @@ export class GraphBuilder {
     });
 
     // 4. Doc Drift
-    const docDriftData = report[ToolName.DocDrift] || report.docDrift || {};
-    const docDriftResults = docDriftData.results || docDriftData.issues || [];
+    const docDriftResults = getResults(ToolName.DocDrift, 'docDrift');
     docDriftResults.forEach((issue: any) => {
       const file = issue.fileName || issue.location?.file;
       if (file) {
@@ -336,12 +348,10 @@ export class GraphBuilder {
     });
 
     // 5. Dependencies
-    const depsData =
-      report[ToolName.DependencyHealth] ||
-      report.dependencyHealth ||
-      report.deps ||
-      {};
-    const depsResults = depsData.results || depsData.issues || [];
+    const depsResults = getResults(
+      ToolName.DependencyHealth,
+      'dependencyHealth'
+    );
     depsResults.forEach((issue: any) => {
       const file = issue.fileName || issue.location?.file;
       if (file) {
