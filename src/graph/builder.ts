@@ -4,6 +4,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import { Severity, UnifiedReportSchema } from '@aiready/core';
 import type {
   GraphData,
   FileNode,
@@ -122,25 +123,33 @@ export class GraphBuilder {
    * Static helper to build graph from an aiready report JSON (ports logic from tools/generate_from_report.cjs)
    */
   static buildFromReport(report: any, rootDir = process.cwd()): GraphData {
+    // Optional: Validate report with Zod schema if needed, but allow partials for visualizer
+    const validation = UnifiedReportSchema.safeParse(report);
+    if (!validation.success) {
+      console.warn(
+        'Visualizer: Report does not fully match UnifiedReportSchema, proceeding with best-effort parsing.'
+      );
+    }
+
     const builder = new GraphBuilder(rootDir);
 
     // Map to collect per-file issue aggregates
     const fileIssues: Map<
       string,
-      { count: number; maxSeverity: IssueSeverity | null; duplicates: number }
+      { count: number; maxSeverity: Severity | null; duplicates: number }
     > = new Map();
 
-    const rankSeverity = (s?: string | null): IssueSeverity | null => {
+    const rankSeverity = (s?: string | null): Severity | null => {
       if (!s) return null;
       const ss = String(s).toLowerCase();
-      if (ss.includes('critical')) return 'critical';
-      if (ss.includes('major')) return 'major';
-      if (ss.includes('minor')) return 'minor';
-      if (ss.includes('info')) return 'info';
+      if (ss.includes('critical')) return Severity.Critical;
+      if (ss.includes('major')) return Severity.Major;
+      if (ss.includes('minor')) return Severity.Minor;
+      if (ss.includes('info')) return Severity.Info;
       return null;
     };
 
-    const bumpIssue = (file: string, sev?: IssueSeverity | null) => {
+    const bumpIssue = (file: string, sev?: Severity | null) => {
       if (!file) return;
       const id = path.resolve(rootDir, file);
       if (!fileIssues.has(id))
@@ -148,10 +157,12 @@ export class GraphBuilder {
       const rec = fileIssues.get(id)!;
       rec.count += 1;
       if (sev) {
-        const order = { critical: 3, major: 2, minor: 1, info: 0 } as Record<
-          IssueSeverity,
-          number
-        >;
+        const order = {
+          [Severity.Critical]: 3,
+          [Severity.Major]: 2,
+          [Severity.Minor]: 1,
+          [Severity.Info]: 0,
+        } as Record<Severity, number>;
         if (!rec.maxSeverity || order[sev] > order[rec.maxSeverity])
           rec.maxSeverity = sev;
       }
@@ -166,7 +177,8 @@ export class GraphBuilder {
     });
 
     // 1. Process patterns (Support unified patternDetect.results or legacy patterns)
-    const patterns = report.patternDetect?.results || report.patterns || [];
+    const patterns =
+      report.patternDetect?.results || report.results || report.patterns || [];
     patterns.forEach((entry: any) => {
       const file = entry.fileName;
       builder.addNode(
@@ -243,22 +255,23 @@ export class GraphBuilder {
     // 3. Context: dependencies and related files (Support unified contextAnalyzer.results or legacy context)
     const context = report.contextAnalyzer?.results || report.context || [];
     context.forEach((ctx: any) => {
-      const file = ctx.file;
+      // Handle context analyzer results (which use 'file' instead of 'fileName')
+      const file = ctx.fileName || ctx.file;
       builder.addNode(file, `Deps: ${ctx.dependencyCount || 0}`, 10);
 
       // context-level issues
       if (ctx.issues && Array.isArray(ctx.issues)) {
         ctx.issues.forEach((issue: any) => {
           const sev = rankSeverity(
-            issue.severity || issue.severityLevel || null
+            typeof issue === 'string'
+              ? ctx.severity
+              : issue.severity || issue.severityLevel || null
           );
           bumpIssue(file, sev);
         });
       }
 
-      // Add related files: do not create visual edges for 'related' links to
-      // avoid clutter. Instead, increase the related node's prominence so the
-      // layout reflects contextual proximity without extra lines.
+      // Add related files
       (ctx.relatedFiles || []).forEach((rel: string) => {
         const resolvedRel = path.isAbsolute(rel)
           ? rel
@@ -276,9 +289,6 @@ export class GraphBuilder {
           path.resolve(builder.rootDir, resolvedRel)
         );
         if (n) n.size = (n.size || 1) + 2;
-        // Also add a visual 'related' edge so that built/packed visualizations
-        // (which use this GraphBuilder) include related connections rather
-        // than only bumping node prominence.
         try {
           builder.addEdge(file, resolvedRel, 'related');
         } catch {
@@ -313,7 +323,7 @@ export class GraphBuilder {
     const docDriftResults =
       report.docDrift?.results || report.docDrift?.issues || [];
     docDriftResults.forEach((issue: any) => {
-      const file = issue.location?.file;
+      const file = issue.fileName || issue.location?.file;
       if (file) {
         builder.addNode(file, 'Doc-Drift Issue', 5);
         const sev = rankSeverity(issue.severity || null);
@@ -325,7 +335,7 @@ export class GraphBuilder {
     const depsResults =
       report.dependencyHealth?.results || report.deps?.issues || [];
     depsResults.forEach((issue: any) => {
-      const file = issue.location?.file;
+      const file = issue.fileName || issue.location?.file;
       if (file) {
         builder.addNode(file, 'Dependency Issue', 5);
         const sev = rankSeverity(issue.severity || null);
@@ -338,15 +348,15 @@ export class GraphBuilder {
     const edges = (builder as any).edges as DependencyEdge[];
 
     // Color mapping by highest severity
-    const colorFor = (sev: IssueSeverity | null) => {
+    const colorFor = (sev: Severity | null) => {
       switch (sev) {
-        case 'critical':
+        case Severity.Critical:
           return '#ff4d4f'; // red
-        case 'major':
+        case Severity.Major:
           return '#ff9900'; // orange
-        case 'minor':
+        case Severity.Minor:
           return '#ffd666'; // yellow
-        case 'info':
+        case Severity.Info:
           return '#91d5ff'; // light blue
         default:
           return '#97c2fc'; // default blue
@@ -369,10 +379,10 @@ export class GraphBuilder {
         // assign package group for boundary drawing
         n.group = builder.getPackageGroup(n.id as any) || undefined;
         // increment metadata counts by severity seen on this file
-        if (rec.maxSeverity === 'critical') criticalIssues += rec.count;
-        else if (rec.maxSeverity === 'major') majorIssues += rec.count;
-        else if (rec.maxSeverity === 'minor') minorIssues += rec.count;
-        else if (rec.maxSeverity === 'info') infoIssues += rec.count;
+        if (rec.maxSeverity === Severity.Critical) criticalIssues += rec.count;
+        else if (rec.maxSeverity === Severity.Major) majorIssues += rec.count;
+        else if (rec.maxSeverity === Severity.Minor) minorIssues += rec.count;
+        else if (rec.maxSeverity === Severity.Info) infoIssues += rec.count;
       } else {
         n.color = colorFor(null);
         n.group = builder.getPackageGroup(n.id as any) || undefined;
