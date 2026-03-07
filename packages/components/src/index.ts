@@ -44,8 +44,14 @@ export { CodeBlock, InlineCode, type CodeBlockProps } from './code-block';
 // Navigation
 export {
   Breadcrumb,
+  PlatformShell,
   type BreadcrumbProps,
   type BreadcrumbItem,
+  type PlatformShellProps,
+  type NavItem,
+  type User,
+  type Team,
+  type TeamMember,
 } from './navigation';
 
 // Data Display
@@ -64,10 +70,12 @@ export {
   LoadingSpinner,
   LoadingOverlay,
   ErrorDisplay,
+  FeedbackWidget,
   EmptyState,
   type LoadingSpinnerProps,
   type LoadingOverlayProps,
   type ErrorDisplayProps,
+  type FeedbackWidgetProps,
   type EmptyStateProps,
 } from './feedback';
 
