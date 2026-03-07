@@ -138,6 +138,7 @@ export interface GraphMetadata extends CoreGraphMetadata {
   estimatedMonthlyCost?: number;
   estimatedDeveloperHours?: number;
   aiAcceptanceRate?: number;
+  aiReadinessScore?: number;
   /** AI token budget unit economics (v0.13+) */
   tokenBudget?: TokenBudget;
 }

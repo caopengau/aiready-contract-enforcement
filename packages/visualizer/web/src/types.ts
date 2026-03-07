@@ -7,6 +7,7 @@ export interface BusinessMetrics {
   estimatedMonthlyCost?: number;
   estimatedDeveloperHours?: number;
   aiAcceptanceRate?: number;
+  aiReadinessScore?: number;
 }
 
 export interface FileNode {
