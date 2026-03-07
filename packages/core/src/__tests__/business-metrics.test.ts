@@ -72,8 +72,7 @@ describe('Business Metrics', () => {
         3000, // low context budget
         3, // shallow imports
         0.1, // well organized
-        90, // high consistency
-        20 // small project
+        'frontier' // model tier
       );
 
       expect(result.rating).toBe('trivial');
@@ -85,11 +84,10 @@ describe('Business Metrics', () => {
         25000, // high context budget
         10, // deep imports
         0.6, // fragmented
-        40, // low consistency
-        500 // large project
+        'compact' // model tier
       );
 
-      expect(result.rating).toBe('difficult');
+      expect(result.rating).toBe('expert');
       expect(result.score).toBeGreaterThan(60);
     });
   });

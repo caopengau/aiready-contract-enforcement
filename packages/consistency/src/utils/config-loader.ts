@@ -31,10 +31,14 @@ export async function loadNamingConfig(files: string[]): Promise<NamingConfig> {
 
   // Extract custom configuration
   const customAbbreviations = new Set(
-    consistencyConfig?.acceptedAbbreviations || []
+    (consistencyConfig?.acceptedAbbreviations as string[]) || []
   );
-  const customShortWords = new Set(consistencyConfig?.shortWords || []);
-  const disabledChecks = new Set(consistencyConfig?.disableChecks || []);
+  const customShortWords = new Set(
+    (consistencyConfig?.shortWords as string[]) || []
+  );
+  const disabledChecks = new Set(
+    (consistencyConfig?.disableChecks as string[]) || []
+  );
 
   // Merge with defaults
   const allAbbreviations = new Set([

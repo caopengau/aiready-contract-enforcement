@@ -42,10 +42,10 @@ export function GraphCanvas({
     const svgGroup = svg.append('g');
 
     // Setup zoom
-    const zoom = d3
-      .zoom<SVGSVGElement, unknown>()
+    const zoom = (d3 as any)
+      .zoom()
       .scaleExtent([GRAPH_CONFIG.zoomMin, GRAPH_CONFIG.zoomMax])
-      .on('zoom', (event) => {
+      .on('zoom', (event: any) => {
         svgGroup.attr('transform', event.transform);
         zoomTransformRef.current = event.transform;
       });
@@ -127,8 +127,8 @@ export function GraphCanvas({
       .append('g')
       .attr('cursor', 'pointer')
       .call(
-        d3
-          .drag<SVGGElement, any>()
+        (d3 as any)
+          .drag()
           .on('start', dragstarted)
           .on('drag', dragged)
           .on('end', dragended) as any

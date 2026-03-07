@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { Severity } from '@aiready/core';
 import { calculatePatternScore } from '../scoring';
 import type { DuplicatePattern } from '../detector';
 
@@ -22,12 +23,14 @@ describe('Pattern Scoring', () => {
         endLine1: 10,
         endLine2: 10,
         similarity: 0.8,
-        code: 'test code',
+        code1: 'test code',
+        code2: 'test code',
+        patternType: 'utility',
+        severity: Severity.Minor,
         tokenCost: 500,
       } as DuplicatePattern);
 
       // 50 duplicates / 10 files = 5 duplicates per file
-      // duplicatesPenalty = min(60, 5 * 0.6) = 3
       const result = calculatePatternScore(duplicates, 10);
 
       expect(result.score).toBeLessThan(100);
@@ -45,7 +48,10 @@ describe('Pattern Scoring', () => {
           endLine1: 100,
           endLine2: 100,
           similarity: 0.9,
-          code: 'test code'.repeat(100),
+          code1: 'test code'.repeat(100),
+          code2: 'test code'.repeat(100),
+          patternType: 'utility',
+          severity: Severity.Major,
           tokenCost: 5000,
         } as DuplicatePattern,
       ];
@@ -67,7 +73,10 @@ describe('Pattern Scoring', () => {
           endLine1: 10,
           endLine2: 10,
           similarity: 0.95, // High similarity
-          code: 'test code',
+          code1: 'test code',
+          code2: 'test code',
+          patternType: 'utility',
+          severity: Severity.Critical,
           tokenCost: 1500, // High token cost
         } as DuplicatePattern,
         {
@@ -78,7 +87,10 @@ describe('Pattern Scoring', () => {
           endLine1: 5,
           endLine2: 5,
           similarity: 0.5,
-          code: 'test',
+          code1: 'test',
+          code2: 'test',
+          patternType: 'utility',
+          severity: Severity.Minor,
           tokenCost: 200,
         } as DuplicatePattern,
       ];
@@ -100,7 +112,10 @@ describe('Pattern Scoring', () => {
         endLine1: 10,
         endLine2: 10,
         similarity: 0.9,
-        code: 'test',
+        code1: 'test',
+        code2: 'test',
+        patternType: 'utility',
+        severity: Severity.Major,
         tokenCost: 1000,
       } as DuplicatePattern);
 

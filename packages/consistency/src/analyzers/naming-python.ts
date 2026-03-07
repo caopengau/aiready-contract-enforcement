@@ -5,7 +5,7 @@
  * https://peps.python.org/pep-0008/#naming-conventions
  */
 
-import { getParser } from '@aiready/core';
+import { getParser, Severity } from '@aiready/core';
 import type { NamingIssue } from '../types';
 
 /**
@@ -97,7 +97,7 @@ function checkPythonNaming(
         file,
         line,
         column: 0,
-        severity: 'major',
+        severity: Severity.Major,
         category: 'naming',
         suggestion: `Class names should use PascalCase (e.g., ${toPascalCase(identifier)})`,
       };
@@ -113,7 +113,7 @@ function checkPythonNaming(
           file,
           line,
           column: 0,
-          severity: 'major',
+          severity: Severity.Major,
           category: 'naming',
           suggestion: `Function names should use snake_case, not camelCase (e.g., ${toSnakeCase(identifier)})`,
         };
@@ -130,7 +130,7 @@ function checkPythonNaming(
           file,
           line,
           column: 0,
-          severity: 'minor',
+          severity: Severity.Minor,
           category: 'naming',
           suggestion: 'Constants should use UPPER_CASE_WITH_UNDERSCORES',
         };
@@ -149,7 +149,7 @@ function checkPythonNaming(
             file,
             line,
             column: 0,
-            severity: 'major',
+            severity: Severity.Major,
             category: 'naming',
             suggestion: `Variable names should use snake_case, not camelCase (e.g., ${toSnakeCase(identifier)})`,
           };

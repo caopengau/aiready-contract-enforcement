@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { Severity } from '@aiready/core';
 import { analyzeConsistency } from '../analyzer';
 import { analyzePatterns } from '../analyzers/patterns';
 
@@ -19,7 +20,7 @@ describe('analyzeConsistency', () => {
   it('should detect minimum severity filtering', async () => {
     const report = await analyzeConsistency({
       rootDir: './src',
-      minSeverity: 'major',
+      minSeverity: Severity.Major,
     });
 
     // All issues should be major or critical
