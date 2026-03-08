@@ -390,6 +390,154 @@ export function RefreshCwIcon({
   );
 }
 
+export function WalletIcon({
+  className = 'w-6 h-6',
+  ...props
+}: { className?: string } & React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      {...props}
+    >
+      <path d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-1" />
+      <path d="M16 12h5" />
+      <circle cx="16" cy="12" r="1" />
+    </svg>
+  );
+}
+
+export function ClockIcon({
+  className = 'w-6 h-6',
+  ...props
+}: { className?: string } & React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      {...props}
+    >
+      <circle cx="12" cy="12" r="10" />
+      <polyline points="12 6 12 12 16 14" />
+    </svg>
+  );
+}
+
+export function ZapIcon({
+  className = 'w-6 h-6',
+  ...props
+}: { className?: string } & React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      {...props}
+    >
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+    </svg>
+  );
+}
+
+export function HammerIcon({
+  className = 'w-6 h-6',
+  ...props
+}: { className?: string } & React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      {...props}
+    >
+      <path d="M18.42 13.59L7.46 2.63a1 1 0 0 0-1.42 0l-4.7 4.7a1 1 0 0 0 0 1.42L11 18.23l1.07-1.07-1.41-1.41 1.42-1.42 1.41 1.41 1.41-1.41-1.41-1.41 1.42-1.42 1.41 1.41 2-2z" />
+      <path d="M13 18l6 6" />
+    </svg>
+  );
+}
+
+export function ArrowRightIcon({
+  className = 'w-6 h-6',
+  ...props
+}: { className?: string } & React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      {...props}
+    >
+      <line x1="5" y1="12" x2="19" y2="12" />
+      <polyline points="12 5 19 12 12 19" />
+    </svg>
+  );
+}
+
+export function ShieldCheckIcon({
+  className = 'w-6 h-6',
+  ...props
+}: { className?: string } & React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      {...props}
+    >
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+      <path d="M9 12l2 2 4-4" />
+    </svg>
+  );
+}
+
+export function AlertTriangleIcon({
+  className = 'w-6 h-6',
+  ...props
+}: { className?: string } & React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      {...props}
+    >
+      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+      <line x1="12" y1="9" x2="12" y2="13" />
+      <line x1="12" y1="17" x2="12.01" y2="17" />
+    </svg>
+  );
+}
+
 export default {
   RocketIcon,
   ChartIcon,
@@ -406,4 +554,11 @@ export default {
   BrainIcon,
   TerminalIcon,
   CommandLineIcon,
+  WalletIcon,
+  ClockIcon,
+  ZapIcon,
+  HammerIcon,
+  ArrowRightIcon,
+  ShieldCheckIcon,
+  AlertTriangleIcon,
 };

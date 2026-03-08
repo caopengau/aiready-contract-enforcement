@@ -13,22 +13,25 @@ export const DEFAULT_COST_CONFIG: CostConfig = {
 
 /**
  * Calculate estimated monthly cost of AI context waste
- * @deprecated Since v0.13
  */
 export function calculateMonthlyCost(
   tokenWaste: number,
   config: Partial<CostConfig> = {}
 ): { total: number; range: [number, number]; confidence: number } {
+  // Use representative context multipliers based on project size
+  // More waste in larger projects due to deeper dependencies
+  const multiplier = tokenWaste > 50000 ? 5.0 : tokenWaste > 10000 ? 3.5 : 2.5;
+
   const budget = calculateTokenBudget({
-    totalContextTokens: tokenWaste * 2.5,
+    totalContextTokens: tokenWaste * multiplier,
     wastedTokens: {
       duplication: tokenWaste * 0.7,
       fragmentation: tokenWaste * 0.3,
-      chattiness: 0,
+      chattiness: 0.1 * tokenWaste, // Added baseline chattiness
     },
   });
 
-  const preset = getModelPreset('claude-4.6');
+  const preset = getModelPreset('claude-3.5-sonnet'); // Updated to modern default
   return estimateCostFromBudget(budget, preset, config);
 }
 

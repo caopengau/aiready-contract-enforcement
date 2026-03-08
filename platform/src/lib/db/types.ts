@@ -50,6 +50,7 @@ export interface Repository {
   defaultBranch: string;
   lastAnalysisAt?: string;
   aiScore?: number;
+  potentialSavings?: number;
   isScanning?: boolean;
   lastError?: string;
   lastCommitHash?: string;
@@ -89,6 +90,11 @@ export interface Analysis {
     warnings: number;
     executionTime?: number;
     config?: AIReadyConfig;
+    businessImpact?: {
+      estimatedMonthlyWaste: number;
+      potentialSavings: number;
+      productivityHours: number;
+    };
   };
   executionTime?: number;
   details?: any[];

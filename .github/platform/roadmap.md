@@ -44,6 +44,20 @@
 
 ---
 
+## ⚡ Phase 1.1: Business Value & ROI (Immediate)
+
+### Cost Impact & Profitability
+- [ ] Implement `estimatedMonthlyCost` metric in `@aiready/core`
+- [ ] Add "ROI Dashboard" to platform showing potential token savings
+- [ ] Launch "State of AI-Readiness" benchmarking report (Lead Gen)
+
+### Remediation MVP
+- [ ] Build "Remediation Queue" UI stub in dashboard
+- [ ] Implement `aiready fix` command in CLI for basic consolidations
+- [ ] Finalize Stripe Customer Portal for self-serve Pro upgrades
+
+---
+
 ## Short-term — Months 2–3
 
 ### Metrics & Trends (Next Priority)

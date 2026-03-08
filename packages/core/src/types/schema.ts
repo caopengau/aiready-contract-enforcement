@@ -219,6 +219,13 @@ export const UnifiedReportSchema = z
       totalIssues: z.number(),
       criticalIssues: z.number(),
       majorIssues: z.number(),
+      businessImpact: z
+        .object({
+          estimatedMonthlyWaste: z.number().optional(),
+          potentialSavings: z.number().optional(),
+          productivityHours: z.number().optional(),
+        })
+        .optional(),
     }),
     results: z.array(AnalysisResultSchema),
     scoring: z

@@ -17,6 +17,8 @@ import { ToolName, FRIENDLY_TOOL_NAMES } from '@aiready/core/client';
 import { RepoHeader } from './components/RepoHeader';
 import { RepoDimensions } from './components/RepoDimensions';
 import { IssueFeed } from './components/IssueFeed';
+import { BusinessImpact } from './components/BusinessImpact';
+import { RemediationQueue } from './components/RemediationQueue';
 import { MethodologyPanel } from '@/components/MethodologyPanel';
 import CodeBlock from '@/components/CodeBlock';
 import { metrics } from '@/app/metrics/constants';
@@ -50,7 +52,16 @@ function RepoDetailContent({ repo, user, teams, overallScore }: Props) {
   const [currentPage, setCurrentPage] = useState(1);
   const [showMethodology, setShowMethodology] = useState(false);
   const [showConfig, setShowConfig] = useState(false);
+  const [activeTab, setActiveTab] = useState<'insights' | 'remediation'>(
+    'insights'
+  );
   const ITEMS_PER_PAGE = 25;
+
+  useEffect(() => {
+    if (analysis?.summary.businessImpact) {
+      setActiveTab('insights');
+    }
+  }, [analysis]);
 
   const toggleIssue = (index: number) => {
     const newExpanded = new Set(expandedIssues);
@@ -316,36 +327,124 @@ function RepoDetailContent({ repo, user, teams, overallScore }: Props) {
                 </div>
               )}
 
-              <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                <RepoDimensions
-                  analysis={analysis}
-                  selectedTool={selectedTool}
-                  onSelectTool={setSelectedTool}
-                  toolLabels={toolLabels}
-                  totalIssues={allIssues.length}
-                />
-
-                <IssueFeed
-                  issues={paginatedIssues}
-                  allIssues={filteredIssues}
-                  expandedIssues={expandedIssues}
-                  onToggleIssue={toggleIssue}
-                  onExpandAll={() =>
-                    setExpandedIssues(new Set(allIssues.keys()))
-                  }
-                  onCollapseAll={() => setExpandedIssues(new Set())}
-                  filter={filter}
-                  onFilterChange={(sev) =>
-                    setFilter((f) => ({ ...f, severity: sev || undefined }))
-                  }
-                  toolLabels={toolLabels}
-                  severityColors={severityColors}
-                  currentPage={currentPage}
-                  onLoadMore={() => setCurrentPage((p) => p + 1)}
-                  hasMore={hasMore}
-                  itemsPerPage={ITEMS_PER_PAGE}
-                />
+              {/* Tabs Switcher */}
+              <div className="flex items-center gap-1 p-1 bg-slate-900/50 border border-slate-800 rounded-2xl w-fit">
+                <button
+                  onClick={() => setActiveTab('insights')}
+                  className={`px-6 py-2 rounded-xl text-sm font-bold transition-all ${
+                    activeTab === 'insights'
+                      ? 'bg-cyan-500 text-slate-950 shadow-lg shadow-cyan-500/20'
+                      : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                  }`}
+                >
+                  Insights
+                </button>
+                <button
+                  onClick={() => setActiveTab('remediation')}
+                  className={`px-6 py-2 rounded-xl text-sm font-bold transition-all ${
+                    activeTab === 'remediation'
+                      ? 'bg-cyan-500 text-slate-950 shadow-lg shadow-cyan-500/20'
+                      : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                  }`}
+                >
+                  Remediation
+                </button>
               </div>
+
+              <AnimatePresence mode="wait">
+                {activeTab === 'insights' ? (
+                  <motion.div
+                    key="insights"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="space-y-8"
+                  >
+                    <BusinessImpact
+                      businessImpact={analysis.summary.businessImpact}
+                      aiScore={analysis.summary.aiReadinessScore}
+                    />
+
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                      <div className="lg:col-span-3">
+                        <RepoDimensions
+                          analysis={analysis}
+                          selectedTool={selectedTool}
+                          onSelectTool={setSelectedTool}
+                          toolLabels={toolLabels}
+                          totalIssues={allIssues.length}
+                        />
+                      </div>
+
+                      <div className="lg:col-span-9">
+                        <IssueFeed
+                          issues={paginatedIssues}
+                          allIssues={filteredIssues}
+                          expandedIssues={expandedIssues}
+                          onToggleIssue={toggleIssue}
+                          onExpandAll={() =>
+                            setExpandedIssues(new Set(allIssues.keys()))
+                          }
+                          onCollapseAll={() => setExpandedIssues(new Set())}
+                          filter={filter}
+                          onFilterChange={(sev) =>
+                            setFilter((f) => ({
+                              ...f,
+                              severity: sev || undefined,
+                            }))
+                          }
+                          toolLabels={toolLabels}
+                          severityColors={severityColors}
+                          currentPage={currentPage}
+                          onLoadMore={() => setCurrentPage((p) => p + 1)}
+                          hasMore={hasMore}
+                          itemsPerPage={ITEMS_PER_PAGE}
+                        />
+                      </div>
+                    </div>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="remediation"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="space-y-8"
+                  >
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                      <div className="lg:col-span-8">
+                        <RemediationQueue
+                          repoId={repo.id}
+                          hasIssues={allIssues.length > 0}
+                        />
+                      </div>
+                      <div className="lg:col-span-4">
+                        <div className="glass-card rounded-3xl p-8 border border-slate-800 bg-slate-900/30">
+                          <h4 className="text-lg font-bold mb-4">
+                            Action Center
+                          </h4>
+                          <p className="text-sm text-slate-400 leading-relaxed mb-6">
+                            This workspace allows you to apply agentic
+                            remediations directly to your repository. High-ROI
+                            fixes are prioritized to optimize context window
+                            efficiency immediately.
+                          </p>
+                          <div className="space-y-4">
+                            <div className="flex items-center justify-between p-4 rounded-2xl bg-slate-800/50 border border-slate-700">
+                              <span className="text-xs text-slate-400 font-bold uppercase tracking-widest">
+                                Active Agent
+                              </span>
+                              <span className="text-cyan-400 font-black">
+                                Remediation-V1
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           )
         )}

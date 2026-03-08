@@ -53,6 +53,11 @@ export interface AnalysisData {
     warnings: number;
     executionTime?: number;
     config?: any;
+    businessImpact?: {
+      estimatedMonthlyWaste: number;
+      potentialSavings: number;
+      productivityHours: number;
+    };
   };
   breakdown: Record<
     string,
@@ -516,6 +521,10 @@ export function normalizeReport(
       warnings: summary.warnings || 0,
       executionTime: summary.executionTime || source.executionTime || 0,
       config: summary.config || source.config || metadata.config,
+      businessImpact:
+        summary.businessImpact ||
+        source.businessImpact ||
+        source.summary?.businessImpact,
     },
     breakdown,
     rawOutput: source,

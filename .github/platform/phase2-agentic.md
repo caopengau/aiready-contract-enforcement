@@ -89,9 +89,10 @@ The platform evaluates code using **9 Core AI-Readiness Metrics**:
 
 ### 3. Prioritization Agent — Phase 2a
 
-- **ROI Calculator:** Ranks issues by impact/effort ratio
-- **Effort Estimator:** Predicts time and complexity per fix
-- **Auto-Scheduler:** Builds remediation sprint plan
+- **ROI Calculator:** Ranks issues by impact/effort ratio.
+- **Cost Impact Agent:** Quantifies token waste × API pricing to show real dollar savings.
+- **Effort Estimator:** Predicts time and complexity per fix.
+- **Auto-Scheduler:** Builds remediation sprint plan.
 
 ### 4. Remediation Agents — Phase 2b
 
@@ -141,30 +142,34 @@ interface RemediationRisk {
 
 ---
 
-## Revenue Model: Consulting + SaaS Hybrid
+---
 
-### Tier 1: Self-Service Platform ($49–199/mo)
+## Revenue Model: Hybrid SaaS
 
-- AI agents detect issues
-- Auto-remediation for low-risk fixes
-- Team review queue
-- Historical trends
-- 5 AI remediation requests/month included
+### Tier 1: Free (OSS)
+- Local CLI & core detection agents.
+- Static visualization & HTML exports.
+- Community support.
 
-### Tier 2: Expert Review Add-On ($150–300/hr)
+### Tier 2: Pro ($49/mo)
+- **Trends & Benchmarks:** Historical tracking and industry comparisons.
+- **Cost Impact Dashboard:** Real-time visibility into AI token waste.
+- **Team Collaboration:** Shared dashboards and member management.
+- **CI/CD Integration:** Automated scan uploads on every PR.
 
-- Human AI consultant reviews complex fixes
-- Architectural guidance and custom remediation strategies
-- Pair programming sessions
-- Team training
+### Tier 3: Enterprise ($499+/mo)
+- **Managed Remediation:** Agents fix detected issues (Phase 2b).
+- **Human-in-the-Loop:** Expert oversight for critical architectural changes.
+- **SSO & RBAC:** Enterprise-grade security and access control.
+- **Priority SLAs:** 4h response for critical remediations.
 
-### Tier 3: Enterprise Managed Service ($2,000–10,000/mo)
+---
 
-- Dedicated AI transformation engineer
-- Weekly remediation sprints
-- Custom rules and policies
-- Quarterly AI readiness reviews
-- Priority support
+## Strategic Moats (Why We Win)
+
+1. **The Data Moat:** Analyzing thousands of repos creates the world's best dataset for "AI-Ready Code," making our benchmarks unbeatable.
+2. **ROI-Driven Selling:** We don't sell "Code Quality"; we sell **AI Cost Efficiency** and **Developer Velocity**.
+3. **The "Prettier" Strategy:** Position AIReady as the standard, expected infra for any repository used with AI assistants.
 
 ---
 
