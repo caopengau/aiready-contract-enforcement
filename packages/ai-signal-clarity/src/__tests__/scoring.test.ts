@@ -16,7 +16,7 @@ describe('AI Signal Clarity Scoring', () => {
     },
     results: [],
     aggregateSignals: {
-      magicLiterals: 5,
+      magicLiterals: 60,
       booleanTraps: 2,
       ambiguousNames: 1,
       undocumentedExports: 3,
@@ -26,7 +26,7 @@ describe('AI Signal Clarity Scoring', () => {
       totalSymbols: 100,
       totalExports: 20,
     },
-    recommendations: ['Reduce magic literals'],
+    recommendations: ['Extract 60 magic literals into named constants'],
   };
 
   it('should map report to ToolScoringOutput correctly', () => {
@@ -36,7 +36,9 @@ describe('AI Signal Clarity Scoring', () => {
     expect(scoring.score).toBeLessThanOrEqual(100);
     expect(scoring.score).toBeGreaterThanOrEqual(0);
     expect(scoring.factors.length).toBeGreaterThan(0);
-    expect(scoring.recommendations[0].action).toBe('Reduce magic literals');
+    expect(scoring.recommendations[0].action).toBe(
+      'Extract 60 magic literals into named constants'
+    );
   });
 
   it('should handle zero signals with perfect score', () => {

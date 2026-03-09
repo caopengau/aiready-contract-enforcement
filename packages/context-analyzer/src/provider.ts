@@ -9,7 +9,8 @@ import {
   IssueType,
   SpokeOutputSchema,
 } from '@aiready/core';
-import { analyzeContext, generateSummary } from './index';
+import { analyzeContext } from './analyzer';
+import { generateSummary } from './summary';
 import { calculateContextScore } from './scoring';
 import { ContextAnalyzerOptions, ContextAnalysisResult } from './types';
 

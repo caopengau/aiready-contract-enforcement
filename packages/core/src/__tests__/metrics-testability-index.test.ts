@@ -35,8 +35,8 @@ describe('Testability Index Metric', () => {
     });
 
     expect(result.aiChangeSafetyRating).toBe('blind-risk');
-    expect(result.recommendations).some((r) =>
-      r.includes('Add a testing framework')
-    );
+    expect(
+      result.recommendations.some((r) => r.includes('Add a testing framework'))
+    ).toBe(true);
   });
 });

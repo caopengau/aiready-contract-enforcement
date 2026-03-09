@@ -13,12 +13,16 @@ describe('Doc Drift Scoring', () => {
     },
     issues: [],
     rawData: {
-      uncommentedExports: 10,
+      uncommentedExports: 20,
       totalExports: 50,
       outdatedComments: 2,
       undocumentedComplexity: 1,
     },
-    recommendations: ['Add JSDoc to exports'],
+    recommendations: [
+      'Update or remove 2 outdated comments that contradict the code.',
+      'Add JSDoc to 20 uncommented exports.',
+      'Explain the business logic for 1 highly complex functions.',
+    ],
   };
 
   it('should map report to ToolScoringOutput correctly', () => {
@@ -27,7 +31,9 @@ describe('Doc Drift Scoring', () => {
     expect(scoring.toolName).toBe(ToolName.DocDrift);
     expect(scoring.score).toBe(70);
     expect(scoring.factors.length).toBeGreaterThan(0);
-    expect(scoring.recommendations[0].action).toBe('Add JSDoc to exports');
+    expect(scoring.recommendations[0].action).toBe(
+      'Update or remove 2 outdated comments that contradict the code.'
+    );
   });
 
   it('should set high priority for low scores', () => {

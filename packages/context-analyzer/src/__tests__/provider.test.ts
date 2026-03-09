@@ -1,19 +1,27 @@
 import { describe, it, expect, vi } from 'vitest';
 import { ContextAnalyzerProvider } from '../provider';
-import * as main from '../index';
+import * as analyzer from '../analyzer';
+import * as summary from '../summary';
 
-vi.mock('../index', async () => {
-  const actual = await vi.importActual('../index');
+vi.mock('../analyzer', async () => {
+  const actual = await vi.importActual('../analyzer');
   return {
     ...actual,
     analyzeContext: vi.fn(),
+  };
+});
+
+vi.mock('../summary', async () => {
+  const actual = await vi.importActual('../summary');
+  return {
+    ...actual,
     generateSummary: vi.fn(),
   };
 });
 
 describe('Context Analyzer Provider', () => {
   it('should analyze and return SpokeOutput', async () => {
-    vi.mocked(main.analyzeContext).mockResolvedValue([
+    vi.mocked(analyzer.analyzeContext).mockResolvedValue([
       {
         file: 'file1.ts',
         issues: ['issue'],
@@ -35,7 +43,9 @@ describe('Context Analyzer Provider', () => {
         linesOfCode: 50,
       } as any,
     ]);
-    vi.mocked(main.generateSummary).mockReturnValue({ totalFiles: 1 } as any);
+    vi.mocked(summary.generateSummary).mockReturnValue({
+      totalFiles: 1,
+    } as any);
 
     const output = await ContextAnalyzerProvider.analyze({ rootDir: '.' });
 
@@ -45,7 +55,17 @@ describe('Context Analyzer Provider', () => {
 
   it('should score an output', () => {
     const mockOutput = {
-      summary: { score: 80 } as any,
+      summary: {
+        score: 80,
+        avgContextBudget: 1000,
+        maxContextBudget: 5000,
+        avgImportDepth: 3,
+        maxImportDepth: 5,
+        avgFragmentation: 0.2,
+        criticalIssues: 0,
+        majorIssues: 0,
+        totalFiles: 10,
+      } as any,
       results: [],
     };
 
@@ -53,5 +73,6 @@ describe('Context Analyzer Provider', () => {
       rootDir: '.',
     });
     expect(scoring.score).toBeDefined();
+    expect(scoring.toolName).toBe('context-analyzer');
   });
 });

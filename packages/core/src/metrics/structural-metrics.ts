@@ -44,7 +44,7 @@ export function calculatePatternEntropy(
 
   const dirGroups = new Map<string, number>();
   for (const file of files) {
-    const parts = file.path.split('/').slice(0, 4).join('/') || 'root';
+    const parts = file.path.split('/').slice(0, -1).join('/') || 'root';
     dirGroups.set(parts, (dirGroups.get(parts) || 0) + 1);
   }
 

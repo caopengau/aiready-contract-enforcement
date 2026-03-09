@@ -24,20 +24,22 @@ describe('Agent Grounding Metric', () => {
   it('should calculate disorienting score for poor structure', () => {
     const result = calculateAgentGrounding({
       deepDirectories: 10,
-      totalDirectories: 12,
-      vagueFileNames: 15,
+      totalDirectories: 10,
+      vagueFileNames: 20,
       totalFiles: 20,
       hasRootReadme: false,
       readmeIsFresh: false,
       barrelExports: 0,
-      untypedExports: 40,
+      untypedExports: 50,
       totalExports: 50,
-      inconsistentDomainTerms: 20,
+      inconsistentDomainTerms: 25,
       domainVocabularySize: 25,
     });
 
     expect(result.score).toBeLessThan(30);
     expect(result.rating).toBe('disorienting');
-    expect(result.recommendations).some((r) => r.includes('README.md'));
+    expect(result.recommendations.some((r) => r.includes('README.md'))).toBe(
+      true
+    );
   });
 });

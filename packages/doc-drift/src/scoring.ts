@@ -18,13 +18,28 @@ export function calculateDocDriftScore(
     undocumentedComplexity: rawData.undocumentedComplexity,
   });
 
-  const factors: ToolScoringOutput['factors'] = riskResult.signals.map(
-    (sig) => ({
-      name: sig.name,
-      impact: -sig.riskContribution,
-      description: sig.description,
-    })
-  );
+  const factors: ToolScoringOutput['factors'] = [
+    {
+      name: 'Uncommented Exports',
+      impact: -Math.min(
+        20,
+        (rawData.uncommentedExports / Math.max(1, rawData.totalExports)) *
+          100 *
+          0.2
+      ),
+      description: `${rawData.uncommentedExports} uncommented exports`,
+    },
+    {
+      name: 'Outdated Comments',
+      impact: -Math.min(60, rawData.outdatedComments * 15 * 0.6),
+      description: `${rawData.outdatedComments} outdated comments`,
+    },
+    {
+      name: 'Undocumented Complexity',
+      impact: -Math.min(20, rawData.undocumentedComplexity * 10 * 0.2),
+      description: `${rawData.undocumentedComplexity} complex functions lack docs`,
+    },
+  ];
 
   const recommendations: ToolScoringOutput['recommendations'] =
     riskResult.recommendations.map((rec) => ({

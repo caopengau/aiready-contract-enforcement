@@ -129,8 +129,10 @@ describe('Cluster Detector', () => {
     const clusters = detectModuleClusters(graph);
 
     expect(clusters[0].totalTokens).toBe(25000);
-    expect(clusters[0].suggestedStructure.consolidationPlan).some((p) =>
-      p.includes('Ensure clear sub-domain boundaries')
-    );
+    expect(
+      clusters[0].suggestedStructure.consolidationPlan.some((p) =>
+        p.includes('Ensure clear sub-domain boundaries')
+      )
+    ).toBe(true);
   });
 });
