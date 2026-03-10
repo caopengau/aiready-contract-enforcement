@@ -128,15 +128,22 @@ async function run(): Promise<void> {
 
     // SaaS Upload
     if (uploadToSaas && apiKey) {
-      core.info('\n☁️ Uploading results to AIReady SaaS...');
+      const isProd = !process.env.AIREADY_SERVER || process.env.AIREADY_SERVER.includes('getaiready.dev');
+      const baseUrl = process.env.AIREADY_SERVER || 'https://platform.getaiready.dev';
+      const uploadUrl = `${baseUrl}/api/analysis/upload`;
+      
+      core.info(`\n☁️ Uploading results to AIReady SaaS: ${baseUrl}...`);
       try {
-        const response = await fetch('https://api.getaiready.dev/v1/upload', {
+        const response = await fetch(uploadUrl, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${apiKey}`,
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(results),
+          body: JSON.stringify({
+            repoId: core.getInput('repo-id'), // Optional, can be inferred by API
+            data: results
+          }),
         });
         
         if (response.ok) {

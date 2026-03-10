@@ -33,7 +33,8 @@
 - [x] Provision S3 bucket for raw analysis JSON
 - [x] **SES notification system for waitlist/feedback**
 - [x] Set up EventBridge bus + SQS queues (for async processing)
-- [ ] Configure CloudWatch monitoring + Sentry
+- [x] **AWS-native observability: DLQs, SNS Alerts, and CloudWatch metrics**
+- [ ] Configure Sentry (optional, deferred in favor of AWS Native)
 
 ### Growth & Support
 

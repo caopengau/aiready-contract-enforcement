@@ -138,10 +138,13 @@ Large players (SonarQube, Snyk, GitHub Advanced Security) will likely add "AI Co
 - [x] Add Lambda reserved concurrency
 - [x] Plan-gating middleware
 - [x] **MVP Free tier launch** — All paid plans "Coming Soon"
+- [x] **AWS-native observability** (DLQs, SNS Topic, CloudWatch monitoring)
 
 ### Next Priority (Post-MVP)
 
 - [ ] Onboard beta users
+- [ ] **PR Gatekeeper Enforcement** (Block merges via GitHub status checks)
+- [ ] **One-Click Remediation** (Dashboard-integrated Auto-Fix Agents)
 - [ ] Historical trend charts
 - [ ] EventBridge/SQS for async processing
 - [ ] Improve CLI output formatting

@@ -271,7 +271,7 @@ Where in your codebase would collapsing one domain save the most time?
 ---
 
 **Day 7 — Human-in-the-Loop Post**
-AI can draft fast. Humans must own architecture and final decisions.
+AI can action instantly. Humans must own architecture and final decisions.
 
 My rule:
 
@@ -282,7 +282,7 @@ When teams skip human review discipline, velocity rises briefly and debt compoun
 
 AIReady’s mission is simple: make quality visible so human reviews are focused, not reactive.
 
-Start here: <https://getaiready.dev?utm_source=linkedin&utm_medium=social&utm_campaign=thought-leadership&utm_content=day07-main-post>
+Start here: https://getaiready.dev?utm_source=linkedin&utm_medium=social&utm_campaign=thought-leadership&utm_content=day07-main-post
 
 What review guardrail has saved your team most often?
 

@@ -34,6 +34,11 @@ export default $config({
     const isLocal = $app.stage === 'local';
     const sesDomain = isProd ? 'getaiready.dev' : 'dev.getaiready.dev';
 
+    // SNS Topic for System Alerts
+    const alertsTopic = new sst.aws.SnsTopic('SystemAlerts');
+    // Note: Subscription (e.g. to email) should be done manually or via AWS Console
+    // for security/privacy, or added here if the email is fixed.
+
     // DynamoDB Table for all entities (Single Table Design)
     // TTL enabled for automatic cleanup of old analyses (Free tier: 7 days)
     const table = new sst.aws.Dynamo('MainTable', {
@@ -62,24 +67,21 @@ export default $config({
     // EventBridge Bus for platform events
     const bus = new sst.aws.Bus('PlatformBus');
 
+    // Dead Letter Queues for reliability
+    const scanDLQ = new sst.aws.Queue('ScanDLQ');
+    const analysisDLQ = new sst.aws.Queue('AnalysisDLQ');
+
     // Queue for background analysis requests
     const scanQueue = new sst.aws.Queue('ScanQueue', {
       visibilityTimeout: '15 minutes',
+      dlq: scanDLQ.arn,
     });
 
     // Queue for processing uploaded analysis results
     const analysisQueue = new sst.aws.Queue('AnalysisQueue', {
       visibilityTimeout: '5 minutes',
+      dlq: analysisDLQ.arn,
     });
-
-    // Subscribe AnalysisQueue to the Bus (REMOVED: will send to SQS directly for better reliability in SST Ion)
-    /*
-    bus.subscribe('AnalysisUploadedRule', analysisQueue.arn, {
-      pattern: {
-        detailType: ['AnalysisUploaded'],
-      },
-    });
-    */
 
     // Next.js site configuration
     const siteConfig: sst.aws.NextjsArgs = {
@@ -207,7 +209,15 @@ export default $config({
 
     const site = new sst.aws.Nextjs('Dashboard', {
       ...siteConfig,
-      link: [table, bucket, scanQueue, analysisQueue, submissions, bus],
+      link: [
+        table,
+        bucket,
+        scanQueue,
+        analysisQueue,
+        submissions,
+        bus,
+        alertsTopic,
+      ],
       permissions: [
         {
           actions: ['ses:SendEmail', 'ses:SendRawEmail'],
@@ -223,6 +233,7 @@ export default $config({
       scanQueueUrl: scanQueue.url,
       analysisQueueUrl: analysisQueue.url,
       busName: bus.name,
+      alertsTopicArn: alertsTopic.arn,
     };
   },
 });
