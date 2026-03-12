@@ -1,6 +1,4 @@
-'use client';
-
-import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import {
   Zap,
@@ -23,10 +21,14 @@ export default function ClawHubPage() {
       {/* Navigation */}
       <nav className="sticky top-0 z-50 backdrop-blur-xl bg-black/60 border-b border-white/5">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-sm bg-cyber-blue flex items-center justify-center font-black text-black shadow-[0_0_15px_rgba(0,224,255,0.3)]">
-              CH
-            </div>
+          <div className="flex items-center gap-4">
+            <Image
+              src="/logo.png"
+              alt="ClawHub Logo"
+              width={40}
+              height={40}
+              className="rounded-sm shadow-[0_0_15px_rgba(0,224,255,0.3)]"
+            />
             <div className="flex flex-col">
               <span className="text-xl font-bold tracking-tight leading-none glow-text">
                 ClawHub
@@ -74,18 +76,29 @@ export default function ClawHubPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-24 overflow-hidden">
-        {/* Background Gradients */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[600px] bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-cyber-blue/10 via-transparent to-transparent blur-[120px] -z-10 opacity-60" />
-        <div className="absolute -top-24 -left-24 w-96 h-96 bg-cyber-green/5 blur-[100px] rounded-full -z-10" />
+      <section className="relative pt-32 pb-32 overflow-hidden border-b border-white/5">
+        {/* Cinematic Background Image */}
+        <div className="absolute inset-0 -z-10 bg-black">
+          <Image
+            src="/hero.png"
+            alt="Hero Background"
+            fill
+            className="object-cover opacity-20 grayscale transition-opacity duration-1000 group-hover:opacity-30"
+            priority
+          />
+          {/* Gradients to blend image */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_#0a0a0a_80%)]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-transparent to-[#0a0a0a]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-transparent to-[#0a0a0a]" />
+        </div>
 
-        <div className="container mx-auto px-4 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-sm border border-cyber-blue/20 bg-cyber-blue/5 text-cyber-blue text-[10px] font-mono uppercase tracking-[0.3em] mb-10 shadow-[0_0_20px_rgba(0,224,255,0.05)]">
+        <div className="container mx-auto px-4 text-center relative">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-sm border border-cyber-blue/20 bg-cyber-blue/5 text-cyber-blue text-[10px] font-mono uppercase tracking-[0.3em] mb-12 shadow-[0_0_20px_rgba(0,224,255,0.05)] backdrop-blur-sm">
             <Activity className="w-3 h-3" />
             <span>Autonomous Infrastructure Synthesis</span>
           </div>
 
-          <h1 className="text-6xl md:text-8xl font-black tracking-tighter mb-8 bg-gradient-to-b from-white to-white/40 bg-clip-text text-transparent">
+          <h1 className="text-6xl md:text-9xl font-black tracking-tighter mb-10 bg-gradient-to-b from-white to-white/30 bg-clip-text text-transparent leading-[0.9]">
             Never-Dying,
             <br />
             <span className="text-cyber-blue glow-text italic">
@@ -94,7 +107,7 @@ export default function ClawHubPage() {
             Stack
           </h1>
 
-          <p className="text-lg text-zinc-400 max-w-3xl mx-auto mb-12 leading-relaxed font-light">
+          <p className="text-xl text-zinc-300 max-w-3xl mx-auto mb-14 leading-relaxed font-light drop-shadow-lg">
             ClawHub is the world&apos;s first autonomous agentic system built on
             AWS Ion. It interprets intent, synthesizes infrastructure, and{' '}
             <span className="text-cyber-green font-mono text-sm underline decoration-cyber-green/30 underline-offset-4">
@@ -103,17 +116,17 @@ export default function ClawHubPage() {
             back to source control while you sleep.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
             <Link
               href="https://github.com/caopengau/serverlessclaw"
-              className="px-10 py-4 rounded-sm bg-cyber-blue hover:bg-cyber-blue/90 text-black transition-all font-black uppercase tracking-widest flex items-center gap-3 group shadow-[0_0_30px_rgba(0,224,255,0.2)]"
+              className="px-12 py-5 rounded-sm bg-cyber-blue hover:bg-cyber-blue/90 text-black transition-all font-black uppercase tracking-widest flex items-center gap-3 group shadow-[0_0_40px_rgba(0,224,255,0.25)]"
             >
               Initialize Node
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
               href="#waitlist"
-              className="px-10 py-4 rounded-sm border border-white/10 bg-white/5 hover:bg-white/10 transition-all font-bold uppercase tracking-widest text-[12px]"
+              className="px-12 py-5 rounded-sm border border-white/10 bg-white/5 hover:bg-white/10 transition-all font-bold uppercase tracking-widest text-[14px]"
             >
               Managed Beta Access
             </Link>
@@ -448,10 +461,14 @@ export default function ClawHubPage() {
       {/* Footer */}
       <footer className="py-20 border-t border-white/5 bg-black/40">
         <div className="container mx-auto px-4 text-center">
-          <div className="flex items-center justify-center gap-3 mb-10">
-            <div className="w-8 h-8 rounded-sm bg-cyber-blue flex items-center justify-center text-[10px] font-black text-black">
-              CH
-            </div>
+          <div className="flex items-center justify-center gap-4 mb-10">
+            <Image
+              src="/logo.png"
+              alt="ClawHub Logo"
+              width={32}
+              height={32}
+              className="rounded-sm opacity-80"
+            />
             <span className="font-black text-xl tracking-tighter italic glow-text">
               ClawHub
             </span>
