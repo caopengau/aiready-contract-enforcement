@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'ClawHub | Autonomous Agentic Stack',
-  description: "The world's first autonomous agentic system built on AWS Ion.",
+  title: 'ClawMore | Serverless, but ClawMore!',
+  description: "ClawMore: The world's first autonomous agentic system for AWS.",
 };
 
 export default function RootLayout({

@@ -1,7 +1,7 @@
 packages:
   - 'packages/*'
   - 'landing'
-  - 'clawhub'
+  - 'clawmore'
   - 'platform'
   - 'integration-tests'
   - 'vscode-extension'

@@ -15,7 +15,7 @@ import {
   Activity,
 } from 'lucide-react';
 
-export default function ClawHubPage() {
+export default function ClawMorePage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white selection:bg-cyber-blue/30 selection:text-cyber-blue font-sans">
       {/* Navigation */}
@@ -24,14 +24,14 @@ export default function ClawHubPage() {
           <div className="flex items-center gap-4">
             <Image
               src="/logo.png"
-              alt="ClawHub Logo"
+              alt="ClawMore Logo"
               width={40}
               height={40}
-              className="rounded-sm shadow-[0_0_15px_rgba(0,224,255,0.3)]"
+              className="rounded-sm shadow-[0_0_15px_rgba(0,224,255,0.8)]"
             />
             <div className="flex flex-col">
               <span className="text-xl font-bold tracking-tight leading-none glow-text">
-                ClawHub
+                ClawMore
               </span>
               <span className="text-[8px] font-mono text-cyber-purple uppercase tracking-[0.2em] mt-0.5">
                 Neural_Node_v1.0
@@ -82,7 +82,7 @@ export default function ClawHubPage() {
             src="/hero.png"
             alt="Hero Background"
             fill
-            className="object-cover blur-[2px] brightness-[0.4] saturate-[0.6]"
+            className="object-cover blur-[1px] brightness-[0.65] saturate-[0.8]"
             priority
           />
           {/* Subtle Vignette to protect text while keeping edges vibrant */}
@@ -102,13 +102,14 @@ export default function ClawHubPage() {
           <h1 className="text-6xl md:text-9xl font-black tracking-tighter mb-10 bg-gradient-to-b from-white via-cyber-blue to-[#404040] bg-clip-text text-transparent leading-[1.2] pb-4 drop-shadow-[0_10px_60px_rgba(0,0,0,1)]">
             Never-Dying,
             <br />
-            <span className="italic">Self-Evolving</span> Claw
+            <span className="italic">Self-Evolving</span> ClawMore
           </h1>
 
           <p className="text-xl text-white/90 max-w-2xl mx-auto mb-14 leading-relaxed font-light drop-shadow-[0_2px_10px_rgba(0,0,0,1)]">
-            ClawHub is an autonomous agentic system for AWS. We interpret intent
-            and persist infrastructure mutations to source control while you
-            sleep.
+            Serverless, but{' '}
+            <span className="text-cyber-blue font-bold">ClawMore!</span> We
+            interpret intent and persist infrastructure mutations to source
+            control while you sleep.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
@@ -201,7 +202,7 @@ export default function ClawHubPage() {
                 The Mutation Cycle
               </h2>
               <p className="text-zinc-400 mb-10 leading-relaxed text-lg font-light">
-                Standard agents are transient. ClawHub treats its primary logic
+                Standard agents are transient. ClawMore treats its primary logic
                 as <span className="text-white italic">Mutable State</span>.
                 When a capability gap is detected, the Planner sintetizes a
                 patch and the Coder commits it directly to the monorepo branch.
@@ -433,13 +434,13 @@ export default function ClawHubPage() {
           <div className="flex items-center justify-center gap-4 mb-10">
             <Image
               src="/logo.png"
-              alt="ClawHub Logo"
+              alt="ClawMore Logo"
               width={32}
               height={32}
               className="rounded-sm opacity-80"
             />
             <span className="font-black text-xl tracking-tighter italic glow-text">
-              ClawHub
+              ClawMore
             </span>
           </div>
           <div className="text-zinc-600 text-[10px] font-mono uppercase tracking-[0.3em] font-bold">

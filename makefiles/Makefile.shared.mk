@@ -27,7 +27,7 @@ ROOT_DIR ?= $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/..)
 # Project directory definitions
 LANDING_DIR := $(ROOT_DIR)/landing
 PLATFORM_DIR := $(ROOT_DIR)/platform
-CLAW_HUB_DIR := $(ROOT_DIR)/clawhub
+CLAW_MORE_DIR := $(ROOT_DIR)/clawmore
 EXTENSION_DIR := $(ROOT_DIR)/vscode-extension
 
 # Three-phase release strategy (matches release-all workflow)

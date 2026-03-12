@@ -7,7 +7,7 @@ include $(MAKEFILE_DIR)/Makefile.shared.mk
 
 .PHONY: deploy-landing deploy-landing-prod deploy-landing-remove landing-logs landing-verify landing-cleanup
 .PHONY: deploy-platform deploy-platform-prod deploy-platform-remove platform-logs platform-verify
-.PHONY: deploy-clawhub deploy-clawhub-dev deploy-clawhub-prod clawhub-verify
+.PHONY: deploy-clawmore deploy-clawmore-dev deploy-clawmore-prod clawmore-verify
 
 ##@ Deployment
 
@@ -76,54 +76,54 @@ landing-logs: ## Show landing page logs (requires SST dashboard)
 	@cd landing && \
 		AWS_PROFILE=$(AWS_PROFILE) AWS_REGION=$(AWS_REGION) sst dev
 
-##@ ClawHub Deployment
+##@ ClawMore Deployment
 
-deploy-clawhub: verify-aws-account ## Deploy ClawHub to AWS (default stage)
-	@$(call log_step,Deploying ClawHub to AWS)
-	@cd clawhub && \
+deploy-clawmore: verify-aws-account ## Deploy ClawMore to AWS (default stage)
+	@$(call log_step,Deploying ClawMore to AWS)
+	@cd clawmore && \
 		set -a && [ -f .env ] && . ./.env || true && set +a && \
 		export AWS_PROFILE=$${AWS_PROFILE:-$(AWS_PROFILE)} && \
 		export AWS_REGION=$${AWS_REGION:-$(AWS_REGION)} && \
 		sst deploy --yes
-	@$(call log_success,ClawHub deployed)
+	@$(call log_success,ClawMore deployed)
 
-deploy-clawhub-dev: verify-aws-account ## Deploy ClawHub to AWS (stage: dev)
-	@$(call log_step,Deploying ClawHub to AWS (stage: dev))
-	@cd clawhub && \
+deploy-clawmore-dev: verify-aws-account ## Deploy ClawMore to AWS (stage: dev)
+	@$(call log_step,Deploying ClawMore to AWS (stage: dev))
+	@cd clawmore && \
 		set -a && [ -f .env ] && . ./.env || true && set +a && \
 		export AWS_PROFILE=$${AWS_PROFILE:-$(AWS_PROFILE)} && \
 		export AWS_REGION=$${AWS_REGION:-$(AWS_REGION)} && \
 		sst deploy --stage dev --yes
-	@$(call log_success,ClawHub deployed to stage: dev)
+	@$(call log_success,ClawMore deployed to stage: dev)
 
-deploy-clawhub-prod: verify-aws-account ## Deploy ClawHub to AWS (production)
-	@$(call log_step,Deploying ClawHub to AWS (production))
+deploy-clawmore-prod: verify-aws-account ## Deploy ClawMore to AWS (production)
+	@$(call log_step,Deploying ClawMore to AWS (production))
 	@echo "$(YELLOW)⚠️  Deploying to PRODUCTION$(NC)"
-	@cd clawhub && \
+	@cd clawmore && \
 		set -a && [ -f .env ] && . ./.env || true && set +a && \
 		export AWS_PROFILE=$${AWS_PROFILE:-$(AWS_PROFILE)} && \
 		export AWS_REGION=$${AWS_REGION:-$(AWS_REGION)} && \
 		sst deploy --stage production --yes
-	@$(call log_success,ClawHub deployed to production)
-	@$(MAKE) -f $(MAKEFILE_DIR)/Makefile.deploy.mk clawhub-verify
+	@$(call log_success,ClawMore deployed to production)
+	@$(MAKE) -f $(MAKEFILE_DIR)/Makefile.deploy.mk clawmore-verify
 
-clawhub-verify: ## Verify ClawHub is accessible
-	@$(call log_step,Verifying ClawHub is accessible)
-	@DOMAIN=$$( [ "$$STAGE" = "production" ] && echo "clawhub.getaiready.dev" || echo "dev.clawhub.getaiready.dev" ); \
+clawmore-verify: ## Verify ClawMore is accessible
+	@$(call log_step,Verifying ClawMore is accessible)
+	@DOMAIN=$$( [ "$$STAGE" = "production" ] && echo "clawmore.getaiready.dev" || echo "dev.clawmore.getaiready.dev" ); \
 	if curl -fsS -o /dev/null "https://$$DOMAIN" >/dev/null 2>&1; then \
-		echo "$(GREEN)✓ ClawHub is live and responding$(NC)"; \
+		echo "$(GREEN)✓ ClawMore is live and responding$(NC)"; \
 		echo "$(CYAN)🌐 URL: https://$$DOMAIN$(NC)"; \
 	else \
-		echo "$(YELLOW)⚠️  ClawHub may still be deploying$(NC)"; \
+		echo "$(YELLOW)⚠️  ClawMore may still be deploying$(NC)"; \
 	fi
 
-dev-clawhub: ## Run ClawHub locally in development mode
-	@$(call log_step,Starting ClawHub local dev server)
-	@cd clawhub && pnpm dev
+dev-clawmore: ## Run ClawMore locally in development mode
+	@$(call log_step,Starting ClawMore local dev server)
+	@cd clawmore && pnpm dev
 
-clawhub-logs: ## Show ClawHub logs (runs sst dev)
-	@$(call log_step,Starting SST dev mode for ClawHub)
-	@cd clawhub && \
+clawmore-logs: ## Show ClawMore logs (runs sst dev)
+	@$(call log_step,Starting SST dev mode for ClawMore)
+	@cd clawmore && \
 		set -a && [ -f .env ] && . ./.env || true && set +a && \
 		export AWS_PROFILE=$${AWS_PROFILE:-$(AWS_PROFILE)} && \
 		sst dev

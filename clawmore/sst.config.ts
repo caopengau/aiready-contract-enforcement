@@ -13,7 +13,7 @@ if (
 export default $config({
   app(input) {
     return {
-      name: 'aiready-clawhub',
+      name: 'aiready-clawmore',
       removal: input?.stage === 'production' ? 'retain' : 'remove',
       home: 'aws',
     };
@@ -21,10 +21,10 @@ export default $config({
   async run() {
     const isProd = $app.stage === 'production';
     const domainName = isProd
-      ? 'clawhub.getaiready.dev'
-      : `${$app.stage}.clawhub.getaiready.dev`;
+      ? 'clawmore.getaiready.dev'
+      : `${$app.stage}.clawmore.getaiready.dev`;
 
-    const site = new sst.aws.Nextjs('ClawHubSite', {
+    const site = new sst.aws.Nextjs('ClawMoreSite', {
       path: '.',
       domain: {
         name: domainName,
