@@ -75,9 +75,9 @@ export default function ClawHubPage() {
         </div>
       </nav>
 
-      <section className="relative pt-32 pb-48 overflow-hidden border-b border-white/5">
+      <section className="relative pt-32 pb-48 overflow-hidden border-b border-white/5 isolate">
         {/* Cinematic Background Image - STACKING FIX & MAXIMUM IMPACT */}
-        <div className="absolute inset-0 -z-10">
+        <div className="absolute inset-0 -z-10 bg-[#0a0a0a]">
           <Image
             src="/hero.png"
             alt="Hero Background"
@@ -103,12 +103,9 @@ export default function ClawHubPage() {
           </h1>
 
           <p className="text-xl text-zinc-100 max-w-3xl mx-auto mb-14 leading-relaxed font-light drop-shadow-[0_2px_10px_rgba(0,0,0,1)]">
-            ClawHub is the world&apos;s first autonomous agentic system built on
-            AWS Ion. It interprets intent, synthesizes infrastructure, and{' '}
-            <span className="text-cyber-blue font-mono text-sm underline decoration-cyber-blue/30 underline-offset-4 font-bold">
-              persists mutations
-            </span>{' '}
-            back to source control while you sleep.
+            ClawHub is an autonomous agentic system for AWS. We interpret intent
+            and persist infrastructure mutations to source control while you
+            sleep.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
@@ -334,7 +331,7 @@ export default function ClawHubPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-4xl mx-auto">
             {/* Free Tier */}
             <div className="glass-card p-10 flex flex-col hover:border-white/20 transition-all">
               <div className="mb-10">
@@ -397,40 +394,12 @@ export default function ClawHubPage() {
                   Feedback Loop
                 </li>
               </ul>
-              <button className="w-full py-4 rounded-sm bg-cyber-blue hover:bg-cyber-blue/90 transition-all text-black text-[10px] font-black uppercase tracking-widest shadow-[0_0_20px_rgba(0,224,255,0.2)]">
-                Connect_Pulse
-              </button>
-            </div>
-
-            {/* Team Tier */}
-            <div className="glass-card p-10 flex flex-col hover:border-white/20 transition-all">
-              <div className="mb-10">
-                <h4 className="text-zinc-500 font-mono text-[9px] uppercase tracking-widest font-black mb-2">
-                  Enterprise_Mesh
-                </h4>
-                <div className="text-5xl font-black tracking-tight">
-                  $299
-                  <span className="text-xl font-normal text-zinc-600">/mo</span>
-                </div>
-                <p className="text-[10px] font-mono text-zinc-600 uppercase mt-4 tracking-tighter">
-                  Dedicated BYOC Isolation
-                </p>
-              </div>
-              <ul className="space-y-5 mb-12 flex-grow">
-                <li className="flex items-center gap-3 text-xs text-zinc-400 font-mono uppercase tracking-tight">
-                  <Layers className="w-4 h-4 text-zinc-600" /> Multi-Org Support
-                </li>
-                <li className="flex items-center gap-3 text-xs text-zinc-400 font-mono uppercase tracking-tight">
-                  <ShieldCheck className="w-4 h-4 text-zinc-600" /> VPC Peering
-                  + SSO
-                </li>
-                <li className="flex items-center gap-3 text-xs text-zinc-400 font-mono uppercase tracking-tight">
-                  <Zap className="w-4 h-4 text-zinc-600" /> 24/7 Rapid Response
-                </li>
-              </ul>
-              <button className="w-full py-4 rounded-sm border border-white/10 text-center hover:bg-white/5 transition-all text-[10px] font-black uppercase tracking-widest">
-                Negotiate_Terms
-              </button>
+              <Link
+                href="#waitlist"
+                className="w-full py-4 rounded-sm bg-cyber-blue hover:bg-cyber-blue/90 transition-all text-black text-[10px] font-black uppercase text-center tracking-widest shadow-[0_0_20px_rgba(0,224,255,0.2)]"
+              >
+                Join Waitlist
+              </Link>
             </div>
           </div>
 
