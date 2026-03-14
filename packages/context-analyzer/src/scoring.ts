@@ -23,53 +23,70 @@ export function calculateContextScore(
     avgFragmentation,
     criticalIssues,
     majorIssues,
+    totalFiles,
   } = summary;
 
+  // More reasonable thresholds for modern codebases
   const budgetScore =
-    avgContextBudget < 5000
+    avgContextBudget < 8000
       ? 100
-      : Math.max(0, 100 - (avgContextBudget - 5000) / 150);
+      : Math.max(0, 100 - (avgContextBudget - 8000) / 200);
 
   const depthScore =
-    avgImportDepth < 5 ? 100 : Math.max(0, 100 - (avgImportDepth - 5) * 10);
+    avgImportDepth < 8 ? 100 : Math.max(0, 100 - (avgImportDepth - 8) * 5);
 
   const fragmentationScore =
-    avgFragmentation < 0.3
+    avgFragmentation < 0.5
       ? 100
-      : Math.max(0, 100 - (avgFragmentation - 0.3) * 200);
+      : Math.max(0, 100 - (avgFragmentation - 0.5) * 100);
 
-  const criticalPenalty = criticalIssues * 10;
-  const majorPenalty = majorIssues * 3;
+  // Cap penalties to prevent score going to 0
+  const criticalPenalty = Math.min(20, criticalIssues * 3); // Max 20 points
+  const majorPenalty = Math.min(15, majorIssues * 1); // Max 15 points
 
   const maxBudgetPenalty =
     maxContextBudget > 15000
       ? Math.min(20, (maxContextBudget - 15000) / 500)
       : 0;
 
+  // Add bonus for well-organized codebases
+  let bonus = 0;
+  if (criticalIssues === 0 && majorIssues === 0 && avgFragmentation < 0.2) {
+    bonus = 5; // Well-organized codebase bonus
+  }
+
   const rawScore =
-    budgetScore * 0.4 + depthScore * 0.3 + fragmentationScore * 0.3;
+    budgetScore * 0.35 + depthScore * 0.25 + fragmentationScore * 0.25 + bonus;
   const finalScore =
-    rawScore - criticalPenalty - majorPenalty - maxBudgetPenalty;
+    rawScore - Math.min(30, criticalPenalty + majorPenalty) - maxBudgetPenalty;
 
   const score = Math.max(0, Math.min(100, Math.round(finalScore)));
 
   const factors = [
     {
       name: 'Context Budget',
-      impact: Math.round(budgetScore * 0.4 - 40),
-      description: `Avg ${Math.round(avgContextBudget)} tokens per file ${avgContextBudget < 5000 ? '(excellent)' : avgContextBudget < 10000 ? '(acceptable)' : '(high)'}`,
+      impact: Math.round(budgetScore * 0.35 - 35),
+      description: `Avg ${Math.round(avgContextBudget)} tokens per file ${avgContextBudget < 8000 ? '(excellent)' : avgContextBudget < 12000 ? '(acceptable)' : '(high)'}`,
     },
     {
       name: 'Import Depth',
-      impact: Math.round(depthScore * 0.3 - 30),
-      description: `Avg ${avgImportDepth.toFixed(1)} levels ${avgImportDepth < 5 ? '(excellent)' : avgImportDepth < 8 ? '(acceptable)' : '(deep)'}`,
+      impact: Math.round(depthScore * 0.25 - 25),
+      description: `Avg ${avgImportDepth.toFixed(1)} levels ${avgImportDepth < 8 ? '(excellent)' : avgImportDepth < 12 ? '(acceptable)' : '(deep)'}`,
     },
     {
       name: 'Fragmentation',
-      impact: Math.round(fragmentationScore * 0.3 - 30),
+      impact: Math.round(fragmentationScore * 0.25 - 25),
       description: `${(avgFragmentation * 100).toFixed(0)}% fragmentation ${avgFragmentation < 0.3 ? '(well-organized)' : avgFragmentation < 0.5 ? '(moderate)' : '(high)'}`,
     },
   ];
+
+  if (bonus > 0) {
+    factors.push({
+      name: 'Well-Organized Codebase',
+      impact: bonus,
+      description: 'No critical/major issues and low fragmentation',
+    });
+  }
 
   if (criticalIssues > 0) {
     factors.push({
@@ -97,10 +114,10 @@ export function calculateContextScore(
 
   const recommendations: ToolScoringOutput['recommendations'] = [];
 
-  if (avgContextBudget > 10000) {
+  if (avgContextBudget > 12000) {
     const estimatedImpact = Math.min(
       15,
-      Math.round((avgContextBudget - 10000) / 1000)
+      Math.round((avgContextBudget - 12000) / 1000)
     );
     recommendations.push({
       action: 'Reduce file dependencies to lower context requirements',
@@ -109,12 +126,15 @@ export function calculateContextScore(
     });
   }
 
-  if (avgImportDepth > 8) {
-    const estimatedImpact = Math.min(10, Math.round((avgImportDepth - 8) * 2));
+  if (avgImportDepth > 10) {
+    const estimatedImpact = Math.min(
+      10,
+      Math.round((avgImportDepth - 10) * 1.5)
+    );
     recommendations.push({
       action: 'Flatten import chains to reduce depth',
       estimatedImpact,
-      priority: avgImportDepth > 10 ? 'high' : 'medium',
+      priority: avgImportDepth > 15 ? 'high' : 'medium',
     });
   }
 
@@ -140,7 +160,7 @@ export function calculateContextScore(
 
   const cfg = { ...DEFAULT_COST_CONFIG, ...costConfig };
   const estimatedMonthlyCost = calculateMonthlyCost(
-    avgContextBudget * (summary.totalFiles || 1),
+    avgContextBudget * (totalFiles || 1),
     cfg
   );
 
