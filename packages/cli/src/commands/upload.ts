@@ -51,7 +51,7 @@ export async function uploadAction(file: string, options: UploadOptions) {
     // Note: repoId is optional if the metadata contains it, but for now we'll require it or infer from metadata
     const repoId = options.repoId || reportData.repository?.repoId;
 
-    const res = await fetch(`${serverUrl}/api/analysis/upload`, {
+    const response = await fetch(`${serverUrl}/api/analysis/upload`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -63,19 +63,21 @@ export async function uploadAction(file: string, options: UploadOptions) {
       }),
     });
 
-    const contentType = res.headers.get('content-type');
-    let result: any = {};
+    const contentType = response.headers.get('content-type');
+    let uploadResult: any = {};
 
     if (contentType?.includes('application/json')) {
-      result = await res.json();
+      uploadResult = await response.json();
     } else {
-      const text = await res.text();
-      result = { error: text || res.statusText };
+      const text = await response.text();
+      uploadResult = { error: text || response.statusText };
     }
 
-    if (!res.ok) {
+    if (!response.ok) {
       console.error(
-        chalk.red(`❌ Upload failed: ${result.error || res.statusText}`)
+        chalk.red(
+          `❌ Upload failed: ${uploadResult.error || response.statusText}`
+        )
       );
 
       // Special case for redirects or HTML error pages
@@ -85,7 +87,7 @@ export async function uploadAction(file: string, options: UploadOptions) {
             '   Note: Received an HTML response. This often indicates a redirect (e.g., to a login page) or a server error.'
           )
         );
-        if (result.error?.includes('Redirecting')) {
+        if (uploadResult.error?.includes('Redirecting')) {
           console.log(
             chalk.dim(
               '   Detected redirect. Check if the API endpoint requires authentication or has changed.'
@@ -94,7 +96,7 @@ export async function uploadAction(file: string, options: UploadOptions) {
         }
       }
 
-      if (res.status === 401) {
+      if (response.status === 401) {
         console.log(
           chalk.dim('   Hint: Your API key may be invalid or expired.')
         );
@@ -106,9 +108,9 @@ export async function uploadAction(file: string, options: UploadOptions) {
     console.log(chalk.green(`\n✅ Upload successful! (${duration}s)`));
     console.log(chalk.cyan(`   View results: ${serverUrl}/dashboard`));
 
-    if (result.analysis) {
-      console.log(chalk.dim(`   Analysis ID: ${result.analysis.id}`));
-      console.log(chalk.dim(`   Score: ${result.analysis.aiScore}/100`));
+    if (uploadResult.analysis) {
+      console.log(chalk.dim(`   Analysis ID: ${uploadResult.analysis.id}`));
+      console.log(chalk.dim(`   Score: ${uploadResult.analysis.aiScore}/100`));
     }
   } catch (error) {
     handleCLIError(error, 'Upload');

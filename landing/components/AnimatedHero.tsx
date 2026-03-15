@@ -14,6 +14,7 @@ import {
   Copy,
   Check,
 } from 'lucide-react';
+import { UI_DELAY_SHORT_MS, ANIMATION_WORD_ROTATION_MS } from '@/lib/constants';
 
 const words = ['AI-Ready', 'Model-Aware', 'Agentic', 'ROI-Driven'];
 
@@ -31,13 +32,13 @@ export default function AnimatedHero({ onOpenAudit }: AnimatedHeroProps) {
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setTimeout(() => setCopied(false), UI_DELAY_SHORT_MS);
   };
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentWord((prev) => (prev + 1) % words.length);
-    }, 3000);
+    }, ANIMATION_WORD_ROTATION_MS);
     return () => clearInterval(interval);
   }, []);
 

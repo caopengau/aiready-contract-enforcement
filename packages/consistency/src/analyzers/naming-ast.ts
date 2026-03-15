@@ -251,6 +251,13 @@ class ScopeTracker {
   }
 }
 
+/**
+ * Extracts identifiers from destructured patterns (object or array destructuring)
+ * and registers them in the scope tracker.
+ * @param node - The AST node representing the destructured pattern
+ * @param isParameter - When true, indicates the destructured variable is a function parameter; when false, it's a local variable
+ * @param scopeTracker - The scope tracker to register variables with
+ */
 function extractDestructuredIdentifiers(
   node: TSESTree.ObjectPattern | TSESTree.ArrayPattern,
   isParameter: boolean,

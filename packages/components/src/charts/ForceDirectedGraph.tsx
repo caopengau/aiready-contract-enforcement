@@ -20,6 +20,10 @@ export interface ForceDirectedGraphHandle {
   resetLayout: () => void;
   fitView: () => void;
   getPinnedNodes: () => string[];
+  /**
+   * Enable or disable drag mode for nodes.
+   * @param enabled - When true, nodes can be dragged; when false, dragging is disabled
+   */
   setDragMode: (enabled: boolean) => void;
   setLayout: (layout: LayoutType) => void;
   getLayout: () => LayoutType;
@@ -45,6 +49,10 @@ export interface ForceDirectedGraphProps {
   showLinkLabels?: boolean;
   className?: string;
   manualLayout?: boolean;
+  /**
+   * Callback fired when manual layout mode changes.
+   * @param enabled - True when manual layout mode is enabled, false when disabled
+   */
   onManualLayoutChange?: (enabled: boolean) => void;
   packageBounds?: Record<string, { x: number; y: number; r: number }>;
   layout?: LayoutType;

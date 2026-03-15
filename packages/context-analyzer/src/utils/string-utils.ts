@@ -1,6 +1,10 @@
 /**
- * Simple singularization for common English plurals.
- * Shared across graph-builder and semantic-analysis.
+ * Converts an English plural word to its singular form.
+ * Used for normalizing module names and file paths during dependency analysis.
+ * Handles common irregular plurals and regular -s/-es endings.
+ *
+ * @param word - The plural word to convert to singular form
+ * @returns The singular form of the word (e.g., 'children' -> 'child')
  */
 export function singularize(word: string): string {
   const irregulars: Record<string, string> = {

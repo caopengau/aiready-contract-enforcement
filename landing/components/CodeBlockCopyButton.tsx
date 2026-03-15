@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import { UI_DELAY_SHORT_MS } from '@/lib/constants';
 
 interface CodeBlockCopyButtonProps {
   code: string;
@@ -13,7 +14,7 @@ export const CodeBlockCopyButton: React.FC<CodeBlockCopyButtonProps> = ({
   const handleCopy = async () => {
     await navigator.clipboard.writeText(code);
     setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setTimeout(() => setCopied(false), UI_DELAY_SHORT_MS);
   };
 
   return (

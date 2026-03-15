@@ -9,6 +9,7 @@ export interface GraphControlsProps {
 
   /**
    * Callback to toggle drag mode
+   * @param enabled - True when drag mode should be enabled, false when disabled
    */
   onDragToggle?: (enabled: boolean) => void;
 
@@ -19,6 +20,7 @@ export interface GraphControlsProps {
 
   /**
    * Callback to toggle manual layout mode
+   * @param enabled - True when manual layout should be enabled, false when disabled
    */
   onManualLayoutToggle?: (enabled: boolean) => void;
 

@@ -223,6 +223,11 @@ export function useForceSimulation(
   initialLinks: SimulationLink[],
   options: ForceSimulationOptions
 ): UseForceSimulationReturn & { setForcesEnabled: (enabled: boolean) => void } {
+  /**
+   * Enable or disable the simulation forces (charge and link forces).
+   * When disabled, nodes can still be dragged but won't be affected by forces.
+   * @param enabled - When true, simulation forces are active; when false, forces are disabled
+   */
   const {
     chargeStrength = -300,
     linkDistance = 100,

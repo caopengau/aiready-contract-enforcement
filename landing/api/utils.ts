@@ -2,11 +2,13 @@
  * Common utilities for Landing API routes
  */
 
+import { CONTENT_TYPE_JSON, CORS_ALLOW_HEADERS } from '@/lib/constants';
+
 export function allowedCorsHeaders() {
   return {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Headers': CORS_ALLOW_HEADERS,
   };
 }
 
@@ -18,7 +20,7 @@ export function json(
   return {
     statusCode,
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': CONTENT_TYPE_JSON,
       ...allowedCorsHeaders(),
       ...extraHeaders,
     },

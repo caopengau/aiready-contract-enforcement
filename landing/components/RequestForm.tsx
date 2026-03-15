@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { BarChart3, Sparkles, Rocket, ArrowLeft, Loader2 } from 'lucide-react';
+import { CONTENT_TYPE_JSON } from '@/lib/constants';
 
 interface RequestFormProps {
   title?: string;
@@ -37,7 +38,7 @@ export default function RequestForm({
 
       const res = await fetch(endpoint, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': CONTENT_TYPE_JSON },
         body: JSON.stringify({ email, repoUrl, notes }),
       });
 

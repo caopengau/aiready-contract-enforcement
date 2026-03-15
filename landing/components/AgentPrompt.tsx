@@ -3,6 +3,11 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bot, Copy, Check } from 'lucide-react';
+import {
+  UI_DELAY_SHORT_MS,
+  ANIMATION_INITIAL_DELAY_MS,
+  ANIMATION_STEP_DELAY_MS,
+} from '@/lib/constants';
 
 interface AgentPromptProps {
   variant?: 'basic' | 'detailed' | 'fix' | 'consulting';
@@ -113,8 +118,8 @@ export default function AgentPrompt({
           () => {
             setVisibleLines((prev) => [...prev, index]);
           },
-          index * 100 + 500
-        ) // Start after 500ms, then 100ms between lines
+          index * ANIMATION_STEP_DELAY_MS + ANIMATION_INITIAL_DELAY_MS
+        ) // Start after initial delay, then step delay between lines
     );
 
     return () => delays.forEach(clearTimeout);
@@ -123,7 +128,7 @@ export default function AgentPrompt({
   const handleCopy = async () => {
     await navigator.clipboard.writeText(promptLines.join('\n'));
     setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setTimeout(() => setCopied(false), UI_DELAY_SHORT_MS);
   };
 
   return (

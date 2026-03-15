@@ -113,10 +113,6 @@ export async function initAction(options: {
     },
     ...(options.full
       ? {
-          output: {
-            format: fileExt,
-            file: 'aiready-report.json',
-          },
           visualizer: {
             groupingDirs: ['packages', 'src', 'lib'],
             graph: {

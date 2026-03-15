@@ -1,5 +1,9 @@
 /**
- * Normalize code for comparison
+ * Normalizes source code for similarity comparison by removing variable-specific details.
+ * This makes the comparison focus on code structure rather than naming.
+ *
+ * @param code - The raw source code to normalize
+ * @returns Normalized code with strings replaced by placeholder, numbers removed, and comments stripped
  */
 export function normalizeCode(code: string): string {
   if (!code) return '';
@@ -45,7 +49,11 @@ const stopwords = new Set([
 ]);
 
 /**
- * Tokenize normalized code
+ * Tokenizes normalized code into meaningful identifiers for similarity comparison.
+ * Filters out common programming keywords and short tokens to focus on domain-specific terms.
+ *
+ * @param norm - Normalized code string from normalizeCode()
+ * @returns Array of meaningful tokens extracted from the code
  */
 export function tokenize(norm: string): string[] {
   const punctuation = '(){}[];.,';
