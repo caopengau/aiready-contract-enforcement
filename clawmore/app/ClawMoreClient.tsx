@@ -98,22 +98,33 @@ export default function ClawMoreClient({ apiUrl, dict }: ClawMoreClientProps) {
 
       <section className="relative min-h-[100vh] flex flex-col items-center justify-center overflow-hidden border-b border-white/5 isolate py-14 sm:py-20">
         {/* Cinematic Background Image - STACKING FIX & MAXIMUM IMPACT */}
-        <div className="absolute inset-0 -z-10 bg-[#0a0a0a]">
+        <div className="absolute inset-0 -z-20 bg-[#0a0a0a]">
           <Image
             src="/hero.png"
             alt="Hero Background"
             fill
-            className="object-cover blur-[1px] brightness-[0.65] saturate-[0.8]"
+            className="object-cover blur-[0.5px] brightness-[0.9] saturate-[1.1]"
             priority
           />
           {/* Subtle Vignette to protect text while keeping edges vibrant */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(10,10,10,0.6)_40%,_#0a0a0a_100%)]" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-transparent to-[#0a0a0a] opacity-80" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(10,10,10,0.4)_40%,_#0a0a0a_100%)]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-transparent to-black/30 opacity-70" />
         </div>
+
+        {/* Global Diffuse Blur Layer for Text Legibility */}
+        <div
+          className="absolute inset-0 -z-10 backdrop-blur-[30px] bg-black/40 pointer-events-none"
+          style={{
+            maskImage:
+              'radial-gradient(circle at center, black 0%, transparent 80%)',
+            WebkitMaskImage:
+              'radial-gradient(circle at center, black 0%, transparent 80%)',
+          }}
+        />
 
         <div className="container mx-auto px-4 relative flex flex-col items-center text-center -mt-8 sm:-mt-14 md:-mt-20">
           {/* Intensified Lighting Halo to lift content from background */}
-          <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_center,_rgba(0,224,255,0.15)_0%,_transparent_70%)] blur-3xl opacity-50" />
+          <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_center,_rgba(0,224,255,0.3)_0%,_transparent_60%)] blur-[100px] opacity-70" />
 
           <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-sm border border-cyber-blue/40 bg-cyber-blue/10 text-cyber-blue text-[10px] font-mono uppercase tracking-[0.2em] sm:tracking-[0.3em] mb-6 sm:mb-12 shadow-[0_0_30px_rgba(0,224,255,0.15)] backdrop-blur-sm animate-current-flow">
             <Activity className="w-3 h-3" />
@@ -121,14 +132,14 @@ export default function ClawMoreClient({ apiUrl, dict }: ClawMoreClientProps) {
           </div>
 
           {/* Cache-buster: v2-gradient */}
-          <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter mb-4 sm:mb-10 bg-gradient-to-r from-[#00e0ff] to-[#bc00ff] bg-clip-text text-transparent leading-[1.1] sm:leading-[1.1] pb-3 sm:pb-4 drop-shadow-[0_10px_60px_rgba(0,0,0,1)]">
+          <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter mb-4 sm:mb-10 bg-gradient-to-r from-[#00e0ff] to-[#bc00ff] bg-clip-text text-transparent leading-[1.1] sm:leading-[1.1] pb-3 sm:pb-4 drop-shadow-[0_10px_60px_rgba(0,0,0,1)]">
             {dict.hero.title1}
             <br />
             <span className="italic">{dict.hero.title2}</span>{' '}
             {dict.hero.title3}
           </h1>
 
-          <p className="text-xl sm:text-2xl text-white/90 max-w-2xl mx-auto mb-10 sm:mb-14 leading-relaxed font-light drop-shadow-[0_2px_10px_rgba(0,0,0,1)]">
+          <p className="text-2xl sm:text-2xl text-white/90 max-w-2xl mx-auto mb-10 sm:mb-14 leading-relaxed font-light drop-shadow-[0_2px_10px_rgba(0,0,0,1)]">
             {dict.hero.description}
           </p>
 

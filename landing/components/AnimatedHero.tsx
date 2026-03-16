@@ -88,7 +88,7 @@ export default function AnimatedHero({ onOpenAudit }: AnimatedHeroProps) {
       {/* Main heading */}
       <motion.h1
         variants={itemVariants}
-        className="text-5xl md:text-7xl font-black text-slate-900 mb-6 leading-tight"
+        className="text-6xl md:text-7xl font-black text-slate-900 mb-6 leading-tight"
       >
         Make Your Codebase <br />
         <motion.span
@@ -106,7 +106,7 @@ export default function AnimatedHero({ onOpenAudit }: AnimatedHeroProps) {
       {/* Description */}
       <motion.p
         variants={itemVariants}
-        className="text-xl md:text-2xl text-slate-600 mb-10 max-w-3xl mx-auto leading-relaxed"
+        className="text-2xl md:text-2xl text-slate-600 mb-10 max-w-3xl mx-auto leading-relaxed"
       >
         <span className="font-semibold text-slate-900">
           Your AI tools aren't broken. Your codebase confuses them.
