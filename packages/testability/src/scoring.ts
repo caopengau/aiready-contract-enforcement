@@ -3,6 +3,9 @@ import type { TestabilityReport } from './types';
 
 /**
  * Convert testability report into a ToolScoringOutput for the unified score.
+ *
+ * @param report - The comprehensive testability report containing raw metrics and summary.
+ * @returns Standardized scoring output with impact factors and recommendations.
  */
 export function calculateTestabilityScore(
   report: TestabilityReport

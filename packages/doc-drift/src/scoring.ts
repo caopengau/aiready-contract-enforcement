@@ -3,7 +3,11 @@ import type { ToolScoringOutput } from '@aiready/core';
 import type { DocDriftReport } from './types';
 
 /**
- * Convert doc-drift report into a ToolScoringOutput.
+ * Convert doc-drift report into a standardized ToolScoringOutput.
+ *
+ * @param report - The detailed doc-drift report including raw metrics.
+ * @returns Standardized scoring and risk factor breakdown.
+ * @lastUpdated 2026-03-18
  */
 export function calculateDocDriftScore(
   report: DocDriftReport

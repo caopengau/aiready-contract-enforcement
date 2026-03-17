@@ -8,7 +8,10 @@ import {
 } from '@aiready/core';
 
 /**
- * Handle console output for the scan results
+ * Handle console output for the scan results.
+ *
+ * @param results - The combined results from all tools.
+ * @param startTime - The timestamp when the scan started.
  */
 export function printScanSummary(results: any, startTime: number) {
   console.log(chalk.cyan('\n=== AIReady Run Summary ==='));
@@ -21,7 +24,10 @@ export function printScanSummary(results: any, startTime: number) {
 }
 
 /**
- * Print business impact analysis
+ * Print business impact analysis based on ROI and budget metrics.
+ *
+ * @param roi - Calculated Return on Investment metrics.
+ * @param unifiedBudget - Consolidated context budget metrics.
  */
 export function printBusinessImpact(roi: any, unifiedBudget: any) {
   console.log(chalk.bold('\n💰 Business Impact Analysis (Monthly)'));
@@ -40,7 +46,10 @@ export function printBusinessImpact(roi: any, unifiedBudget: any) {
 }
 
 /**
- * Print detailed scoring breakdown
+ * Print detailed scoring breakdown by tool.
+ *
+ * @param scoringResult - The overall scoring result.
+ * @param scoringProfile - The name of the scoring profile used.
  */
 export function printScoring(
   scoringResult: ScoringResult,
@@ -87,7 +96,11 @@ export function printScoring(
 }
 
 /**
- * Normalize report mapping (CLI logic)
+ * Normalize and map tool-specific results to a unified report structure.
+ *
+ * @param res - Raw unified results object.
+ * @param scoring - Optional scoring result to include.
+ * @returns Enhanced report with totals and scoring.
  */
 export function mapToUnifiedReport(
   res: any,

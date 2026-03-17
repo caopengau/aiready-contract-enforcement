@@ -2,6 +2,9 @@ import { DependencyNode } from './types';
 
 /**
  * Detect if a file is a barrel export (index.ts)
+ *
+ * @param node - The dependency node to analyze.
+ * @returns True if the file matches barrel export patterns.
  */
 export function isBarrelExport(node: DependencyNode): boolean {
   const { file, exports } = node;
@@ -22,6 +25,9 @@ export function isBarrelExport(node: DependencyNode): boolean {
 
 /**
  * Detect if a file is primarily type definitions
+ *
+ * @param node - The dependency node to analyze.
+ * @returns True if the file contains primarily types or matches type paths.
  */
 export function isTypeDefinition(node: DependencyNode): boolean {
   const { file } = node;
@@ -38,7 +44,10 @@ export function isTypeDefinition(node: DependencyNode): boolean {
 }
 
 /**
- * Detect if a file is a utility module
+ * Detect if a file is a utility module.
+ *
+ * @param node - The dependency node to analyze.
+ * @returns True if the file path or name suggests a utility/helper role.
  */
 export function isUtilityModule(node: DependencyNode): boolean {
   const { file } = node;
@@ -49,7 +58,10 @@ export function isUtilityModule(node: DependencyNode): boolean {
 }
 
 /**
- * Detect if a file is a Lambda/API handler
+ * Detect if a file is a Lambda/API handler.
+ *
+ * @param node - The dependency node to analyze.
+ * @returns True if the file serves as a coordination point for requests/lambdas.
  */
 export function isLambdaHandler(node: DependencyNode): boolean {
   const { file, exports } = node;
@@ -73,7 +85,10 @@ export function isLambdaHandler(node: DependencyNode): boolean {
 }
 
 /**
- * Detect if a file is a service file
+ * Detect if a file is a service file.
+ *
+ * @param node - The dependency node to analyze.
+ * @returns True if the file orchestrates logic or matches service patterns.
  */
 export function isServiceFile(node: DependencyNode): boolean {
   const { file, exports } = node;
@@ -91,7 +106,10 @@ export function isServiceFile(node: DependencyNode): boolean {
 }
 
 /**
- * Detect if a file is an email template/layout
+ * Detect if a file is an email template/layout.
+ *
+ * @param node - The dependency node to analyze.
+ * @returns True if the file is used for rendering notifications or emails.
  */
 export function isEmailTemplate(node: DependencyNode): boolean {
   const { file, exports } = node;
@@ -118,7 +136,10 @@ export function isEmailTemplate(node: DependencyNode): boolean {
 }
 
 /**
- * Detect if a file is a parser/transformer
+ * Detect if a file is a parser/transformer.
+ *
+ * @param node - The dependency node to analyze.
+ * @returns True if the file handles data conversion or serialization.
  */
 export function isParserFile(node: DependencyNode): boolean {
   const { file, exports } = node;
@@ -145,7 +166,10 @@ export function isParserFile(node: DependencyNode): boolean {
 }
 
 /**
- * Detect if a file is a session/state management file
+ * Detect if a file is a session/state management file.
+ *
+ * @param node - The dependency node to analyze.
+ * @returns True if the file manages application state or sessions.
  */
 export function isSessionFile(node: DependencyNode): boolean {
   const { file, exports } = node;
@@ -160,7 +184,10 @@ export function isSessionFile(node: DependencyNode): boolean {
 }
 
 /**
- * Detect if a file is a Next.js App Router page
+ * Detect if a file is a Next.js App Router page.
+ *
+ * @param node - The dependency node to analyze.
+ * @returns True if the file is a Next.js page or metadata entry.
  */
 export function isNextJsPage(node: DependencyNode): boolean {
   const { file, exports } = node;
@@ -188,7 +215,10 @@ export function isNextJsPage(node: DependencyNode): boolean {
 }
 
 /**
- * Detect if a file is a configuration or schema file
+ * Detect if a file is a configuration or schema file.
+ *
+ * @param node - The dependency node to analyze.
+ * @returns True if the file matches configuration, setting, or schema patterns.
  */
 export function isConfigFile(node: DependencyNode): boolean {
   const { file, exports } = node;

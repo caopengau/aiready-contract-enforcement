@@ -2,6 +2,11 @@ import type { FileClassification } from './types';
 
 /**
  * Get classification-specific recommendations
+ *
+ * @param classification - The identified type of file (e.g., 'barrel-export', 'utility-module').
+ * @param file - File path or identifier.
+ * @param issues - Initial list of issues to supplement.
+ * @returns Array of tailored recommendations.
  */
 export function getClassificationRecommendations(
   classification: FileClassification,
@@ -66,7 +71,11 @@ export function getClassificationRecommendations(
 }
 
 /**
- * Generate general context recommendations
+ * Generate general context recommendations based on cross-tool metrics and thresholds.
+ *
+ * @param metrics - Object containing context budget, depth, circular dependencies, cohesion, and fragmentation.
+ * @param thresholds - Configurable limits for each metric.
+ * @returns Object with recommendations array, issues array, and overall severity level.
  */
 export function getGeneralRecommendations(
   metrics: {

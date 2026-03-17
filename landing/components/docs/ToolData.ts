@@ -122,6 +122,7 @@ export const sections = [
   { id: 'scoring', label: 'AI Readiness Scoring' },
   { id: 'metrics', label: 'Understanding Metrics' },
   { id: 'unified-cli', label: 'Unified CLI' },
+  { id: 'configuration', label: 'Configuration' },
   { id: 'visualize', label: 'Visualize' },
   { id: 'consulting', label: 'Consulting Audit' },
   { id: 'options', label: 'CLI Options' },

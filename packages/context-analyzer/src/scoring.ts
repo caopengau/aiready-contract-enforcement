@@ -11,6 +11,10 @@ import type { ContextSummary } from './types';
 
 /**
  * Calculate AI Readiness Score for context efficiency (0-100)
+ *
+ * @param summary - Consolidated context summary from the scan.
+ * @param costConfig - Optional configuration for business value calculations.
+ * @returns Standardized scoring output for the context analyzer tool.
  */
 export function calculateContextScore(
   summary: ContextSummary,
@@ -190,6 +194,12 @@ export function calculateContextScore(
   };
 }
 
+/**
+ * Maps a numerical score to a human-readable rating slug.
+ *
+ * @param score - The 0-100 readiness score.
+ * @returns A formatted rating string (e.g., "excellent", "at risk").
+ */
 export function mapScoreToRating(score: number): string {
   // Use core implementation to resolve duplication
   return getRatingSlug(score).replace('-', ' ');

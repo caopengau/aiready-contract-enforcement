@@ -8,7 +8,8 @@ import { Severity, UnifiedReportSchema, ToolName } from '@aiready/core';
 import type { GraphData, FileNode, DependencyEdge } from '../types';
 
 /**
- * GraphBuilder: programmatic builder and report-based builder
+ * GraphBuilder: programmatic builder and report-based builder.
+ * @lastUpdated 2026-03-18
  */
 export class GraphBuilder {
   rootDir: string;
@@ -54,6 +55,13 @@ export class GraphBuilder {
     return parts.length > 1 ? parts[1] : parts[0];
   }
 
+  /**
+   * Add a new node to the graph or update an existing one.
+   *
+   * @param file - Unique identifier for the file (node ID).
+   * @param title - Optional title or description for the node.
+   * @param value - Numerical value representing the node size/weight.
+   */
   addNode(file: string, title = '', value = 1) {
     if (!file) return;
     const id = path.resolve(this.rootDir, file);
@@ -75,6 +83,13 @@ export class GraphBuilder {
     }
   }
 
+  /**
+   * Add a directed edge between two nodes in the graph.
+   *
+   * @param from - Source node ID (file path).
+   * @param to - Target node ID (file path).
+   * @param type - Type of relationship (e.g., 'dependency', 'reference').
+   */
   addEdge(from: string, to: string, type: string = 'link') {
     if (!from || !to) return;
     const a = path.resolve(this.rootDir, from);
@@ -88,7 +103,9 @@ export class GraphBuilder {
   }
 
   /**
-   * Build final GraphData
+   * Build the final GraphData object from collected nodes and edges.
+   *
+   * @returns Consolidated graph data structure.
    */
   build(): GraphData {
     const nodes = Array.from(this.nodesMap.values());
@@ -119,7 +136,11 @@ export class GraphBuilder {
   }
 
   /**
-   * Static helper to build graph from an aiready report JSON (ports logic from tools/generate_from_report.cjs)
+   * Static helper to build graph from an AIReady report JSON.
+   *
+   * @param report - Unified AIReady report object.
+   * @param rootDir - Root directory for path resolution.
+   * @returns Fully populated GraphData for visualization.
    */
   static buildFromReport(report: any, rootDir = process.cwd()): GraphData {
     // Optional: Validate report with Zod schema if needed, but allow partials for visualizer
@@ -447,6 +468,12 @@ export class GraphBuilder {
   }
 }
 
+/**
+ * Create a small sample graph for demonstration or testing purposes.
+ *
+ * @returns Simple sample GraphData object.
+ * @lastUpdated 2026-03-18
+ */
 export function createSampleGraph(): GraphData {
   const builder = new GraphBuilder(process.cwd());
   builder.addNode('src/components/Button.tsx', 'Button', 15);

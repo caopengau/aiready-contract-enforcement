@@ -48,7 +48,11 @@ export interface PatternSummary {
 }
 
 /**
- * Generate refactoring suggestion based on pattern type
+ * Generate refactoring suggestion based on pattern type.
+ *
+ * @param patternType - The detected pattern type.
+ * @param similarity - Similarity score (0-1).
+ * @returns Human-readable refactoring advice.
  */
 function getRefactoringSuggestion(
   patternType: PatternType,
@@ -76,7 +80,11 @@ function getRefactoringSuggestion(
 }
 
 /**
- * Determine smart defaults based on repository size estimation
+ * Determine smart defaults based on repository size estimation.
+ *
+ * @param directory - The directory to analyze for size.
+ * @param userOptions - User-provided option overrides.
+ * @returns Promise resolving to optimal detection options.
  */
 export async function getSmartDefaults(
   directory: string,
@@ -149,7 +157,10 @@ export async function getSmartDefaults(
 }
 
 /**
- * Log current configuration settings
+ * Log current configuration settings to the console.
+ *
+ * @param config - The active detection configuration.
+ * @param estimatedBlocks - Estimated number of code blocks to scan.
  */
 function logConfiguration(
   config: PatternDetectOptions,
@@ -168,6 +179,13 @@ function logConfiguration(
   console.log('');
 }
 
+/**
+ * Main entry point for pattern detection analysis.
+ *
+ * @param options - Configuration including rootDir and detection parameters.
+ * @returns Promise resolving to the comprehensive pattern detect report.
+ * @lastUpdated 2026-03-18
+ */
 export async function analyzePatterns(options: PatternDetectOptions): Promise<{
   results: AnalysisResult[];
   duplicates: DuplicatePattern[];
@@ -300,6 +318,12 @@ export async function analyzePatterns(options: PatternDetectOptions): Promise<{
   return { results, duplicates, files, groups, clusters, config: finalOptions };
 }
 
+/**
+ * Generate a summary of pattern detection results.
+ *
+ * @param results - Array of file-level analysis results.
+ * @returns Consolidated pattern summary object.
+ */
 export function generateSummary(results: AnalysisResult[]): PatternSummary {
   const allIssues = results.flatMap((r) => r.issues);
   const totalTokenCost = results.reduce(

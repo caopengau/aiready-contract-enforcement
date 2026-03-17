@@ -2,8 +2,11 @@ import { type ToolScoringOutput, ToolName } from '@aiready/core';
 import type { AgentGroundingReport } from './types';
 
 /**
- * Convert agent grounding report into a ToolScoringOutput
- * for inclusion in the unified AIReady score.
+ * Convert agent grounding report into a ToolScoringOutput.
+ *
+ * @param report - The detailed agent grounding report.
+ * @returns Standardized scoring and risk factor breakdown.
+ * @lastUpdated 2026-03-18
  */
 export function calculateGroundingScore(
   report: AgentGroundingReport

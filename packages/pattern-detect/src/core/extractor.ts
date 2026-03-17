@@ -56,7 +56,11 @@ export function categorizePattern(code: string): PatternType {
 }
 
 /**
- * Extract function-like blocks from code
+ * Extract function-like blocks from code.
+ *
+ * @param content - Source code content to analyze.
+ * @param minLines - Minimum lines to consider a block.
+ * @returns Array of extracted code block objects.
  */
 export function extractCodeBlocks(
   content: string,

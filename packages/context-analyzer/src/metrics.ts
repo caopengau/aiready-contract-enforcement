@@ -3,16 +3,14 @@ import type { ExportInfo } from './types';
 import { isTestFile } from './ast-utils';
 
 /**
- * Calculate cohesion score (how related are exports in a file)
- */
-/**
  * Calculates a cohesion score (0-1) for a module based on its exports,
  * shared imports, and internal structure. High cohesion indicates
  * a well-focused module that is easy for AI models to reason about.
  *
- * @param exports - Exported symbols and their metadata
- * @param imports - Imported symbols and their sources
- * @returns Cohesion score between 0 and 1
+ * @param exports - Exported symbols and their metadata.
+ * @param filePath - Optional file path for context.
+ * @param options - Optional configuration for weights and co-usage context.
+ * @returns Cohesion score between 0 and 1.
  */
 export function calculateEnhancedCohesion(
   exports: ExportInfo[],
@@ -105,6 +103,10 @@ export function calculateEnhancedCohesion(
 
 /**
  * Calculate structural cohesion for a file based on co-usage patterns.
+ *
+ * @param file - The file path to analyze.
+ * @param coUsageMatrix - Matrix of files frequently imported together.
+ * @returns Cohesion score between 0 and 1 based on co-usage distribution.
  */
 export function calculateStructuralCohesionFromCoUsage(
   file: string,
@@ -137,6 +139,11 @@ export function calculateStructuralCohesionFromCoUsage(
 
 /**
  * Calculate fragmentation score (how scattered is a domain)
+ *
+ * @param files - List of files belonging to the domain.
+ * @param domain - The domain identifier.
+ * @param options - Optional calculation parameters (log scale, thresholds).
+ * @returns Fragmentation score from 0 (perfect) to 1 (highly scattered).
  */
 export function calculateFragmentation(
   files: string[],
@@ -173,7 +180,10 @@ export function calculateFragmentation(
 }
 
 /**
- * Calculate path entropy for a set of files
+ * Calculate path entropy for a set of files to measure directory distribution.
+ *
+ * @param files - Array of file paths.
+ * @returns Entropy score representing the spread across directories.
  */
 export function calculatePathEntropy(files: string[]): number {
   if (!files || files.length === 0) return 0;
@@ -199,7 +209,10 @@ export function calculatePathEntropy(files: string[]): number {
 }
 
 /**
- * Calculate directory-distance metric based on common ancestor depth
+ * Calculate directory-distance metric based on common ancestor depth.
+ *
+ * @param files - Array of file paths to compare.
+ * @returns Normalized distance metric (0-1).
  */
 export function calculateDirectoryDistance(files: string[]): number {
   if (!files || files.length <= 1) return 0;

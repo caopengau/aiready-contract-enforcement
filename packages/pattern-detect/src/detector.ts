@@ -12,6 +12,10 @@ export type { PatternType, DuplicatePattern };
 
 /**
  * Standardize code for similarity comparison
+ *
+ * @param code - The raw source code string.
+ * @param isPython - Whether the file is a Python file (influences comment removal).
+ * @returns Normalized code string for robust comparison.
  */
 function normalizeCode(code: string, isPython: boolean = false): string {
   let normalized = code;
@@ -32,6 +36,10 @@ function normalizeCode(code: string, isPython: boolean = false): string {
 
 /**
  * Split file content into logical blocks (functions, classes, methods)
+ *
+ * @param file - File path or identifier.
+ * @param content - Full file source content.
+ * @returns Array of logical code blocks extracted from the content.
  */
 function extractBlocks(file: string, content: string): CodeBlock[] {
   const isPython = file.toLowerCase().endsWith('.py');
@@ -115,6 +123,10 @@ function extractBlocks(file: string, content: string): CodeBlock[] {
 
 /**
  * Python-specific block extraction based on indentation
+ *
+ * @param file - File path or identifier.
+ * @param content - Full file source content.
+ * @returns Array of logical code blocks extracted from Python source.
  */
 function extractBlocksPython(file: string, content: string): CodeBlock[] {
   const blocks: CodeBlock[] = [];
@@ -168,6 +180,13 @@ function extractBlocksPython(file: string, content: string): CodeBlock[] {
   return blocks;
 }
 
+/**
+ * Infer the type of code pattern based on keywords and naming conventions.
+ *
+ * @param keyword - The keyword used for declaration (e.g., 'class', 'function').
+ * @param name - The identifier name for the block.
+ * @returns Inferred PatternType.
+ */
 function inferPatternType(keyword: string, name: string): PatternType {
   const n = name.toLowerCase();
   if (
@@ -189,6 +208,10 @@ function inferPatternType(keyword: string, name: string): PatternType {
 /**
  * Calculate Jaccard similarity between two strings
  * Splitting by non-alphanumeric to be more robust
+ *
+ * @param a - First string for comparison.
+ * @param b - Second string for comparison.
+ * @returns Similarity score between 0 and 1.
  */
 function calculateSimilarity(a: string, b: string): number {
   if (a === b) return 1.0;
@@ -209,6 +232,10 @@ function calculateSimilarity(a: string, b: string): number {
 
 /**
  * Detect duplicate patterns across files
+ *
+ * @param fileContents - Array of file contents to analyze.
+ * @param options - Configuration for duplicate detection (thresholds, progress, etc).
+ * @returns Promise resolving to an array of detected duplicate patterns sorted by similarity.
  */
 export async function detectDuplicatePatterns(
   fileContents: FileContent[],

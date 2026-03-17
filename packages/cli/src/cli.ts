@@ -49,15 +49,17 @@ AI READINESS SCORING:
 EXAMPLES:
   $ aiready scan                          # Comprehensive analysis with AI Readiness Score
   $ aiready scan --no-score               # Run scan without score calculation
-  $ aiready scan --tools patterns         # Run only pattern detection
+  $ aiready init                          # Create a default aiready.json configuration
+  $ aiready init --full                   # Create configuration with ALL available options
   $ npx @aiready/cli scan                 # Industry standard way to run standard scan
   $ aiready scan --output json            # Output raw JSON for piping
 
 GETTING STARTED:
-  1. Run 'aiready scan' to analyze your codebase and get an AI Readiness Score
-  2. Use '--profile agentic' for agent-focused analysis
-  3. Create aiready.json for persistent configuration
-  4. Set up CI/CD with '--threshold' for quality gates
+  1. Run 'aiready init' to create a persistent 'aiready.json' config file
+  2. Run 'aiready scan' to analyze your codebase and get an AI Readiness Score
+  3. Use 'aiready init --full' to see every fine-tuning parameter available
+  4. Use '--profile agentic' for agent-focused analysis
+  5. Set up CI/CD with '--threshold' for quality gates
 
 CONFIGURATION:
   Config files (searched upward): aiready.json, .aiready.json, aiready.config.*

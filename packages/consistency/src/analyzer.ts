@@ -15,8 +15,12 @@ import { analyzeNamingGeneralized } from './analyzers/naming-generalized';
 import { analyzePatterns } from './analyzers/patterns';
 
 /**
- * Main consistency analyzer that orchestrates all analysis types
- * Supports: TypeScript, JavaScript, Python, Java, C#, Go
+ * Main consistency analyzer that orchestrates all analysis types.
+ * Supports: TypeScript, JavaScript, Python, Java, C#, Go.
+ *
+ * @param options - Configuration for consistency analysis and file scanning.
+ * @returns Promise resolving to the comprehensive consistency report.
+ * @lastUpdated 2026-03-18
  */
 export async function analyzeConsistency(
   options: ConsistencyOptions
@@ -126,6 +130,13 @@ export async function analyzeConsistency(
   } as unknown as ConsistencyReport;
 }
 
+/**
+ * Check if an issue severity meets the minimum threshold.
+ *
+ * @param severity - The severity of the issue.
+ * @param minSeverity - The minimum severity threshold.
+ * @returns True if severity is greater than or equal to minSeverity.
+ */
 function shouldIncludeSeverity(
   severity: Severity | string,
   minSeverity: Severity | string
@@ -134,7 +145,10 @@ function shouldIncludeSeverity(
 }
 
 /**
- * Map string type to IssueType enum value
+ * Map string type to IssueType enum value.
+ *
+ * @param type - The raw issue type string.
+ * @returns Normalized IssueType enum.
  */
 function getIssueType(type: string | undefined): IssueType {
   if (!type) return IssueType.NamingInconsistency;
@@ -155,7 +169,10 @@ function getIssueType(type: string | undefined): IssueType {
 }
 
 /**
- * Transform NamingIssue or PatternIssue to the required Issue format
+ * Transform NamingIssue or PatternIssue to the required Issue format.
+ *
+ * @param i - The raw issue object to transform.
+ * @returns Standardized Issue object.
  */
 function transformToIssue(i: any): Issue {
   // If already has message and location, return as is

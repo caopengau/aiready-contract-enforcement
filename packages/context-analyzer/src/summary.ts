@@ -8,6 +8,10 @@ import { calculatePathEntropy } from './metrics';
 
 /**
  * Generate summary of context analysis results
+ *
+ * @param results - Array of individual file analysis results.
+ * @param options - Optional scan configuration for context extraction.
+ * @returns A consolidated summary of the entire context scan.
  */
 export function generateSummary(
   results: ContextAnalysisResult[],

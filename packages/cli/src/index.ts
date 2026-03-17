@@ -147,8 +147,12 @@ function sanitizeToolConfig(config: any): any {
 }
 
 /**
- * AIReady Unified Analysis
+ * AIReady Unified Analysis.
  * Orchestrates all registered tools via the ToolRegistry.
+ *
+ * @param options - Unified analysis configuration including tools and rootDir.
+ * @returns Promise resolving to the consolidated analysis result.
+ * @lastUpdated 2026-03-18
  */
 export async function analyzeUnified(
   options: UnifiedAnalysisOptions
@@ -347,8 +351,12 @@ export async function analyzeUnified(
 }
 
 /**
- * AIReady Unified Scoring
+ * AIReady Unified Scoring.
  * Calculates scores for all analyzed tools.
+ *
+ * @param results - The consolidated results from a unified analysis.
+ * @param options - Analysis options for weighting and budget calculation.
+ * @returns Promise resolving to the final scoring result.
  */
 export async function scoreUnified(
   results: UnifiedAnalysisResult,
@@ -419,7 +427,10 @@ export async function scoreUnified(
 }
 
 /**
- * Generate human-readable summary of unified results
+ * Generate human-readable summary of unified results.
+ *
+ * @param result - The consolidated analysis result object.
+ * @returns Formatted summary string.
  */
 export function generateUnifiedSummary(result: UnifiedAnalysisResult): string {
   const { summary } = result;

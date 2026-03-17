@@ -1,5 +1,10 @@
 /**
- * Fast Jaccard similarity on token sets
+ * Calculate Jaccard similarity between two token arrays.
+ *
+ * @param tokens1 - First set of tokens.
+ * @param tokens2 - Second set of tokens.
+ * @returns Normalized similarity score (0-1).
+ * @lastUpdated 2026-03-18
  */
 export function jaccardSimilarity(
   tokens1: string[],

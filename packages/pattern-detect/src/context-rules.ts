@@ -186,6 +186,13 @@ export const CONTEXT_RULES: ContextRule[] = [
 
 /**
  * Calculate severity based on context rules and code characteristics
+ *
+ * @param file1 - First file path in the duplicate pair.
+ * @param file2 - Second file path in the duplicate pair.
+ * @param code - Snippet of the duplicated code.
+ * @param similarity - The calculated similarity score (0-1).
+ * @param linesOfCode - Number of lines in the duplicated block.
+ * @returns An object containing the severity level and reasoning.
  */
 export function calculateSeverity(
   file1: string,
@@ -249,6 +256,9 @@ export function calculateSeverity(
 
 /**
  * Get a human-readable severity label with emoji
+ *
+ * @param severity - The severity level to label.
+ * @returns Formatted label string for UI display.
  */
 export function getSeverityLabel(severity: Severity): string {
   const labels: Record<Severity, string> = {
@@ -262,6 +272,10 @@ export function getSeverityLabel(severity: Severity): string {
 
 /**
  * Filter duplicates by minimum severity threshold
+ *
+ * @param duplicates - List of items with a severity property.
+ * @param minSeverity - Minimum threshold for inclusion.
+ * @returns Filtered list of items.
  */
 export function filterBySeverity<T extends { severity: Severity }>(
   duplicates: T[],
@@ -284,7 +298,10 @@ export function filterBySeverity<T extends { severity: Severity }>(
 }
 
 /**
- * Get severity threshold for filtering
+ * Get numerical similarity threshold associated with a severity level
+ *
+ * @param severity - The severity level to look up.
+ * @returns Minimum similarity value for this severity.
  */
 export function getSeverityThreshold(severity: Severity): number {
   const thresholds: Record<Severity, number> = {

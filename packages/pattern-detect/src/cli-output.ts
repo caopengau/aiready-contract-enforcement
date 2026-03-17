@@ -1,7 +1,10 @@
 import { getSeverityBadge, getSeverityValue } from '@aiready/core';
 
 /**
- * Get icon for pattern type
+ * Get emoji icon representing a specific pattern type.
+ *
+ * @param type - The pattern type string.
+ * @returns Emoji icon for the pattern.
  */
 export function getPatternIcon(type: string): string {
   const icons: Record<string, string> = {
@@ -17,7 +20,11 @@ export function getPatternIcon(type: string): string {
 }
 
 /**
- * HTML report generator for pattern detection results
+ * Generate a complete HTML report for pattern detection results.
+ *
+ * @param results - The results object (may be single arg or part of a pair).
+ * @param summary - Optional consolidated summary for legacy support.
+ * @returns Self-contained HTML string.
  */
 export function generateHTMLReport(results: any, summary?: any): string {
   // Handle both single-argument and legacy two-argument calls

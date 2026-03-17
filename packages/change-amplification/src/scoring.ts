@@ -3,7 +3,11 @@ import type { ToolScoringOutput } from '@aiready/core';
 import type { ChangeAmplificationReport } from './types';
 
 /**
- * Convert change amplification report into a ToolScoringOutput.
+ * Convert change amplification report into a standardized ToolScoringOutput.
+ *
+ * @param report - The detailed change amplification report.
+ * @returns Standardized scoring and risk factor breakdown.
+ * @lastUpdated 2026-03-18
  */
 export function calculateChangeAmplificationScore(
   report: ChangeAmplificationReport

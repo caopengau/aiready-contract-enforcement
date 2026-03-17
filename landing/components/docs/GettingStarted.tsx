@@ -52,6 +52,19 @@ export default function GettingStarted() {
             <div>npm install -g @aiready/context-analyzer</div>
             <div>npm install -g @aiready/consistency</div>
           </div>
+
+          <h3 className="text-2xl font-bold text-slate-900 mb-4">
+            ⏩ Next Steps
+          </h3>
+          <p className="text-slate-600 mb-4">
+            Once installed, initialize your project to save your settings:
+          </p>
+          <div className="bg-slate-900 text-blue-400 p-4 rounded-lg font-mono text-sm mb-4">
+            <div className="mb-2">
+              # Create aiready.json with smart defaults
+            </div>
+            <div>aiready init</div>
+          </div>
         </div>
       </motion.div>
     </section>

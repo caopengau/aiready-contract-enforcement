@@ -31,6 +31,46 @@ export default function DocsUnifiedCli() {
         </div>
       </section>
 
+      <section id="configuration" className="mb-16">
+        <h2 className="text-4xl font-black text-slate-900 mb-6">
+          Initialization & Persistence
+        </h2>
+        <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-lg mb-6">
+          <p className="text-slate-700 mb-6">
+            While AIReady works with zero configuration, serious teams use an{' '}
+            <code>aiready.json</code> file to ensure consistent rules across the
+            entire team and CI/CD pipelines.
+          </p>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            <div>
+              <h3 className="text-xl font-bold text-slate-900 mb-4">
+                ✨ Easy Setup
+              </h3>
+              <p className="text-slate-600 mb-4">
+                Generate a configuration file with smart defaults based on your
+                project structure:
+              </p>
+              <div className="bg-slate-900 text-green-400 p-4 rounded-lg font-mono text-sm">
+                <div>aiready init</div>
+              </div>
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-slate-900 mb-4">
+                🛠️ Full Fine-Tuning
+              </h3>
+              <p className="text-slate-600 mb-4">
+                Need to tweak every single detail? Generate a "full" template
+                with every available parameter documented.
+              </p>
+              <div className="bg-slate-900 text-blue-400 p-4 rounded-lg font-mono text-sm">
+                <div>aiready init --full</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="consulting" className="mb-24">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-black text-slate-900 mb-4">

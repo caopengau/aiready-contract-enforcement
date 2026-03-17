@@ -8,9 +8,10 @@ import type {
 import { singularize } from './utils/string-utils';
 
 /**
- * Build co-usage matrix: track which files are imported together
- * @param graph - The dependency graph to analyze
- * @returns Map of file to co-usage counts
+ * Build co-usage matrix: track which files are imported together frequently.
+ *
+ * @param graph - The dependency graph to analyze.
+ * @returns Map of file path to nested map of related files and their co-occurrence counts.
  */
 export function buildCoUsageMatrix(
   graph: DependencyGraph
@@ -40,9 +41,10 @@ export function buildCoUsageMatrix(
 }
 
 /**
- * Extract type dependencies from AST exports
- * @param graph - The dependency graph to analyze
- * @returns Map of type references to files that use them
+ * Extract type dependencies from AST exports to build a type-based relationship graph.
+ *
+ * @param graph - The dependency graph to analyze.
+ * @returns Map of type reference names to sets of files that consume or export them.
  */
 export function buildTypeGraph(
   graph: DependencyGraph
@@ -64,10 +66,11 @@ export function buildTypeGraph(
 }
 
 /**
- * Find semantic clusters using co-usage patterns
- * @param coUsageMatrix - The co-usage matrix from buildCoUsageMatrix
- * @param minCoUsage - Minimum co-usage count to consider (default: 3)
- * @returns Map of cluster representative files to their cluster members
+ * Find semantic clusters using frequently occurring co-usage patterns.
+ *
+ * @param coUsageMatrix - The co-usage matrix from buildCoUsageMatrix.
+ * @param minCoUsage - Minimum co-usage count to consider a strong relationship (default: 3).
+ * @returns Map of cluster representative files to their associated cluster members.
  */
 export function findSemanticClusters(
   coUsageMatrix: Map<string, Map<string, number>>,
@@ -96,7 +99,15 @@ export function findSemanticClusters(
 }
 
 /**
- * Infer domain from semantic analysis (co-usage + types)
+ * Infer domain from semantic analysis (co-usage + types) to identify logical modules.
+ *
+ * @param file - The file path to infer domain for.
+ * @param exportName - The specific export identifier.
+ * @param graph - The full dependency graph.
+ * @param coUsageMatrix - Matrix of files frequently imported together.
+ * @param typeGraph - Map of type references to files.
+ * @param exportTypeRefs - Optional list of types referenced by the export.
+ * @returns Array of potential domain assignments with confidence scores.
  */
 export function inferDomainFromSemantics(
   file: string,
@@ -173,6 +184,12 @@ export function inferDomainFromSemantics(
   return assignments;
 }
 
+/**
+ * Calculate confidence score for a domain assignment based on signals.
+ *
+ * @param signals - The set of semantic signals detected for a domain.
+ * @returns Numerical confidence score (0-1).
+ */
 export function calculateDomainConfidence(signals: DomainSignals): number {
   const weights = {
     coUsage: 0.35,
@@ -192,6 +209,12 @@ export function calculateDomainConfidence(signals: DomainSignals): number {
 
 /**
  * Regex-based export extraction (legacy/fallback)
+ *
+ * @param content - Source code content.
+ * @param filePath - Optional file path for domain context.
+ * @param domainOptions - Optional overrides for domain keywords.
+ * @param fileImports - Optional list of actual imports for semantic context.
+ * @returns Array of extracted export information.
  */
 export function extractExports(
   content: string,
@@ -238,6 +261,12 @@ export function extractExports(
 
 /**
  * Infer domain from name, path, or imports
+ *
+ * @param name - The identifier name to analyze.
+ * @param filePath - Optional file path for structure context.
+ * @param domainOptions - Optional overrides for domain keywords.
+ * @param fileImports - Optional list of imports for domain context.
+ * @returns The inferred domain name (string).
  */
 export function inferDomain(
   name: string,
@@ -320,6 +349,13 @@ export function inferDomain(
   return 'unknown';
 }
 
+/**
+ * Retrieve co-usage data for a specific file.
+ *
+ * @param file - The file path to look up.
+ * @param coUsageMatrix - The global co-usage matrix.
+ * @returns Formatted co-usage data object.
+ */
 export function getCoUsageData(
   file: string,
   coUsageMatrix: Map<string, Map<string, number>>
@@ -331,13 +367,23 @@ export function getCoUsageData(
   };
 }
 
+/**
+ * Identify candidates for module consolidation based on high co-usage or shared types.
+ *
+ * @param graph - The dependency graph.
+ * @param coUsageMatrix - Matrix of frequently paired files.
+ * @param typeGraph - Map of shared type references.
+ * @param minCoUsage - Minimum co-usage count threshold.
+ * @param minSharedTypes - Minimum shared types threshold.
+ * @returns Array of consolidation candidates sorted by strength.
+ */
 export function findConsolidationCandidates(
   graph: DependencyGraph,
   coUsageMatrix: Map<string, Map<string, number>>,
   typeGraph: Map<string, Set<string>>,
   minCoUsage: number = 5,
   minSharedTypes: number = 2
-) {
+): any[] {
   const candidates: any[] = [];
   for (const [fileA, coUsages] of coUsageMatrix) {
     const nodeA = graph.nodes.get(fileA);

@@ -4,6 +4,8 @@ import { contextActionHandler } from './cli-action';
 /**
  * Define the context analysis command structure.
  * Separating this from the execution logic helps reduce context overhead.
+ *
+ * @param program - Commander program instance to attach the command to.
  */
 export function defineContextCommand(program: Command): void {
   program

@@ -3,15 +3,13 @@ import type { ToolScoringOutput, CostConfig } from '@aiready/core';
 import type { ConsistencyIssue } from './types';
 
 /**
- * Calculate AI Readiness Score for code consistency (0-100)
+ * Calculate AI Readiness Score for code consistency (0-100).
  *
- * Based on:
- * - Issue density (issues per file)
- * - Weighted severity (critical: 10pts, major: 3pts, minor: 0.5pts)
- * - Pattern consistency across codebase
- *
- * Includes business value metrics:
- * - Estimated developer hours to fix consistency issues
+ * @param issues - Array of detected consistency issues.
+ * @param totalFilesAnalyzed - Total number of files scanned.
+ * @param costConfig - Optional configuration for productivity cost calculation.
+ * @returns Standardized scoring output for the consistency tool.
+ * @lastUpdated 2026-03-18
  */
 export function calculateConsistencyScore(
   issues: ConsistencyIssue[],

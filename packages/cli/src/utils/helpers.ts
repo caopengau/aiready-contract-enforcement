@@ -22,7 +22,10 @@ export function getReportTimestamp(): string {
 }
 
 /**
- * Warn if graph caps may be exceeded
+ * Warn if graph caps may be exceeded for visualization.
+ *
+ * @param report - The combined analysis report.
+ * @param dirPath - Root directory to look for configuration.
  */
 export async function warnIfGraphCapExceeded(report: any, dirPath: string) {
   try {
@@ -90,7 +93,11 @@ export async function warnIfGraphCapExceeded(report: any, dirPath: string) {
 }
 
 /**
- * Generate markdown report for consistency command
+ * Generate markdown report for consistency command.
+ *
+ * @param report - The consistency report object.
+ * @param elapsedTime - Time taken for analysis in seconds.
+ * @returns Formatted markdown string.
  */
 export function generateMarkdownReport(
   report: any,
@@ -117,7 +124,11 @@ export function generateMarkdownReport(
 }
 
 /**
- * Truncate array for display (show first N items with "... +N more")
+ * Truncate array for display (show first N items with "... +N more").
+ *
+ * @param arr - The array to truncate.
+ * @param cap - Maximum number of items to show before truncating.
+ * @returns Formatted string for display.
  */
 export function truncateArray(arr: any[] | undefined, cap = 8): string {
   if (!Array.isArray(arr)) return '';
@@ -128,6 +139,10 @@ export function truncateArray(arr: any[] | undefined, cap = 8): string {
 
 /**
  * Build a common ToolScoringOutput payload from a tool report.
+ *
+ * @param toolName - Identifier for the tool.
+ * @param report - Minimal report structure containing score and recommendations.
+ * @returns Standardized scoring output.
  */
 export function buildToolScoringOutput(
   toolName: string,
@@ -152,6 +167,10 @@ export function buildToolScoringOutput(
 
 /**
  * Load config and apply tool-level defaults.
+ *
+ * @param directory - Directory to search for config.
+ * @param defaults - Tool-specific default values.
+ * @returns Merged configuration with tool defaults.
  */
 export async function loadMergedToolConfig<T extends Record<string, unknown>>(
   directory: string,
@@ -164,6 +183,11 @@ export async function loadMergedToolConfig<T extends Record<string, unknown>>(
 
 /**
  * Shared base scan options used by CLI tool commands.
+ *
+ * @param directory - Root directory for scanning.
+ * @param options - CLI commander options object.
+ * @param extras - Additional tool-specific options.
+ * @returns Combined scan options for the analyzer.
  */
 export function buildCommonScanOptions(
   directory: string,
@@ -180,6 +204,9 @@ export function buildCommonScanOptions(
 
 /**
  * Execute a config-driven tool command with shared CLI plumbing.
+ *
+ * @param params - Execution parameters including analyze and score callbacks.
+ * @returns Promise resolving to the tool report and its scoring output.
  */
 export async function runConfiguredToolCommand<TReport, TScoring>(params: {
   directory: string;

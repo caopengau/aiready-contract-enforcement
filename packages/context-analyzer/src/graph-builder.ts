@@ -52,7 +52,10 @@ function resolveImport(
 }
 
 /**
- * Auto-detect domain keywords from workspace folder structure
+ * Auto-detect domain keywords from workspace folder structure.
+ *
+ * @param files - Array of file contents to analyze for folder patterns.
+ * @returns Array of singularized domain keywords.
  */
 export function extractDomainKeywordsFromPaths(files: FileContent[]): string[] {
   const folderNames = new Set<string>();
@@ -96,7 +99,11 @@ export function extractDomainKeywordsFromPaths(files: FileContent[]): string[] {
 }
 
 /**
- * Build a dependency graph from file contents
+ * Build a dependency graph from file contents, resolving imports and extracting metadata.
+ *
+ * @param files - Array of file contents to process.
+ * @param options - Optional configuration for domain detection.
+ * @returns Complete dependency graph with nodes, edges, and semantic matrices.
  */
 export function buildDependencyGraph(
   files: FileContent[],
@@ -170,7 +177,13 @@ export function buildDependencyGraph(
 }
 
 /**
- * Calculate the maximum depth of import tree for a file
+ * Calculate the maximum depth of the import tree for a specific file.
+ *
+ * @param file - File path to start depth calculation from.
+ * @param graph - The dependency graph.
+ * @param visited - Optional set to track visited nodes during traversal.
+ * @param depth - Current recursion depth.
+ * @returns Maximum depth of the import chain.
  */
 export function calculateImportDepth(
   file: string,
@@ -182,7 +195,12 @@ export function calculateImportDepth(
 }
 
 /**
- * Get all transitive dependencies for a file
+ * Retrieve all transitive dependencies for a specific file.
+ *
+ * @param file - File path to analyze.
+ * @param graph - The dependency graph.
+ * @param visited - Optional set to track visited nodes.
+ * @returns Array of all reachable file paths.
  */
 export function getTransitiveDependencies(
   file: string,
@@ -193,7 +211,11 @@ export function getTransitiveDependencies(
 }
 
 /**
- * Calculate total context budget (tokens needed to understand this file)
+ * Calculate total context budget (tokens needed to understand this file and its dependencies).
+ *
+ * @param file - File path to calculate budget for.
+ * @param graph - The dependency graph.
+ * @returns Total token count including recursive dependencies.
  */
 export function calculateContextBudget(
   file: string,
@@ -216,7 +238,10 @@ export function calculateContextBudget(
 }
 
 /**
- * Detect circular dependencies
+ * Detect circular dependencies (cycles) within the dependency graph.
+ *
+ * @param graph - The dependency graph to scan.
+ * @returns Array of dependency cycles (each cycle is an array of file paths).
  */
 export function detectCircularDependencies(graph: DependencyGraph): string[][] {
   return detectGraphCycles(graph.edges);

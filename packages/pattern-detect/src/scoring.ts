@@ -19,6 +19,11 @@ import type { DuplicatePattern } from './detector';
  * Includes business value metrics:
  * - Estimated monthly cost of token waste
  * - Estimated developer hours to fix
+ *
+ * @param duplicates - Array of detected duplicate patterns.
+ * @param totalFilesAnalyzed - Total count of files scanned.
+ * @param costConfig - Optional configuration for business value calculations.
+ * @returns Standardized scoring output for pattern detection.
  */
 export function calculatePatternScore(
   duplicates: DuplicatePattern[],

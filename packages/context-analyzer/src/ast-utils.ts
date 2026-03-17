@@ -3,7 +3,14 @@ import type { ExportInfo } from './types';
 import { inferDomain, extractExports } from './semantic-analysis';
 
 /**
- * Extract exports using high-fidelity AST parsing across 5+ languages
+ * Extract exports using high-fidelity AST parsing across 5+ languages.
+ *
+ * @param content - File contents to parse.
+ * @param filePath - Path to the file for language detection and context.
+ * @param domainOptions - Optional configuration for domain detection.
+ * @param fileImports - Optional array of strings for resolving imports.
+ * @returns Array of high-fidelity export metadata.
+ * @lastUpdated 2026-03-18
  */
 export function extractExportsWithAST(
   content: string,
@@ -40,7 +47,10 @@ export function extractExportsWithAST(
 }
 
 /**
- * Check if a file is a test, mock, or fixture file
+ * Check if a file is a test, mock, or fixture file.
+ *
+ * @param filePath - The path to the file to check.
+ * @returns True if the file matches test/mock patterns.
  */
 export function isTestFile(filePath: string): boolean {
   const lower = filePath.toLowerCase();
