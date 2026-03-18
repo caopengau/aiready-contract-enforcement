@@ -1,6 +1,8 @@
 import type { ScanOptions, Issue, IssueType } from '@aiready/core';
 
 export interface AgentGroundingOptions extends ScanOptions {
+  /** Root directory for analysis */
+  rootDir: string;
   /** Max directory depth before flagging as "too deep" */
   maxRecommendedDepth?: number;
   /** README staleness threshold in days */
