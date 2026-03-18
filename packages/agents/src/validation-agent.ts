@@ -18,7 +18,7 @@ export const ValidationAgent = new Agent({
     - errors: array of { file: string, message: string, line?: number }
     - feedbackForRefactor: string (detailed instructions for the RefactorAgent on how to fix these errors)
   `,
-  model: 'openai/gpt-4o',
+  model: 'openai/gpt-5.4-mini',
 });
 
 export const ValidationSchema = z.object({

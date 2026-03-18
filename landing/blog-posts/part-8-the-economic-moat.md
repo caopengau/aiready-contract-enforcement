@@ -24,7 +24,7 @@ In a small project, this is pocket change. In an enterprise monorepo, it’s a *
 
 We’ve traditionally seen refactoring as a "nice to have" when we have extra time. **AIReady changes that.**
 
-By linking our **Fragmentation Score** to real-world model pricing (Claude 4.5, GPT-4o), we can show you exactly how much money you’re leaving on the table.
+By linking our **Fragmentation Score** to real-world model pricing (Claude 4.6, GPT-5.4), we can show you exactly how much money you’re leaving on the table.
 
 - **High Fragmentation** = High Token Attrition = Higher Burn.
 - **High Semantic Duplication** = AI Hallucinations = Wasted Developer Review Time.

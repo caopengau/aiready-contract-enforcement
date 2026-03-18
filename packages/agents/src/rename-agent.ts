@@ -19,7 +19,7 @@ export const RenameAgent = new Agent({
     - Propose a mapping of old -> new names.
     - Execute the rename across all affected files.
   `,
-  model: 'openai/gpt-4o',
+  model: 'openai/gpt-5.4-mini',
 });
 
 export const RenameResultSchema = z.object({

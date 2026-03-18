@@ -20,7 +20,7 @@ export const RiskAssessmentAgent = new Agent({
     - autoApprove: boolean (true only for 'low' risk)
     - reasoning: string
   `,
-  model: 'openai/gpt-4o',
+  model: 'openai/gpt-5.4-mini',
 });
 
 export const RiskSchema = z.object({

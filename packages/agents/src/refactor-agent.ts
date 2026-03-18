@@ -20,7 +20,7 @@ export const RefactorAgent = new Agent({
 
     Return a summary of your actions, including the PR URL and a unified diff of your changes.
   `,
-  model: 'openai/gpt-4o',
+  model: 'openai/gpt-5.4-mini',
   tools: {
     ...githubTools,
     ...fsTools,

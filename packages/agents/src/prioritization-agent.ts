@@ -17,7 +17,7 @@ export const PrioritizationAgent = new Agent({
     - rank: 'P0' | 'P1' | 'P2' | 'P3'
     - reasoning: string explanation of the ranking decision.
   `,
-  model: 'openai/gpt-4o',
+  model: 'openai/gpt-5.4-mini',
 });
 
 export const PrioritySchema = z.object({

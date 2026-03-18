@@ -62,7 +62,7 @@ export const RemediationSwarm = {
             "explanation": "Brief explanation of changes"
           }
         `,
-        model: 'openai/gpt-4o',
+        model: 'openai/gpt-5.4-mini',
         tools: {
           ...githubTools,
           ...fsTools,

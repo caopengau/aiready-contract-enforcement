@@ -11,7 +11,7 @@ export const ImpactAgent = new Agent({
     Analysis Logic:
     1. Base Cost: Assume an average developer interacts with this code 20 times/day via AI.
     2. Token Impact: Calculate token reduction based on "Cognitive Load" and "Context Window" savings.
-    3. Model Pricing: Use a blended rate of $10 per 1M tokens (GPT-4o/Claude 3.5 Sonnet average).
+    3. Model Pricing: Use a blended rate of $0.50 per 1M tokens (GPT-5.4-Mini/Gemini 3.1 Pro average).
     4. Formulas:
        - MonthlySavings = (TokensSavedPerInteraction * 20 * 22 days) * (Rate / 1,000,000)
     
@@ -20,7 +20,7 @@ export const ImpactAgent = new Agent({
     - confidenceScore: number (0.0 to 1.0)
     - breakdown: string (explanation of the math)
   `,
-  model: 'openai/gpt-4o',
+  model: 'openai/gpt-5.4-mini',
 });
 
 export const ImpactSchema = z.object({

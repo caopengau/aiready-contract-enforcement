@@ -18,7 +18,7 @@ export const RestructureAgent = new Agent({
     - strategy: string (explanation of the architectural vision)
     - impact: { cognitiveLoadReduction: number (0-100), fragmentationReduction: number (0-100) }
   `,
-  model: 'openai/gpt-4o',
+  model: 'openai/gpt-5.4-mini',
 });
 
 export const RestructureSchema = z.object({
