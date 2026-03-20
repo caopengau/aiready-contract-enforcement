@@ -23,6 +23,31 @@ function resolveImport(
   // If it's not a relative import, we treat it as an external dependency for now
   // (unless it's an absolute path that exists in our set)
   if (!source.startsWith('.') && !source.startsWith('/')) {
+    // Handle monorepo package imports (@aiready/*)
+    if (source.startsWith('@aiready/')) {
+      const pkgName = source.split('/')[1];
+      const possiblePaths = [
+        // Standard src/index.ts entry point for our packages
+        join('packages', pkgName, 'src', 'index.ts'),
+        join('packages', pkgName, 'src', 'index.tsx'),
+        // Support for sub-exports if needed (e.g. @aiready/core/client)
+        join(
+          'packages',
+          pkgName,
+          'src',
+          `${source.split('/').slice(2).join('/') || 'index'}.ts`
+        ),
+      ];
+
+      for (const p of possiblePaths) {
+        // Find the absolute path that ends with this relative path
+        const absolutePkgPath = Array.from(allFiles).find((f) =>
+          f.endsWith(normalize(p))
+        );
+        if (absolutePkgPath) return absolutePkgPath;
+      }
+    }
+
     if (allFiles.has(source)) return source;
     return null;
   }

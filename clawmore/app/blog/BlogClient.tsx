@@ -10,6 +10,39 @@ interface BlogClientProps {
 
 const BLOG_POSTS = [
   {
+    slug: 'the-great-decoupling-01-audit',
+    title: 'The Great Decoupling: Part 1 - Auditing the Monolith',
+    excerpt:
+      'How to audit a legacy repository for agentic readiness. Identifying the "Wall" before you hit it.',
+    date: 'Mar 22, 2026',
+    readTime: '9 min read',
+    hash: 'audit',
+    category: 'DECOUPLING',
+    image: '/blog-assets/the-great-decoupling-01-audit.png',
+  },
+  {
+    slug: 'the-great-decoupling-02-first-cut',
+    title: 'The Great Decoupling: Part 2 - The First Cut',
+    excerpt:
+      'Moving from audit to action. How to safely decouple your first module for agentic discoverability.',
+    date: 'Mar 24, 2026',
+    readTime: '7 min read',
+    hash: 'firstcut',
+    category: 'DECOUPLING',
+    image: '/blog-assets/the-great-decoupling-02-first-cut.png',
+  },
+  {
+    slug: 'the-great-decoupling-03-protocol',
+    title: 'The Great Decoupling: Part 3 - The Agentic Protocol',
+    excerpt:
+      'The final bridge. How to wrap your decoupled modules in a universal protocol for maximum agentic leverage.',
+    date: 'Mar 26, 2026',
+    readTime: '8 min read',
+    hash: 'protocol',
+    category: 'DECOUPLING',
+    image: '/blog-assets/the-great-decoupling-03-protocol.png',
+  },
+  {
     slug: 'openclaw-chronicles-12-future',
     title: 'The Future: Beyond the Bridge Pattern',
     excerpt:

@@ -87,7 +87,7 @@ export async function analyzeDocDrift(
               const params = exp.parameters;
               // Check if params mentioned in doc (standard @param or simple mention)
               const missingParams = params.filter((p) => {
-                const regex = new RegExp(`\\b${p}\\b`, 'i');
+                const regex = new RegExp(`\\b${p}\\b`);
                 return !regex.test(docContent);
               });
 

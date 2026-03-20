@@ -124,7 +124,11 @@ export async function analyzeNamingGeneralized(
 
           if (
             !conventions.variablePattern.test(spec) &&
-            !conventions.classPattern.test(spec)
+            !conventions.classPattern.test(spec) &&
+            !conventions.constantPattern.test(spec) &&
+            (!conventions.typePattern || !conventions.typePattern.test(spec)) &&
+            (!conventions.interfacePattern ||
+              !conventions.interfacePattern.test(spec))
           ) {
             // This is often a 'convention-mix' issue (e.g. importing snake_case into camelCase project)
             issues.push({

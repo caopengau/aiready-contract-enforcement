@@ -105,6 +105,20 @@ import SemanticDuplicateDetection from './semantic-duplicate-detection';
 import semanticDuplicateDetectionMeta from './semantic-duplicate-detection.meta';
 import HiddenCostImportChains from './hidden-cost-import-chains';
 import hiddenCostImportChainsMeta from './hidden-cost-import-chains.meta';
+import McpSuperpowersContextAware from './mcp-superpowers-context-aware';
+import mcpSuperpowersContextAwareMeta from './mcp-superpowers-context-aware.meta';
+import McpSuperpowersCustomTools from './mcp-superpowers-custom-tools';
+import mcpSuperpowersCustomToolsMeta from './mcp-superpowers-custom-tools.meta';
+import McpSuperpowersOrchestrationLoop from './mcp-superpowers-orchestration-loop';
+import mcpSuperpowersOrchestrationLoopMeta from './mcp-superpowers-orchestration-loop.meta';
+import AgenticRoiNavigationTax from './agentic-roi-navigation-tax';
+import agenticRoiNavigationTaxMeta from './agentic-roi-navigation-tax.meta';
+import AgenticRoiTokenRoi from './agentic-roi-token-roi';
+import agenticRoiTokenRoiMeta from './agentic-roi-token-roi.meta';
+import AgenticRoiTalentMoat from './agentic-roi-talent-moat';
+import agenticRoiTalentMoatMeta from './agentic-roi-talent-moat.meta';
+import TenMinuteAiAudit from './10-minute-ai-audit';
+import tenMinuteAiAuditMeta from './10-minute-ai-audit.meta';
 
 /**
  * Static posts array for static generation.
@@ -158,4 +172,14 @@ export const posts = [
   createPostEntry(metricsThatMatterMeta, MetricsThatMatter),
   createPostEntry(semanticDuplicateDetectionMeta, SemanticDuplicateDetection),
   createPostEntry(hiddenCostImportChainsMeta, HiddenCostImportChains),
+  createPostEntry(mcpSuperpowersContextAwareMeta, McpSuperpowersContextAware),
+  createPostEntry(mcpSuperpowersCustomToolsMeta, McpSuperpowersCustomTools),
+  createPostEntry(
+    mcpSuperpowersOrchestrationLoopMeta,
+    McpSuperpowersOrchestrationLoop
+  ),
+  createPostEntry(agenticRoiNavigationTaxMeta, AgenticRoiNavigationTax),
+  createPostEntry(agenticRoiTokenRoiMeta, AgenticRoiTokenRoi),
+  createPostEntry(agenticRoiTalentMoatMeta, AgenticRoiTalentMoat),
+  createPostEntry(tenMinuteAiAuditMeta, TenMinuteAiAudit),
 ];

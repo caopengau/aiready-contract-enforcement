@@ -5,6 +5,55 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
 });
 
 /**
+ * Creates a Stripe Checkout Session for the $29.00/mo Platform Subscription.
+ * This also authorizes the 'off_session' auto-recharges for AI tokens.
+ */
+export async function createPlatformSubscriptionSession(
+  customerId: string,
+  userEmail: string,
+  coEvolutionOptIn: boolean,
+  successUrl: string,
+  cancelUrl: string
+) {
+  return await stripe.checkout.sessions.create({
+    customer: customerId,
+    customer_email: customerId ? undefined : userEmail,
+    payment_method_types: ['card'],
+    line_items: [
+      {
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: 'ClawMore Managed Platform Subscription',
+            description:
+              '$29.00/mo for managed serverless infrastructure + AI evolution guardrails.',
+          },
+          unit_amount: 2900,
+          recurring: { interval: 'month' },
+        },
+        quantity: 1,
+      },
+    ],
+    mode: 'subscription',
+    payment_intent_data: {
+      setup_future_usage: 'off_session', // CRITICAL: Authorizes auto-recharges
+    },
+    success_url: successUrl,
+    cancel_url: cancelUrl,
+    metadata: {
+      type: 'platform_subscription',
+      coEvolutionOptIn: coEvolutionOptIn ? 'true' : 'false',
+    },
+    subscription_data: {
+      description: `ClawMore Managed - ${userEmail}`,
+      metadata: {
+        coEvolutionOptIn: coEvolutionOptIn ? 'true' : 'false',
+      },
+    },
+  });
+}
+
+/**
  * Reports usage for a metered subscription item (e.g., the Evolution Tax).
  */
 export async function reportMeteredUsage(
@@ -12,7 +61,6 @@ export async function reportMeteredUsage(
   quantity: number = 1
 ) {
   try {
-    // Use any as the Stripe Node SDK version variations can have different method locations for usage records
     await (stripe.subscriptionItems as any).createUsageRecord(
       subscriptionItemId,
       {
@@ -32,7 +80,6 @@ export async function reportMeteredUsage(
 
 /**
  * Adds a one-time charge (invoice item) to the customer's next invoice.
- * Used for pass-through compute overages.
  */
 export async function reportOverageCharge(
   customerId: string,

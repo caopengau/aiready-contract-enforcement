@@ -1,21 +1,40 @@
-import { createFuelPackCheckout } from '../lib/billing';
+import { createPlatformSubscriptionSession } from '../lib/billing';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoDBDocumentClient, GetCommand } from '@aws-sdk/lib-dynamodb';
+
+const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 
 export const handler = async (event: any) => {
-  const { userId, successUrl, cancelUrl } = JSON.parse(event.body || '{}');
+  const { userId, userEmail, coEvolutionOptIn, successUrl, cancelUrl } =
+    JSON.parse(event.body || '{}');
 
-  if (!userId) {
+  if (!userEmail) {
     return {
       statusCode: 400,
-      body: JSON.stringify({ error: 'Missing userId' }),
+      body: JSON.stringify({ error: 'Missing userEmail' }),
     };
   }
 
   try {
-    // In a real implementation, we'd fetch the stripeCustomerId from DynamoDB
-    const session = await createFuelPackCheckout(
-      userId, // Using userId as a placeholder for customerId or mapping it
-      successUrl || 'https://clawmore.getaiready.dev/billing/success',
-      cancelUrl || 'https://clawmore.getaiready.dev/billing'
+    // 1. Fetch existing customer ID if available
+    const userRes = await ddb.send(
+      new GetCommand({
+        TableName: process.env.DYNAMO_TABLE,
+        Key: { PK: `USER#${userEmail}`, SK: 'METADATA' },
+      })
+    );
+
+    const customerId = userRes.Item?.stripeCustomerId;
+
+    // 2. Create the $29/mo Subscription Session with off-session authorization
+    const session = await createPlatformSubscriptionSession(
+      customerId,
+      userEmail,
+      !!coEvolutionOptIn,
+      successUrl ||
+        `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?checkout=success`,
+      cancelUrl ||
+        `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?checkout=cancelled`
     );
 
     return {
@@ -23,7 +42,7 @@ export const handler = async (event: any) => {
       body: JSON.stringify({ url: session.url }),
     };
   } catch (error: any) {
-    console.error('Error creating checkout session:', error);
+    console.error('Error creating subscription session:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: error.message }),

@@ -393,7 +393,9 @@ export const ACCEPTABLE_ABBREVIATIONS = new Set([
  * Convert snake_case to camelCase
  */
 export function snakeCaseToCamelCase(str: string): string {
-  return str.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
+  return str
+    .replace(/^_+/, '')
+    .replace(/_([a-zA-Z0-9])/g, (_, char) => char.toUpperCase());
 }
 
 /**
