@@ -114,4 +114,7 @@ export {
   type ForceDirectedGraphHandle,
   type LayoutType,
 } from './charts/ForceDirectedGraph';
-export { GraphControls, type GraphControlsProps } from './charts/GraphControls';
+export {
+  GraphControls,
+  type GraphControlsProps,
+} from './charts/force-directed/GraphControls';

@@ -1,6 +1,23 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import * as d3 from 'd3';
 import { GraphNode } from './types';
+
+/** Pins a node to its current position (sets fx/fy to current x/y) */
+export function pinNode(node: GraphNode): void {
+  node.fx = node.x;
+  node.fy = node.y;
+}
+
+/** Unpins a node (sets fx/fy to null) */
+export function unpinNode(node: GraphNode): void {
+  node.fx = null;
+  node.fy = null;
+}
+
+/** Unpins all nodes - helper for bulk unpin operations */
+export function unpinAllNodes(nodes: GraphNode[]): void {
+  nodes.forEach(unpinNode);
+}
 
 /**
  * Hook for managing D3 zoom behavior on an SVG element.
@@ -84,4 +101,50 @@ export function useWindowDrag(
       window.removeEventListener('blur', handleWindowUp);
     };
   }, [enableDrag, svgRef, transformRef, dragActiveRef, dragNodeRef, onDragEnd]);
+}
+
+/**
+ * Hook for managing node interactions (drag, double-click pinning).
+ */
+export function useNodeInteractions(
+  enableDrag: boolean,
+  _nodes: GraphNode[],
+  _pinnedNodes: Set<string>,
+  setPinnedNodes: React.Dispatch<React.SetStateAction<Set<string>>>,
+  restart: () => void,
+  stop: () => void
+) {
+  const handleDragStart = useCallback(
+    (event: React.MouseEvent, node: GraphNode) => {
+      if (!enableDrag) return;
+      event.preventDefault();
+      event.stopPropagation();
+      pinNode(node);
+      setPinnedNodes((prev) => new Set([...prev, node.id]));
+      stop();
+    },
+    [enableDrag, stop, setPinnedNodes]
+  );
+
+  const handleNodeDoubleClick = useCallback(
+    (event: React.MouseEvent, node: GraphNode) => {
+      event.stopPropagation();
+      if (!enableDrag) return;
+      if (node.fx === null || node.fx === undefined) {
+        pinNode(node);
+        setPinnedNodes((prev) => new Set([...prev, node.id]));
+      } else {
+        unpinNode(node);
+        setPinnedNodes((prev) => {
+          const next = new Set(prev);
+          next.delete(node.id);
+          return next;
+        });
+      }
+      restart();
+    },
+    [enableDrag, restart, setPinnedNodes]
+  );
+
+  return { handleDragStart, handleNodeDoubleClick };
 }

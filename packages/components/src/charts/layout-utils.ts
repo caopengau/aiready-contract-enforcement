@@ -1,4 +1,4 @@
-import { GraphNode } from './types';
+import { GraphNode } from './force-directed/types';
 import { CIRCULAR_LAYOUT_RADIUS_RATIO } from './constants';
 
 /**
