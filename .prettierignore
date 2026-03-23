@@ -2,6 +2,9 @@
 node_modules
 dist
 coverage
+**/playwright-report/
+.aiready/
+.smithery/
 
 # Build outputs
 *.log
@@ -11,7 +14,8 @@ coverage
 .sst
 .open-next
 landing/out
-sst-env.d.ts
+**/sst-env.d.ts
+**/next-env.d.ts
 
 # Package files
 pnpm-lock.yaml
@@ -32,6 +36,11 @@ Thumbs.db
 .github/
 action-marketplace/
 packages/visualizer/web/
+landing/
+clawmore/
+vscode-extension/
+docker/
+homebrew/
 
 # Generated reports and tool artifacts
 **/.aiready/

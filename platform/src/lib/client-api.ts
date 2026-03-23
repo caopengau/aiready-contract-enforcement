@@ -14,8 +14,7 @@ export function handleApiError(context: string, error: unknown): void {
 export function handleApiSuccess(message: string, refresh = false): void {
   toast.success(message);
   if (refresh) {
-    // Dynamic import to avoid SSR issues
-    import('next/navigation').then((mod) => mod.router?.refresh());
+    window.location.reload();
   }
 }
 

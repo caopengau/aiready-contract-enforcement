@@ -31,17 +31,6 @@ export function RemediationQueue({
     diff?: string;
   } | null>(null);
 
-  useEffect(() => {
-    fetchRemediations();
-    const interval = setInterval(fetchRemediations, 5000); // Poll for agent status
-    return () => clearInterval(interval);
-  }, [fetchRemediations]);
-
-  // Check if any remediation for this repo is currently in-progress
-  const hasInProgressRemediation = remediations.some(
-    (r) => r.status === 'in-progress'
-  );
-
   const fetchRemediations = useCallback(async () => {
     try {
       const res = await fetch(`/api/repos/${repoId}/remediations`);
@@ -59,6 +48,17 @@ export function RemediationQueue({
       setLoading(false);
     }
   }, [repoId]);
+
+  useEffect(() => {
+    fetchRemediations();
+    const interval = setInterval(fetchRemediations, 5000); // Poll for agent status
+    return () => clearInterval(interval);
+  }, [fetchRemediations]);
+
+  // Check if any remediation for this repo is currently in-progress
+  const hasInProgressRemediation = remediations.some(
+    (r) => r.status === 'in-progress'
+  );
 
   const _handleSwarm = async (remId: string) => {
     try {

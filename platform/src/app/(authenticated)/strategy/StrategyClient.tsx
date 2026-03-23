@@ -24,7 +24,7 @@ export default function StrategyClient({ user, teams, overallScore }: Props) {
   const router = useRouter();
 
   async function handleUpdateScanStrategy(settings: any | null) {
-    return updateScanStrategy(settings, () => router.refresh());
+    await updateScanStrategy(settings, () => router.refresh());
   }
 
   return (
@@ -49,6 +49,9 @@ export default function StrategyClient({ user, teams, overallScore }: Props) {
         <ScanConfigForm
           repoId="global"
           initialSettings={user.scanConfig || null}
+          fileCount={0}
+          lastExecutionTime={0}
+          lastSettings={null}
           onSave={handleUpdateScanStrategy}
         />
       </section>

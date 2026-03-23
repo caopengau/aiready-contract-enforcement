@@ -24,7 +24,7 @@ vi.mock('next/server', () => ({
 
 describe('Auth Middleware', () => {
   it('should return 401 if not authenticated', async () => {
-    vi.mocked(auth).mockResolvedValue(null);
+    vi.mocked(auth).mockResolvedValue(null as any);
     const handler = withAuth(async () => NextResponse.json({}));
     const req: any = {};
     const res = await handler(req);

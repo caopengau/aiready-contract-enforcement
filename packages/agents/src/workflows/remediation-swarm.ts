@@ -82,7 +82,7 @@ export const RemediationSwarm = {
       `;
 
       const result = await agent.generate(prompt, {
-        // @ts-ignore
+        // @ts-expect-error - Mastra types may not include maxTokens yet
         maxTokens: 8192,
       });
 

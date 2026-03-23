@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { authConfig } from '../auth.config';
 
-vi.mock('./db', () => ({
+vi.mock('../db', () => ({
   getUserByEmail: vi.fn(),
   createUser: vi.fn(),
 }));
@@ -14,7 +14,7 @@ vi.mock('bcryptjs', () => ({
 
 describe('Auth Config', () => {
   it('should have required providers', () => {
-    const providerIds = authConfig.providers.map((p) => p.id);
+    const providerIds = (authConfig.providers as any).map((p: any) => p.id);
     expect(providerIds).toContain('github');
     expect(providerIds).toContain('google');
     expect(providerIds).toContain('credentials');
@@ -25,7 +25,7 @@ describe('Auth Config', () => {
       const session: any = { user: {} };
       const token: any = { id: 'u1', email: 't@e.com', name: 'Test' };
 
-      const result = await authConfig.callbacks?.session?.({
+      const result = await (authConfig.callbacks as any).session({
         session,
         token,
         user: {} as any,

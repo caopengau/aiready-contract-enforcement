@@ -82,7 +82,10 @@ describe('RemediationSwarm - MiniMax Integration', () => {
       raw: {
         content: [
           { type: 'thinking', thinking: 'I need to consolidate these styles.' },
-          { type: 'text', text: '{"status":"success","diff":"refactored-code"}' },
+          {
+            type: 'text',
+            text: '{"status":"success","diff":"refactored-code"}',
+          },
         ],
       },
     });
@@ -98,7 +101,9 @@ describe('RemediationSwarm - MiniMax Integration', () => {
 
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.value.reasoning).toBe('I need to consolidate these styles.');
+      expect(result.value.reasoning).toBe(
+        'I need to consolidate these styles.'
+      );
     }
   });
 });

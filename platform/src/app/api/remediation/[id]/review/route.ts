@@ -8,7 +8,7 @@ import { getRemediation, updateRemediation } from '@/lib/db/remediation';
  */
 export async function POST(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth();
@@ -16,6 +16,7 @@ export async function POST(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    const { id: remediationId } = await params;
     const { comment, decision } = (await req.json()) as {
       comment: string;
       decision: 'approve' | 'request-changes';
@@ -28,7 +29,6 @@ export async function POST(
       );
     }
 
-    const remediationId = params.id;
     const remediation = await getRemediation(remediationId);
 
     if (!remediation) {

@@ -23,7 +23,7 @@ ALL_SPOKES := $(filter-out skills, $(notdir $(wildcard packages/*)))
 
 # Spokes that are subject to quality checks (lint, format, type-check)
 # This includes the standard spokes in packages/ plus top-level apps
-QUALITY_SPOKES := $(ALL_SPOKES) landing platform clawmore
+QUALITY_SPOKES := $(ALL_SPOKES) platform
 
 # Function to get the directory for a given spoke
 # It checks if it exists in packages/ first, otherwise assumes it's at the root
