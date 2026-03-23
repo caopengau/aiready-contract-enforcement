@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/app/api/auth/[...nextauth]/route';
 import { createCheckoutSession, createPortalSession } from '@/lib/billing';
-import { getTeam, getUserByEmail } from '@/lib/db';
 
 export async function POST(request: NextRequest) {
   try {

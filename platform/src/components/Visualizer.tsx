@@ -134,7 +134,7 @@ export default function Visualizer({ data, filters, onToggleFilter }: Props) {
                   dashed: true,
                 },
               ] as const
-            ).map(({ type, label, lineClass, dashed }) => {
+            ).map(({ type, label, lineClass }) => {
               const count = edgeCounts[type] || 0;
               const active = count > 0;
               return (

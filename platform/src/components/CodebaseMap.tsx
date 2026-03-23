@@ -100,8 +100,8 @@ export default function CodebaseMap({ repos, initialRepoId }: Props) {
 
       const graphData = GraphBuilder.buildFromReport(result.analysis);
       setFullData(graphData);
-    } catch (err) {
-      console.error('Error fetching visualization data:', err);
+    } catch (_err) {
+      console.error('Error fetching visualization data:', _err);
       toast.error('An unexpected error occurred');
     } finally {
       setLoading(false);

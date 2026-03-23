@@ -2,7 +2,7 @@ import { auth } from '@/app/api/auth/[...nextauth]/route';
 import { redirect } from 'next/navigation';
 import { getUserByEmail, listUserRepositories, listUserTeams } from '@/lib/db';
 import CodebaseMap from '@/components/CodebaseMap';
-import PlatformShell from '@/components/PlatformShell';
+import _PlatformShell from '@/components/PlatformShell';
 
 interface Props {
   searchParams: Promise<{ repoId?: string }>;
@@ -22,13 +22,13 @@ export default async function MapPage({
   if (!user) redirect('/login');
 
   const repos = await listUserRepositories(user.id);
-  const teams = await listUserTeams(user.id);
+  const _teams = await listUserTeams(user.id);
 
   // Calculate overall AI score
   const reposWithScores = repos.filter(
     (r) => r.aiScore !== null && r.aiScore !== undefined
   );
-  const overallScore =
+  const _overallScore =
     reposWithScores.length > 0
       ? Math.round(
           reposWithScores.reduce((sum, r) => sum + (r.aiScore || 0), 0) /

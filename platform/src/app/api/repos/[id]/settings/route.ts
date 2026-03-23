@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { updateRepositoryConfig } from '@/lib/db';
 import { withRepoAuth } from '@/lib/api/repo-route';
 

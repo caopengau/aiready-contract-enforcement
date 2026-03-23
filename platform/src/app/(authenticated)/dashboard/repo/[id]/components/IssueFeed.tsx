@@ -1,6 +1,5 @@
 'use client';
 
-import { AnimatePresence } from 'framer-motion';
 import { ShieldIcon } from '@/components/Icons';
 import { IssueItem } from './IssueItem';
 

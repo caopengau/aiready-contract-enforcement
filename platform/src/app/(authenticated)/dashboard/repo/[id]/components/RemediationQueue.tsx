@@ -42,8 +42,8 @@ export function RemediationQueue({
         );
         setRemediations(sorted);
       }
-    } catch (err) {
-      console.error('Error fetching remediations:', err);
+    } catch (_err) {
+      console.error('Error fetching remediations:', _err);
     } finally {
       setLoading(false);
     }
@@ -81,7 +81,7 @@ export function RemediationQueue({
           )
         );
       }
-    } catch (err) {
+    } catch (_err) {
       toast.error('Failed to start swarm');
     }
   };
@@ -94,8 +94,8 @@ export function RemediationQueue({
       if (res.ok) {
         fetchRemediations();
       }
-    } catch (err) {
-      console.error('Error approving remediation:', err);
+    } catch (_err) {
+      console.error('Error approving remediation:', _err);
     }
   }
 
@@ -109,8 +109,8 @@ export function RemediationQueue({
       if (res.ok) {
         fetchRemediations();
       }
-    } catch (err) {
-      console.error('Error triggering remediation:', err);
+    } catch (_err) {
+      console.error('Error triggering remediation:', _err);
     }
   }
 

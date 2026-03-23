@@ -10,9 +10,6 @@ import { ApiAccessSection } from './components/ApiAccessSection';
 import { NewKeyModal } from './components/NewKeyModal';
 import ConfirmationModal from '@/components/ConfirmationModal';
 
-import type { AIReadyConfig } from '@aiready/core';
-import { updateScanStrategy } from '@/lib/scan-strategy';
-
 interface Props {
   user: {
     id: string;
@@ -32,7 +29,7 @@ export default function SettingsClient({
   teams: _teams,
   overallScore: _overallScore,
 }: Props) {
-  const router = useRouter();
+  const [_router, _setRouter] = useState(useRouter());
   const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
   // ... rest of state
   const [newKeyName, setNewKeyName] = useState('');
@@ -53,8 +50,8 @@ export default function SettingsClient({
       const res = await fetch('/api/keys');
       const data = await res.json();
       if (res.ok) setApiKeys(data.keys);
-    } catch (err) {
-      console.error('Failed to fetch API keys:', err);
+    } catch (_err) {
+      console.error('Failed to fetch API keys:', _err);
     }
   }
 
@@ -75,8 +72,8 @@ export default function SettingsClient({
         fetchApiKeys();
         toast.success('API key generated');
       }
-    } catch (err) {
-      console.error('Failed to create API key:', err);
+    } catch (_err) {
+      console.error('Failed to create API key:', _err);
       toast.error('Failed to generate API key');
     } finally {
       setKeysLoading(false);
@@ -94,17 +91,13 @@ export default function SettingsClient({
         setApiKeys((prev) => prev.filter((k) => k.id !== keyToDelete.id));
         toast.success('API key deleted');
       }
-    } catch (err) {
-      console.error('Failed to delete API key:', err);
+    } catch (_err) {
+      console.error('Failed to delete API key:', _err);
       toast.error('Failed to delete API key');
     } finally {
       setDeletingKeyId(null);
       setKeyToDelete(null);
     }
-  }
-
-  async function handleUpdateScanStrategy(settings: AIReadyConfig | null) {
-    return updateScanStrategy(settings, () => router.refresh());
   }
 
   return (

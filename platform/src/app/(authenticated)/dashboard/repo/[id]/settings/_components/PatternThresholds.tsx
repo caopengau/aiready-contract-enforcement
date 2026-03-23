@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { ToolName, AIReadyConfig } from '@aiready/core/client';
 import { ThresholdSlider } from './ThresholdSlider';
 import ConfirmationModal from '@/components/ConfirmationModal';
 

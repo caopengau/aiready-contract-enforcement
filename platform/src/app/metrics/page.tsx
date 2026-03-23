@@ -26,14 +26,13 @@ export default async function MetricsPage() {
   const session = await auth();
 
   let user = null;
-  let repos: any[] = [];
   let teams: (TeamMember & { team: Team })[] = [];
   let overallScore = null;
 
   if (session?.user?.email) {
     user = await getUserByEmail(session.user.email);
     if (user) {
-      repos = await listUserRepositories(user.id);
+      const repos = await listUserRepositories(user.id);
       teams = await listUserTeams(user.id);
 
       // Calculate overall AI score

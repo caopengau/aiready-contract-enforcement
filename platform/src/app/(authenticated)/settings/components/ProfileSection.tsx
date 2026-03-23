@@ -41,6 +41,7 @@ export function ProfileSection({ user }: ProfileSectionProps) {
             {user.image ? (
               <img
                 src={user.image}
+                alt={user.name || user.email || 'User avatar'}
                 className="w-20 h-20 rounded-2xl border-2 border-indigo-500/30"
               />
             ) : (

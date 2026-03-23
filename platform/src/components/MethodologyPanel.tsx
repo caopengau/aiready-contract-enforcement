@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import CodeBlock from '@/components/CodeBlock';
 
 interface MethodologyPanelProps {

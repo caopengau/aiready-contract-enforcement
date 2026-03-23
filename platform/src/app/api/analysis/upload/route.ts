@@ -4,20 +4,11 @@ import {
   createAnalysis,
   getRepository,
   listRepositoryAnalyses,
-  getUser,
   validateApiKey,
   listUserRepositories,
 } from '@/lib/db';
-import {
-  storeAnalysis,
-  calculateAiScore,
-  extractSummary,
-  extractBreakdown,
-  normalizeReport,
-  AnalysisData,
-} from '@/lib/storage';
+import { storeAnalysis, extractSummary, normalizeReport } from '@/lib/storage';
 import { planLimits } from '@/lib/plans';
-import { sendAnalysisCompleteEmail } from '@/lib/email';
 import { randomUUID } from 'crypto';
 import { UnifiedReportSchema, AnalysisStatus } from '@aiready/core/client';
 

@@ -24,8 +24,8 @@ export function TrendsView({ repoId, repoName, onClose }: TrendsViewProps) {
           // Reverse for timeline (oldest to newest)
           setHistory(data.analyses.reverse());
         }
-      } catch (err) {
-        console.error('Failed to fetch history:', err);
+      } catch (_err) {
+        console.error('Failed to fetch history:', _err);
       } finally {
         setLoading(false);
       }

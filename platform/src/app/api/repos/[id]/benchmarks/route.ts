@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { getIndustryBenchmarks } from '@/lib/db/benchmarks';
 import { withRepoAuth } from '@/lib/api/repo-route';
 

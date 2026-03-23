@@ -45,7 +45,7 @@ export function ExpertReviewPanel({
       } else {
         toast.error('Failed to submit review');
       }
-    } catch (err) {
+    } catch (_err) {
       toast.error('Network error');
     } finally {
       setLoading(false);

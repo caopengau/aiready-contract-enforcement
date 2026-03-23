@@ -21,48 +21,47 @@ export default function VisualizePage({ params: paramsPromise }: Props) {
   const [teams, setTeams] = useState<any[]>([]);
 
   useEffect(() => {
-    fetchData();
-  }, [params.id]);
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(`/api/repos/${params.id}/analysis/latest`);
+        const result = await res.json();
 
-  async function fetchData() {
-    try {
-      setLoading(true);
-      const res = await fetch(`/api/repos/${params.id}/analysis/latest`);
-      const result = await res.json();
-
-      if (!res.ok) {
-        toast.error(result.error || 'Failed to fetch visualization data');
-        if (res.status === 404) {
-          router.push(`/dashboard/repo/${params.id}`);
+        if (!res.ok) {
+          toast.error(result.error || 'Failed to fetch visualization data');
+          if (res.status === 404) {
+            router.push(`/dashboard/repo/${params.id}`);
+          }
+          return;
         }
-        return;
-      }
 
-      setRepo(result.repo);
+        setRepo(result.repo);
 
-      // Transform report to graph data
-      const graphData = GraphBuilder.buildFromReport(result.analysis);
-      setData(graphData);
+        // Transform report to graph data
+        const graphData = GraphBuilder.buildFromReport(result.analysis);
+        setData(graphData);
 
-      const sessionRes = await fetch('/api/auth/session');
-      const session = await sessionRes.json();
-      if (session?.user) {
-        setUser(session.user);
+        const sessionRes = await fetch('/api/auth/session');
+        const session = await sessionRes.json();
+        if (session?.user) {
+          setUser(session.user);
 
-        // Fetch teams
-        const teamsRes = await fetch('/api/teams');
-        const teamsData = await teamsRes.json();
-        if (teamsRes.ok) {
-          setTeams(teamsData.teams || []);
+          // Fetch teams
+          const teamsRes = await fetch('/api/teams');
+          const teamsData = await teamsRes.json();
+          if (teamsRes.ok) {
+            setTeams(teamsData.teams || []);
+          }
         }
+      } catch (_err) {
+        console.error('Error fetching visualization data:', _err);
+        toast.error('An unexpected error occurred');
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.error('Error fetching visualization data:', err);
-      toast.error('An unexpected error occurred');
-    } finally {
-      setLoading(false);
-    }
-  }
+    };
+    loadData();
+  }, [params.id, router]);
 
   return (
     <PlatformShell user={user} teams={teams} activePage="repo">

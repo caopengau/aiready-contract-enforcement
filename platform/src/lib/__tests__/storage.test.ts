@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { calculateAiScore, normalizeReport } from '../storage';
 import { ToolName } from '@aiready/core/client';
 

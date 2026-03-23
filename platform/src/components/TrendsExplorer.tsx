@@ -32,8 +32,8 @@ export default function TrendsExplorer({ repos }: Props) {
       if (res.ok) {
         setHistory(data.analyses.reverse());
       }
-    } catch (err) {
-      console.error('Failed to fetch history:', err);
+    } catch (_err) {
+      console.error('Failed to fetch history:', _err);
     } finally {
       setLoading(false);
     }

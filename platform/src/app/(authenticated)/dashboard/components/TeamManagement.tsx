@@ -21,8 +21,8 @@ export function TeamManagement({
         const data = await res.json();
         setMembers(data.members);
       }
-    } catch (err) {
-      console.error('Failed to fetch members:', err);
+    } catch (_err) {
+      console.error('Failed to fetch members:', _err);
     }
   }, [teamId]);
 
@@ -47,7 +47,7 @@ export function TeamManagement({
       } else {
         setError(data.error || 'Failed to invite member');
       }
-    } catch (err) {
+    } catch (_err) {
       setError('Network error');
     } finally {
       setLoading(false);

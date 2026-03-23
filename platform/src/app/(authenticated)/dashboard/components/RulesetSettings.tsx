@@ -49,8 +49,8 @@ export function RulesetSettings({ teamId }: { teamId: string }) {
           setRuleset(data.ruleset);
         }
       }
-    } catch (err) {
-      console.error('Failed to fetch ruleset:', err);
+    } catch (_err) {
+      console.error('Failed to fetch ruleset:', _err);
     } finally {
       setLoading(false);
     }
@@ -73,7 +73,7 @@ export function RulesetSettings({ teamId }: { teamId: string }) {
       } else {
         toast.error('Failed to update ruleset');
       }
-    } catch (err) {
+    } catch (_err) {
       toast.error('Network error');
     } finally {
       setSaving(false);

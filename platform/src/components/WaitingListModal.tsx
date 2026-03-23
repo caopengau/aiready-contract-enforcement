@@ -30,7 +30,7 @@ export default function WaitingListModal({ isOpen, onClose, planName }: Props) {
 
       if (!res.ok) throw new Error('Failed to join waiting list');
       setStatus('success');
-    } catch (err) {
+    } catch {
       setStatus('error');
     }
   };

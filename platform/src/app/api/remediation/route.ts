@@ -4,8 +4,6 @@ import {
   createRemediation,
   listRemediations,
   listTeamRemediations,
-  getRemediation,
-  updateRemediation,
   RemediationRequest,
 } from '@/lib/db';
 import { randomUUID } from 'crypto';
