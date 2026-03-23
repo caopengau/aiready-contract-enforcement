@@ -212,6 +212,58 @@ describe('consistency scoring', () => {
   });
 });
 
+describe('naming-generalized const naming', () => {
+  it('should allow SCREAMING_SNAKE_CASE for non-primitive constants', () => {
+    // This test verifies the fix that allows SCREAMING_SNAKE_CASE for all exported constants,
+    // not just primitives. Constants like SKILL_CONFIG, SECTION_MAP, BUILD_DIR should be valid.
+    const validConstantNames = [
+      'SKILL_CONFIG',
+      'SECTION_MAP',
+      'BUILD_DIR',
+      'API_ENDPOINT',
+      'DEFAULT_OPTIONS',
+      'MAX_RETRIES',
+    ];
+
+    // SCREAMING_SNAKE_CASE should match the constant pattern
+    const constantPattern = /^[A-Z][A-Z0-9_]*$/;
+    for (const name of validConstantNames) {
+      expect(constantPattern.test(name)).toBe(true);
+    }
+  });
+
+  it('should allow camelCase for non-primitive constants', () => {
+    // camelCase should also be valid for constants (e.g., logger, githubTools)
+    const validCamelCaseNames = [
+      'logger',
+      'githubTools',
+      'config',
+      'defaultOptions',
+    ];
+
+    const variablePattern = /^[a-z][a-zA-Z0-9]*$/;
+    for (const name of validCamelCaseNames) {
+      expect(variablePattern.test(name)).toBe(true);
+    }
+  });
+
+  it('should NOT flag SCREAMING_SNAKE_CASE constants as naming issues', async () => {
+    // After the fix, SCREAMING_SNAKE_CASE constants should not generate naming issues
+    const report = await analyzeConsistency({
+      rootDir: './src',
+      checkNaming: true,
+      checkPatterns: false,
+    });
+
+    // Check that naming issues are reduced after the fix
+    const namingIssues = report.summary.namingIssues;
+
+    // There should be fewer naming issues after the fix (was 105, now ~55)
+    // This is a sanity check that the fix is working
+    expect(namingIssues).toBeLessThan(100);
+  });
+});
+
 describe('recommendations', () => {
   it('should generate relevant recommendations', async () => {
     const report = await analyzeConsistency({

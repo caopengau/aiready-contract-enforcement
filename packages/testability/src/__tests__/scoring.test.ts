@@ -78,4 +78,35 @@ describe('Testability Scoring', () => {
     expect(scoring.recommendations[0].estimatedImpact).toBe(15);
     expect(scoring.recommendations[0].priority).toBe('high');
   });
+
+  it('should return ToolScoringOutput with score at top level (not summary.score)', () => {
+    const scoring = calculateTestabilityScore(mockReport);
+
+    // The bug was that CLI tried to access scoring.summary.score
+    // but ToolScoringOutput has score at the top level
+    expect(scoring.score).toBeDefined();
+    expect(typeof scoring.score).toBe('number');
+    expect(scoring.score).toBe(75);
+
+    // Verify there is no .summary property (which would cause the CLI crash)
+    expect((scoring as any).summary).toBeUndefined();
+  });
+
+  it('should return rating at top level (not summary.rating)', () => {
+    const scoring = calculateTestabilityScore(mockReport);
+
+    // The CLI accesses scoring.rating || report.summary.rating
+    // ToolScoringOutput may not have rating, but it should not have summary
+    expect((scoring as any).summary).toBeUndefined();
+  });
+
+  it('should have rawMetrics with testability data', () => {
+    const scoring = calculateTestabilityScore(mockReport);
+
+    expect(scoring.rawMetrics).toBeDefined();
+    expect(scoring.rawMetrics).toHaveProperty('sourceFiles');
+    expect(scoring.rawMetrics).toHaveProperty('testFiles');
+    expect(scoring.rawMetrics).toHaveProperty('pureFunctions');
+    expect(scoring.rawMetrics).toHaveProperty('totalFunctions');
+  });
 });
