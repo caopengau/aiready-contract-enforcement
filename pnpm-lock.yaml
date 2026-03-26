@@ -528,6 +528,9 @@ importers:
       '@aiready/context-analyzer':
         specifier: workspace:*
         version: link:../context-analyzer
+      '@aiready/contract-enforcement':
+        specifier: workspace:*
+        version: link:../contract-enforcement
       '@aiready/core':
         specifier: workspace:*
         version: link:../core
