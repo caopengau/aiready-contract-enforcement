@@ -35,10 +35,11 @@ export function calculateContractEnforcementScore(
   const boundaryDensity = (boundaryCount / loc) * 1000;
 
   // Dimension scores: 100 = no patterns, 0 = very high density
-  const typeEscapeHatchScore = clamp(100 - typeDensity * 15, 0, 100);
-  const fallbackCascadeScore = clamp(100 - fallbackDensity * 12, 0, 100);
-  const errorTransparencyScore = clamp(100 - errorDensity * 25, 0, 100);
-  const boundaryValidationScore = clamp(100 - boundaryDensity * 10, 0, 100);
+  // Adjusted to be more lenient - many defensive patterns are valid practices
+  const typeEscapeHatchScore = clamp(100 - typeDensity * 10, 0, 100);
+  const fallbackCascadeScore = clamp(100 - fallbackDensity * 8, 0, 100);
+  const errorTransparencyScore = clamp(100 - errorDensity * 15, 0, 100);
+  const boundaryValidationScore = clamp(100 - boundaryDensity * 7, 0, 100);
 
   const score = Math.round(
     typeEscapeHatchScore * DIMENSION_WEIGHTS.typeEscapeHatch +
