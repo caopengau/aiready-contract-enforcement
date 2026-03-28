@@ -25,15 +25,7 @@ export interface AiSignalClarityIssue extends Issue {
 }
 
 export interface FileAiSignalClarityResult extends AnalysisResult {
-  signals: {
-    type: string;
-    description: string;
-    impact: number;
-    location: {
-      line: number;
-      column: number;
-    };
-  }[];
+  signals: Record<string, number>;
   issues: AiSignalClarityIssue[];
   filePath?: string; // For backward compatibility
 }

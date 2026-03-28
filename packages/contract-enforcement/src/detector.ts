@@ -75,8 +75,7 @@ function countOptionalChainDepth(node: TSESTree.Node): number {
   return depth;
 }
 
-function isLiteral(node: TSESTree.Node | undefined): boolean {
-  if (!node) return false;
+function isLiteral(node: TSESTree.Node): boolean {
   if (node.type === 'Literal') return true;
   if (node.type === 'TemplateLiteral' && node.expressions.length === 0)
     return true;
@@ -100,9 +99,8 @@ function isProcessEnvAccess(node: TSESTree.Node | undefined): boolean {
   );
 }
 
-function isSstResourceAccess(node: TSESTree.Node | undefined): boolean {
-  if (!node) return false;
-  let current: TSESTree.Node | undefined = node;
+function isSstResourceAccess(node: TSESTree.Node): boolean {
+  let current: TSESTree.Node = node;
   // Handle ChainExpression for optional chaining like Resource.MySecret?.value
   if (current.type === 'ChainExpression') {
     current = current.expression;
@@ -234,9 +232,9 @@ export function detectDefensivePatterns(
             Severity.Major,
             '`as any` type assertion bypasses type safety',
             filePath,
-            node.loc?.start.line ?? 0,
-            node.loc?.start.column ?? 0,
-            getLineContent(code, node.loc?.start.line ?? 0)
+            node.loc.start.line,
+            node.loc.start.column,
+            getLineContent(code, node.loc.start.line)
           )
         );
       }
@@ -259,9 +257,9 @@ export function detectDefensivePatterns(
             Severity.Major,
             '`as unknown` double-cast bypasses type safety',
             filePath,
-            node.loc?.start.line ?? 0,
-            node.loc?.start.column ?? 0,
-            getLineContent(code, node.loc?.start.line ?? 0)
+            node.loc.start.line,
+            node.loc.start.column,
+            getLineContent(code, node.loc.start.line)
           )
         );
       }
@@ -278,9 +276,9 @@ export function detectDefensivePatterns(
             Severity.Minor,
             `Optional chain depth of ${depth} indicates missing structural guarantees`,
             filePath,
-            node.loc?.start.line ?? 0,
-            node.loc?.start.column ?? 0,
-            getLineContent(code, node.loc?.start.line ?? 0)
+            node.loc.start.line,
+            node.loc.start.column,
+            getLineContent(code, node.loc.start.line)
           )
         );
       }
@@ -301,9 +299,9 @@ export function detectDefensivePatterns(
             Severity.Minor,
             'Nullish coalescing with literal default suggests missing upstream type guarantee',
             filePath,
-            node.loc?.start.line ?? 0,
-            node.loc?.start.column ?? 0,
-            getLineContent(code, node.loc?.start.line ?? 0)
+            node.loc.start.line,
+            node.loc.start.column,
+            getLineContent(code, node.loc.start.line)
           )
         );
       }
@@ -320,9 +318,9 @@ export function detectDefensivePatterns(
             Severity.Major,
             'Error is swallowed in catch block — failures will be silent',
             filePath,
-            node.handler.loc?.start.line ?? 0,
-            node.handler.loc?.start.column ?? 0,
-            getLineContent(code, node.handler.loc?.start.line ?? 0)
+            node.handler.loc.start.line,
+            node.handler.loc.start.column,
+            getLineContent(code, node.handler.loc.start.line)
           )
         );
       }
@@ -341,9 +339,9 @@ export function detectDefensivePatterns(
           Severity.Minor,
           'Environment variable with fallback — use a validated env schema instead',
           filePath,
-          node.loc?.start.line ?? 0,
-          node.loc?.start.column ?? 0,
-          getLineContent(code, node.loc?.start.line ?? 0)
+          node.loc.start.line,
+          node.loc.start.column,
+          getLineContent(code, node.loc.start.line)
         )
       );
     }
@@ -373,9 +371,9 @@ export function detectDefensivePatterns(
             Severity.Info,
             'Guard clause could be eliminated with non-nullable type at source',
             filePath,
-            node.loc?.start.line ?? 0,
-            node.loc?.start.column ?? 0,
-            getLineContent(code, node.loc?.start.line ?? 0)
+            node.loc.start.line,
+            node.loc.start.column,
+            getLineContent(code, node.loc.start.line)
           )
         );
       }
@@ -405,9 +403,9 @@ export function detectDefensivePatterns(
               Severity.Major,
               'Parameter typed as `any` bypasses type safety',
               filePath,
-              param.loc?.start.line ?? 0,
-              param.loc?.start.column ?? 0,
-              getLineContent(code, param.loc?.start.line ?? 0)
+              param.loc.start.line,
+              param.loc.start.column,
+              getLineContent(code, param.loc.start.line)
             )
           );
         }
@@ -421,20 +419,21 @@ export function detectDefensivePatterns(
       }
 
       if (returnAnno?.type === 'TSAnyKeyword') {
-        const returnTypeNode = (node as TSESTree.FunctionDeclaration)
-          .returnType;
-        counts['any-return']++;
-        issues.push(
-          makeIssue(
-            'any-return',
-            Severity.Major,
-            'Return type is `any` — callers cannot rely on the result shape',
-            filePath,
-            returnTypeNode?.loc?.start.line ?? 0,
-            returnTypeNode?.loc?.start.column ?? 0,
-            getLineContent(code, returnTypeNode?.loc?.start.line ?? 0)
-          )
-        );
+        const returnTypeNode = (node as any).returnType;
+        if (returnTypeNode?.loc) {
+          counts['any-return']++;
+          issues.push(
+            makeIssue(
+              'any-return',
+              Severity.Major,
+              'Return type is `any` — callers cannot rely on the result shape',
+              filePath,
+              returnTypeNode.loc.start.line,
+              returnTypeNode.loc.start.column,
+              getLineContent(code, returnTypeNode.loc.start.line)
+            )
+          );
+        }
       }
     }
 

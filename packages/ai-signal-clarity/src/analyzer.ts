@@ -51,8 +51,11 @@ export async function analyzeAiSignalClarity(
 
     const result = await scanFile(filePath, options);
     results.push(result);
-    for (const key of Object.keys(aggregate) as Array<keyof typeof aggregate>) {
-      aggregate[key] += (result.signals as Record<string, number>)[key] ?? 0;
+    // result.signals is a Record<string, number>, iterate over entries
+    for (const [key, value] of Object.entries(result.signals)) {
+      if (key in aggregate) {
+        (aggregate as Record<string, number>)[key] += value;
+      }
     }
   }
 

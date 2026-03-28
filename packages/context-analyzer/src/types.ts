@@ -1,4 +1,4 @@
-import type { ScanOptions, Severity } from '@aiready/core';
+import type { ScanOptions, Severity, ExportInfo } from '@aiready/core';
 
 /**
  * Options for the Context Analyzer tool.
@@ -157,16 +157,6 @@ export interface DependencyNode {
   linesOfCode: number;
   exportedBy?: string[]; // Files that import exports from this file
   sharedTypes?: string[]; // Types shared with other files
-}
-
-export interface ExportInfo {
-  name: string;
-  type: 'function' | 'class' | 'const' | 'type' | 'interface' | 'default';
-  inferredDomain?: string; // Inferred from name/usage (legacy single domain)
-  domains?: DomainAssignment[]; // Multi-domain support with confidence scores
-  imports?: string[]; // Imports used by this export (for import-based cohesion)
-  dependencies?: string[]; // Other exports from same file this depends on
-  typeReferences?: string[]; // TypeScript types referenced by this export
 }
 
 export interface DomainAssignment {
