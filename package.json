@@ -74,11 +74,8 @@
     "d3": "^7.9.0"
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx}": [
-      "prettier --write"
-    ],
-    "*.{json,md,yml,yaml}": [
-      "prettier --write"
+    "**/*": [
+      "prettier --write --ignore-unknown"
     ]
   }
 }

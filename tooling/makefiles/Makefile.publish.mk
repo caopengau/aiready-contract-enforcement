@@ -610,3 +610,4 @@ publish-vscode: ## Publish VS Code extension to Marketplace (requires VSCE_PAT e
 	fi; \
 	$(call log_success,VS Code extension published)
 
+# Test comment
