@@ -1,12 +1,12 @@
 import { ToolRegistry } from '@aiready/core';
-import { ContractEnforcementProvider } from './provider';
+import { CONTRACT_ENFORCEMENT_PROVIDER } from './provider';
 
-ToolRegistry.register(ContractEnforcementProvider);
+ToolRegistry.register(CONTRACT_ENFORCEMENT_PROVIDER);
 
 export { analyzeContractEnforcement } from './analyzer';
 export { calculateContractEnforcementScore } from './scoring';
 export { detectDefensivePatterns } from './detector';
-export { ContractEnforcementProvider };
+export { CONTRACT_ENFORCEMENT_PROVIDER };
 export type {
   ContractEnforcementOptions,
   ContractEnforcementReport,

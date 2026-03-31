@@ -1,26 +1,26 @@
 import { describe, it, expect } from 'vitest';
-import { ContractEnforcementProvider } from '../provider';
+import { CONTRACT_ENFORCEMENT_PROVIDER } from '../provider';
 import { ToolName } from '@aiready/core';
 
-describe('ContractEnforcementProvider', () => {
+describe('CONTRACT_ENFORCEMENT_PROVIDER', () => {
   it('has correct tool ID', () => {
-    expect(ContractEnforcementProvider.id).toBe(ToolName.ContractEnforcement);
+    expect(CONTRACT_ENFORCEMENT_PROVIDER.id).toBe(ToolName.ContractEnforcement);
   });
 
   it('has aliases', () => {
-    expect(ContractEnforcementProvider.alias).toContain('contract');
-    expect(ContractEnforcementProvider.alias).toContain('ce');
+    expect(CONTRACT_ENFORCEMENT_PROVIDER.alias).toContain('contract');
+    expect(CONTRACT_ENFORCEMENT_PROVIDER.alias).toContain('ce');
   });
 
   it('has default weight', () => {
-    expect(ContractEnforcementProvider.defaultWeight).toBe(10);
+    expect(CONTRACT_ENFORCEMENT_PROVIDER.defaultWeight).toBe(10);
   });
 
   it('has analyze function', () => {
-    expect(typeof ContractEnforcementProvider.analyze).toBe('function');
+    expect(typeof CONTRACT_ENFORCEMENT_PROVIDER.analyze).toBe('function');
   });
 
   it('has score function', () => {
-    expect(typeof ContractEnforcementProvider.score).toBe('function');
+    expect(typeof CONTRACT_ENFORCEMENT_PROVIDER.score).toBe('function');
   });
 });
