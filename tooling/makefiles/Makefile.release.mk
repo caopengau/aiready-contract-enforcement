@@ -237,7 +237,7 @@ release-one: ## Release one npm spoke: SPOKE=name TYPE=patch|minor|major
 	$(call require_spoke)
 	@$(validate_type)
 	@$(MAKE) -C $(ROOT_DIR) $(call bump_target_for_type,$(TYPE)) SPOKE=$(SPOKE)
-	@$(call commit_and_tag)
+	@$(call commit_and_tag,packages/$(SPOKE),$(SPOKE),$(SPOKE))
 	@$(call run_if_enabled,$(RELEASE_PRECHECKS),$(MAKE) -C $(ROOT_DIR) release-checks-spoke SPOKE=$(SPOKE),spoke checks)
 	@$(call run_if_enabled,$(RELEASE_PUBLISH),$(MAKE) -C $(ROOT_DIR) npm-publish SPOKE=$(SPOKE) && $(MAKE) -C $(ROOT_DIR) publish SPOKE=$(SPOKE) PUBLIC_OWNER=$(PUBLIC_OWNER),publish spoke)
 	@$(call run_if_enabled,$(RELEASE_DISTRIBUTION),$(MAKE) -C $(ROOT_DIR) update-distribution,distribution channels)

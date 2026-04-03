@@ -74,7 +74,7 @@ define sync_to_github
 	git branch -D "$$branch" >/dev/null 2>&1 || true; \
 	$(call log_info,Creating subtree split for $(1)...); \
 	git subtree split --prefix="$(1)" -b "$$branch" >/dev/null; \
-	if [ -n "$(6)" ]; then \
+	if [ -n "$(strip $(6))" ]; then \
 		$(call log_info,Running cleanup for split branch...); \
 		git checkout "$$branch" 2>/dev/null; \
 		$(6); \
